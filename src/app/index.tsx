@@ -1,13 +1,6 @@
-import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import React from "react";
-import {
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import Camera from "../components/camera";
 export default function HomeScreen() {
   return (
@@ -32,34 +25,10 @@ export default function HomeScreen() {
 
       <ScrollView style={styles.content}>
         <Text style={styles.sectionTitle}>Quick Actions</Text>
-        <View style={styles.row}>
-          <Camera />
-
-          {[
-            // { icon: "upload-file" as const, label: "Upload" },
-            { icon: "qr-code-scanner" as const, label: "Scan" },
-            { icon: "download" as const, label: "Fetch" },
-          ].map((item, i) => (
-            <TouchableOpacity key={i} style={styles.card}>
-              <MaterialIcons name={item.icon} size={28} color="#2563eb" />
-              <Text>{item.label}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
+        <Camera />
 
         <Text style={styles.sectionTitle}>My Documents</Text>
         <View style={styles.grid}>
-          {/* <View
-            style={{
-              backgroundColor: "green",
-              width: "48%",
-              padding: 15,
-              borderRadius: 10,
-              marginBottom: 10,
-            }}
-          >
-            <Text style={{ fontWeight: "500" }}>Add</Text>
-          </View> */}
           {["Aadhaar", "PAN Card", "Driving License", "Education", "PAN"].map(
             (cat, i) => (
               <View key={i} style={styles.gridCard}>

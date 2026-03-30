@@ -1,7 +1,7 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { useState } from "react";
-import { Alert, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function ImagePickerExample() {
   const [image, setImage] = useState<string | null>(null);
@@ -69,10 +69,18 @@ export default function ImagePickerExample() {
   };
 
   return (
-    <TouchableOpacity style={styles.card} onPress={pickImage}>
-      <MaterialIcons name="upload-file" size={28} color="#2563eb" />
-      <Text>Upload</Text>
-    </TouchableOpacity>
+    <View style={styles.row}>
+      {[
+        { icon: "upload-file" as const, label: "Upload", action: pickImage },
+        { icon: "qr-code-scanner" as const, label: "Scan", action: openCamera },
+        { icon: "download" as const, label: "Fetch" },
+      ].map((item, i) => (
+        <TouchableOpacity key={i} style={styles.card} onPress={item.action}>
+          <MaterialIcons name={item.icon} size={28} color="#2563eb" />
+          <Text>{item.label}</Text>
+        </TouchableOpacity>
+      ))}
+    </View>
   );
 }
 
@@ -93,4 +101,5 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: "center",
   },
+  row: { flexDirection: "row", justifyContent: "space-between" },
 });
