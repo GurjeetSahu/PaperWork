@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-
+import Camera from "../components/camera";
 export default function HomeScreen() {
   return (
     <View style={styles.container}>
@@ -33,6 +33,19 @@ export default function HomeScreen() {
       </View>
 
       <ScrollView style={styles.content}>
+        {/* My Docs */}
+        <Text style={styles.sectionTitle}>My Documents</Text>
+        <View style={styles.grid}>
+          {["Aadhaar", "PAN Card", "Driving License", "Education", "PAN"].map(
+            (cat, i) => (
+              <View key={i} style={styles.gridCard}>
+                <Text style={{ fontWeight: "500" }}>{cat}</Text>
+                <Text style={{ fontSize: 12, color: "gray" }}>2 documents</Text>
+              </View>
+            ),
+          )}
+        </View>
+
         {/* Quick Actions */}
         <Text style={styles.sectionTitle}>Quick Actions</Text>
         <View style={styles.row}>
@@ -46,19 +59,6 @@ export default function HomeScreen() {
               <Text>{item.label}</Text>
             </TouchableOpacity>
           ))}
-        </View>
-
-        {/* Categories */}
-        <Text style={styles.sectionTitle}>Categories</Text>
-        <View style={styles.grid}>
-          {["Aadhaar", "PAN Card", "Driving License", "Education"].map(
-            (cat, i) => (
-              <View key={i} style={styles.gridCard}>
-                <Text style={{ fontWeight: "500" }}>{cat}</Text>
-                <Text style={{ fontSize: 12, color: "gray" }}>2 documents</Text>
-              </View>
-            ),
-          )}
         </View>
 
         {/* Recent */}
@@ -80,6 +80,7 @@ export default function HomeScreen() {
             <Ionicons name="chevron-forward" size={20} color="gray" />
           </View>
         ))}
+        <Camera />
       </ScrollView>
 
       {/* Bottom Nav */}
