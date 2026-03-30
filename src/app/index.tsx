@@ -1,4 +1,4 @@
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import React from "react";
 import {
   Image,
@@ -12,7 +12,6 @@ import Camera from "../components/camera";
 export default function HomeScreen() {
   return (
     <View style={styles.container}>
-      {/* Header */}
       <View style={styles.header}>
         <View style={styles.headerTop}>
           <View>
@@ -25,7 +24,6 @@ export default function HomeScreen() {
           />
         </View>
 
-        {/* Search */}
         <View style={styles.search}>
           <Ionicons name="search" size={20} color="gray" />
           <Text style={styles.searchText}>Search documents</Text>
@@ -33,35 +31,44 @@ export default function HomeScreen() {
       </View>
 
       <ScrollView style={styles.content}>
-        {/* My Docs */}
-        <Text style={styles.sectionTitle}>My Documents</Text>
-        <View style={styles.grid}>
-          {["Aadhaar", "PAN Card", "Driving License", "Education", "PAN"].map(
-            (cat, i) => (
-              <View key={i} style={styles.gridCard}>
-                <Text style={{ fontWeight: "500" }}>{cat}</Text>
-                <Text style={{ fontSize: 12, color: "gray" }}>2 documents</Text>
-              </View>
-            ),
-          )}
-        </View>
-
-        {/* Quick Actions */}
         <Text style={styles.sectionTitle}>Quick Actions</Text>
         <View style={styles.row}>
+          <Camera />
+
           {[
-            { icon: "cloud-upload", label: "Upload" },
-            { icon: "qr-code-scanner", label: "Scan" },
-            { icon: "download", label: "Fetch" },
+            // { icon: "upload-file" as const, label: "Upload" },
+            { icon: "qr-code-scanner" as const, label: "Scan" },
+            { icon: "download" as const, label: "Fetch" },
           ].map((item, i) => (
             <TouchableOpacity key={i} style={styles.card}>
-              {/* <MaterialIcons name={item.icon} size={28} color="#2563eb" /> */}
+              <MaterialIcons name={item.icon} size={28} color="#2563eb" />
               <Text>{item.label}</Text>
             </TouchableOpacity>
           ))}
         </View>
 
-        {/* Recent */}
+        <Text style={styles.sectionTitle}>My Documents</Text>
+        <View style={styles.grid}>
+          {/* <View
+            style={{
+              backgroundColor: "green",
+              width: "48%",
+              padding: 15,
+              borderRadius: 10,
+              marginBottom: 10,
+            }}
+          >
+            <Text style={{ fontWeight: "500" }}>Add</Text>
+          </View> */}
+          {["Aadhaar", "PAN Card", "Driving License", "Education", "PAN"].map(
+            (cat, i) => (
+              <View key={i} style={styles.gridCard}>
+                <Text style={{ fontWeight: "500" }}>{cat}</Text>
+              </View>
+            ),
+          )}
+        </View>
+
         <Text style={styles.sectionTitle}>Recent Documents</Text>
         {[
           { name: "Aadhaar Card", date: "Updated Jan 2026" },
@@ -80,18 +87,16 @@ export default function HomeScreen() {
             <Ionicons name="chevron-forward" size={20} color="gray" />
           </View>
         ))}
-        <Camera />
       </ScrollView>
-
-      {/* Bottom Nav */}
+      {/* 
       <View style={styles.nav}>
         {["home", "folder", "notifications", "person"].map((icon, i) => (
           <TouchableOpacity key={i} style={{ alignItems: "center" }}>
-            {/* <Ionicons name={icon} size={22} color="gray" /> */}
+            <Ionicons name="add" size={22} color="gray" />
             <Text style={{ fontSize: 12 }}>{icon}</Text>
           </TouchableOpacity>
         ))}
-      </View>
+      </View> */}
     </View>
   );
 }
