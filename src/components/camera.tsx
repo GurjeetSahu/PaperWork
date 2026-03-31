@@ -1,17 +1,23 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
-import { useState } from "react";
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useRef, useState } from "react";
+import {
+  Alert,
+  Button,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+
+import { CameraView } from "expo-camera";
 
 export default function ImagePickerExample() {
-  const [image, setImage] = useState<string | null>(null);
+  const [uri, setUri] = useState<string | null>(null);
+  const ref = useRef<CameraView>(null);
 
   const pickImage = async () => {
-    // No permissions request is necessary for launching the image library.
-    // Manually request permissions for videos on iOS when `allowsEditing` is set to `false`
-    // and `videoExportPreset` is `'Passthrough'` (the default), ideally before launching the picker
-    // so the app users aren't surprised by a system dialog after picking a video.
-    // See "Invoke permissions for videos" sub section for more details.
     const permissionResult =
       await ImagePicker.requestMediaLibraryPermissionsAsync();
 
@@ -33,11 +39,12 @@ export default function ImagePickerExample() {
     console.log(result);
 
     if (!result.canceled) {
-      setImage(result.assets[0].uri);
+      setUri(result.assets[0].uri);
     }
   };
 
   const openCamera = async () => {
+    console.log("Opening camera...");
     // No permissions request is necessary for launching the image library.
     // Manually request permissions for videos on iOS when `allowsEditing` is set to `false`
     // and `videoExportPreset` is `'Passthrough'` (the default), ideally before launching the picker
@@ -54,18 +61,36 @@ export default function ImagePickerExample() {
       return;
     }
 
-    let result = await ImagePicker.launchCameraAsync({
+    await ImagePicker.launchCameraAsync({
       mediaTypes: ["images", "videos"],
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
-    });
+    })
+      .then((result) => {
+        console.log(result);
+        if (result?.assets && result.assets[0]?.uri) {
+          setUri(result.assets[0].uri);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
-    console.log(result);
-
-    if (!result.canceled) {
-      setImage(result.assets[0].uri);
-    }
+  const renderPicture = (uri: string) => {
+    return (
+      <View>
+        <Image source={{ uri }} style={{ width: 300, aspectRatio: 1 }} />
+        <Button
+          onPress={() => {
+            setUri(null);
+            openCamera();
+          }}
+          title="Take another picture"
+        />
+      </View>
+    );
   };
 
   return (
@@ -80,6 +105,9 @@ export default function ImagePickerExample() {
           <Text>{item.label}</Text>
         </TouchableOpacity>
       ))}
+      <View style={[styles.c, { backgroundColor: "#00ff2a" }]}>
+        {uri ? renderPicture(uri) : null}
+      </View>
     </View>
   );
 }
@@ -87,6 +115,12 @@ export default function ImagePickerExample() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  c: {
+    flex: 1,
+    backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
   },
