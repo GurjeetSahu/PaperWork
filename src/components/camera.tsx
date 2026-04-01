@@ -62,15 +62,15 @@ export default function ImagePickerExample() {
       mediaTypes: ["images"],
       aspect: [4, 3],
       quality: 1,
-    });
-    // .then((result) => {
-    //   if (result?.assets && result.assets[0]?.uri) {
-    //     setUri(result.assets[0].uri);
-    //   }
-    // })
-    // .catch((err) => {
-    //   console.log(err);
-    // });
+    })
+      .then((result) => {
+        if (result?.assets && result.assets[0]?.uri) {
+          setUri(result.assets[0].uri);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     console.log(result);
   };
 
