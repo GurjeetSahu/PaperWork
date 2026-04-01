@@ -1,10 +1,10 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
+import { useRouter } from "expo-router";
 import { useState } from "react";
 import {
   Alert,
   Button,
-  Image,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -12,6 +12,7 @@ import {
 } from "react-native";
 
 export default function ImagePickerExample() {
+  const router = useRouter();
   const [uri, setUri] = useState<string | null>(null);
 
   const pickImage = async () => {
@@ -66,27 +67,16 @@ export default function ImagePickerExample() {
       .then((result) => {
         if (result?.assets && result.assets[0]?.uri) {
           setUri(result.assets[0].uri);
+          router.push({
+            pathname: "/fwdCamera",
+            params: { uri: result.assets[0].uri },
+          });
         }
       })
       .catch((err) => {
         console.log(err);
       });
     console.log(result);
-  };
-
-  const renderPicture = (uri: string) => {
-    return (
-      <View>
-        <Image source={{ uri }} style={{ width: 300, aspectRatio: 1 }} />
-        <Button
-          onPress={() => {
-            setUri(null);
-            openCamera();
-          }}
-          title="Take another picture"
-        />
-      </View>
-    );
   };
 
   return (
@@ -101,9 +91,6 @@ export default function ImagePickerExample() {
           <Text>{item.label}</Text>
         </TouchableOpacity>
       ))}
-      <View style={[styles.c, { backgroundColor: "#00ff2a" }]}>
-        {uri ? renderPicture(uri) : null}
-      </View>
       <Button title="close camera" onPress={() => setUri(null)} />
     </View>
   );
