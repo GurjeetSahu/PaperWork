@@ -1,6 +1,6 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import {
   Alert,
   Button,
@@ -11,11 +11,8 @@ import {
   View,
 } from "react-native";
 
-import { CameraView } from "expo-camera";
-
 export default function ImagePickerExample() {
   const [uri, setUri] = useState<string | null>(null);
-  const ref = useRef<CameraView>(null);
 
   const pickImage = async () => {
     const permissionResult =
@@ -61,21 +58,20 @@ export default function ImagePickerExample() {
       return;
     }
 
-    await ImagePicker.launchCameraAsync({
-      mediaTypes: ["images", "videos"],
-      allowsEditing: true,
+    let result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ["images"],
       aspect: [4, 3],
       quality: 1,
-    })
-      .then((result) => {
-        console.log(result);
-        if (result?.assets && result.assets[0]?.uri) {
-          setUri(result.assets[0].uri);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    });
+    // .then((result) => {
+    //   if (result?.assets && result.assets[0]?.uri) {
+    //     setUri(result.assets[0].uri);
+    //   }
+    // })
+    // .catch((err) => {
+    //   console.log(err);
+    // });
+    console.log(result);
   };
 
   const renderPicture = (uri: string) => {
@@ -108,6 +104,7 @@ export default function ImagePickerExample() {
       <View style={[styles.c, { backgroundColor: "#00ff2a" }]}>
         {uri ? renderPicture(uri) : null}
       </View>
+      <Button title="close camera" onPress={() => setUri(null)} />
     </View>
   );
 }
