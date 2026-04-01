@@ -1,40 +1,117 @@
 import { useLocalSearchParams } from "expo-router";
 import React from "react";
-import { Button, StyleSheet, View } from "react-native";
-
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import ImageViewer from "../../components/ImageViewer";
 
 export default function Index() {
   const { uri }: { uri: string } = useLocalSearchParams();
-  const renderPicture = (uri: string) => {
-    return <ImageViewer imgSource={uri} />;
-  };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.imageContainer}>
-        {uri ? renderPicture(uri) : null}
+    <SafeAreaView style={styles.container}>
+      {/* Image Section */}
+      <View style={styles.imageWrapper}>
+        {uri ? (
+          <View style={styles.imageCard}>
+            <ImageViewer imgSource={uri} />
+          </View>
+        ) : (
+          <Text style={styles.placeholder}>No Image Selected</Text>
+        )}
       </View>
-      <View style={styles.footerContainer}>
-        <Button title="Retake" />
-        <Button title="Add more photo" />
-        <Button title="Proceed" />
+
+      {/* Footer Actions */}
+      <View style={styles.footer}>
+        <TouchableOpacity style={[styles.button, styles.secondary]}>
+          <Text style={styles.secondaryText}>Retake</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={[styles.button, styles.outline]}>
+          <Text style={styles.outlineText}>Add More</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={[styles.button, styles.primary]}>
+          <Text style={styles.primaryText}>Proceed</Text>
+        </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ff0000",
-    alignItems: "center",
+    backgroundColor: "#0f172a", // dark modern bg
+    justifyContent: "space-between",
   },
-  imageContainer: {
+
+  imageWrapper: {
     flex: 1,
-  },
-  footerContainer: {
-    flex: 1 / 3,
+    justifyContent: "center",
     alignItems: "center",
+    padding: 20,
+  },
+
+  imageCard: {
+    width: "100%",
+    height: "90%",
+    borderRadius: 24,
+    overflow: "hidden",
+    backgroundColor: "#1e293b",
+    elevation: 10,
+    shadowColor: "#000",
+    shadowOpacity: 0.3,
+    shadowRadius: 20,
+  },
+
+  placeholder: {
+    color: "#94a3b8",
+    fontSize: 16,
+  },
+
+  footer: {
+    padding: 20,
+    gap: 12,
+  },
+
+  button: {
+    paddingVertical: 14,
+    borderRadius: 16,
+    alignItems: "center",
+  },
+
+  primary: {
+    backgroundColor: "#6366f1",
+  },
+
+  primaryText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "600",
+  },
+
+  secondary: {
+    backgroundColor: "#ef4444",
+  },
+
+  secondaryText: {
+    color: "white",
+    fontSize: 15,
+    fontWeight: "500",
+  },
+
+  outline: {
+    borderWidth: 1,
+    borderColor: "#475569",
+  },
+
+  outlineText: {
+    color: "#cbd5f5",
+    fontSize: 15,
   },
 });
