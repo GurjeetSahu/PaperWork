@@ -4,11 +4,10 @@ import { useRouter } from "expo-router";
 import { useState } from "react";
 import {
   Alert,
-  Button,
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
 
 export default function ImagePickerExample() {
@@ -91,7 +90,6 @@ export default function ImagePickerExample() {
           <Text>{item.label}</Text>
         </TouchableOpacity>
       ))}
-      <Button title="close camera" onPress={() => setUri(null)} />
     </View>
   );
 }

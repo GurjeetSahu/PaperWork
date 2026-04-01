@@ -62,7 +62,8 @@
             }
           }
         }
-      ]
+      ],
+      ["expo-file-system"]
     ],
     "experiments": {
       "typedRoutes": true,
