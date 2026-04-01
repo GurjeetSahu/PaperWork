@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
-import Camera from "../components/camera";
+import Camera from "../components/Camera";
 
 export default function HomeScreen() {
   return (
