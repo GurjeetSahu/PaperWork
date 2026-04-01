@@ -1,8 +1,18 @@
 import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 import React from "react";
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  Button,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import Camera from "../components/camera";
+
 export default function HomeScreen() {
+  const router = useRouter();
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -56,16 +66,11 @@ export default function HomeScreen() {
             <Ionicons name="chevron-forward" size={20} color="gray" />
           </View>
         ))}
+        <Button
+          title="Go to Profile 123"
+          onPress={() => router.push("/fwdCamera")}
+        />
       </ScrollView>
-      {/* 
-      <View style={styles.nav}>
-        {["home", "folder", "notifications", "person"].map((icon, i) => (
-          <TouchableOpacity key={i} style={{ alignItems: "center" }}>
-            <Ionicons name="add" size={22} color="gray" />
-            <Text style={{ fontSize: 12 }}>{icon}</Text>
-          </TouchableOpacity>
-        ))}
-      </View> */}
     </View>
   );
 }

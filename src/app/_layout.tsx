@@ -1,16 +1,35 @@
-import { Icon, Label, NativeTabs } from "expo-router/unstable-native-tabs";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { Tabs } from "expo-router";
 
 export default function TabLayout() {
   return (
-    <NativeTabs>
-      <NativeTabs.Trigger name="index">
-        <Label>Home</Label>
-        <Icon src={require("../../assets/images/react-logo.png")} />
-      </NativeTabs.Trigger>
-      <NativeTabs.Trigger name="settings">
-        <Icon src={require("../../assets/images/react-logo.png")} />
-        <Label>Settings</Label>
-      </NativeTabs.Trigger>
-    </NativeTabs>
+    <Tabs screenOptions={{ tabBarActiveTintColor: "blue" }}>
+      <Tabs.Screen
+        name="index"
+        options={{
+          title: "Home",
+          headerShown: false,
+          tabBarIcon: ({ color }) => (
+            <FontAwesome size={28} name="home" color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="settings"
+        options={{
+          title: "Settings",
+          tabBarIcon: ({ color }) => (
+            <FontAwesome size={28} name="cog" color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="fwdCamera"
+        options={{
+          headerShown: false,
+          href: null,
+        }}
+      />
+    </Tabs>
   );
 }
