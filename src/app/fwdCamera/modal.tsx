@@ -1,47 +1,27 @@
-import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import ImageViewer from "../../components/ImageViewer";
 
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { File, Paths } from "expo-file-system";
+import { useLocalSearchParams } from "expo-router";
 
-export default function Index() {
+export default function Modal() {
   const { uri }: { uri: string } = useLocalSearchParams();
-  const router = useRouter();
   return (
     <View style={styles.container}>
-      {/* Image Section */}
-      <View style={styles.imageWrapper}>
-        {uri ? (
-          <View style={styles.imageCard}>
-            <ImageViewer imgSource={uri} />
-          </View>
-        ) : (
-          <Text style={styles.placeholder}>No Image Selected</Text>
-        )}
-      </View>
-
-      {/* Footer Actions */}
       <View style={styles.footer}>
-        <TouchableOpacity style={[styles.button, styles.secondary]}>
-          <Text style={styles.secondaryText}>Retake</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={[styles.button, styles.outline]}>
-          <Text style={styles.outlineText}>Add More</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={[styles.button, styles.primary]}
-          onPress={() => {
-            router.push({
-              pathname: "/fwdCamera/modal",
-              params: {
-                uri: uri,
-              },
-            });
-          }}
-        >
-          <Text style={styles.primaryText}>Proceed</Text>
+        <TouchableOpacity style={{}}>
+          <Text
+            style={styles.primaryText}
+            onPress={async () => {
+              try {
+                const sourceFile = new File(uri);
+                const destinationFile = new File(Paths.document, "image");
+                sourceFile.copy(destinationFile);
+                console.log("Saved to:", destinationFile.uri);
+              } catch {}
+            }}
+          >
+            Save
+          </Text>
         </TouchableOpacity>
       </View>
     </View>

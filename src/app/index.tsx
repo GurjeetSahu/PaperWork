@@ -45,7 +45,7 @@ export default function HomeScreen() {
                 router.push({
                   pathname: "/fwdCamera",
                   params: {
-                    uri: "file:///data/user/0/host.exp.exponent/files/saved",
+                    uri: "file:///data/user/0/host.exp.exponent/files/image",
                   },
                 });
               }}
