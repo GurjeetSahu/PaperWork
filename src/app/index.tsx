@@ -45,7 +45,7 @@ export default function HomeScreen() {
                 router.push({
                   pathname: "/fwdCamera",
                   params: {
-                    uri: "file:///data/user/0/host.exp.exponent/files/image",
+                    uri: "file:///data/user/0/host.exp.exponent/files/fine",
                   },
                 });
               }}
@@ -55,7 +55,7 @@ export default function HomeScreen() {
           </View>
         </View>
         <View style={styles.grid}>
-          {["Aadhaar", "PAN Card", "Driving License", "Education", "PAN"].map(
+          {/* {["Aadhaar", "PAN Card", "Driving License", "Education", "PAN"].map(
             (cat, i) => (
               <View key={i} style={styles.gridCard}>
                 <TouchableOpacity>
@@ -63,7 +63,7 @@ export default function HomeScreen() {
                 </TouchableOpacity>
               </View>
             ),
-          )}
+          )} */}
         </View>
 
         <Text style={styles.sectionTitle}>Recent Documents</Text>
