@@ -1,5 +1,9 @@
 import { MaterialIcons } from "@expo/vector-icons";
-import * as ImagePicker from "expo-image-picker";
+import {
+  launchCameraAsync,
+  launchImageLibraryAsync,
+  requestMediaLibraryPermissionsAsync,
+} from "expo-image-picker";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -9,8 +13,7 @@ export default function ImagePickerExample() {
   const [uri, setUri] = useState<string | null>(null);
 
   const pickImage = async () => {
-    const permissionResult =
-      await ImagePicker.requestMediaLibraryPermissionsAsync();
+    const permissionResult = await requestMediaLibraryPermissionsAsync();
 
     if (!permissionResult.granted) {
       Alert.alert(
@@ -20,7 +23,7 @@ export default function ImagePickerExample() {
       return;
     }
 
-    let result = await ImagePicker.launchImageLibraryAsync({
+    let result = await launchImageLibraryAsync({
       mediaTypes: ["images", "videos"],
       allowsEditing: true,
       aspect: [4, 3],
@@ -40,8 +43,7 @@ export default function ImagePickerExample() {
     // and `videoExportPreset` is `'Passthrough'` (the default), ideally before launching the picker
     // so the app users aren't surprised by a system dialog after picking a video.
     // See "Invoke permissions for videos" sub section for more details.
-    const permissionResult =
-      await ImagePicker.requestMediaLibraryPermissionsAsync();
+    const permissionResult = await requestMediaLibraryPermissionsAsync();
 
     if (!permissionResult.granted) {
       Alert.alert(
@@ -51,7 +53,7 @@ export default function ImagePickerExample() {
       return;
     }
 
-    let result = await ImagePicker.launchCameraAsync({
+    let result = await launchCameraAsync({
       mediaTypes: ["images"],
       aspect: [4, 3],
       quality: 1,

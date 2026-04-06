@@ -8,8 +8,8 @@ import Camera from "../components/uploadSection";
 export default function HomeScreen() {
   const directory = new Directory(Paths.document, "userData");
   useEffect(() => {
-    if (directory.exists) {
-    } else {
+    console.log("Dir changed");
+    if (!directory.exists) {
       directory.createDirectory("userData");
     }
   }, [directory]);
