@@ -1,4 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
+import { Paths } from "expo-file-system";
 import { useRouter } from "expo-router";
 import React from "react";
 import {
@@ -9,8 +10,8 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import SavedDocuments from "../components/savedDocuments";
 import Camera from "../components/uploadSection";
-
 export default function HomeScreen() {
   const router = useRouter();
   return (
@@ -55,6 +56,7 @@ export default function HomeScreen() {
           </View>
         </View>
         <View style={styles.grid}>
+          <SavedDocuments directory={Paths.document} />
           {/* {["Aadhaar", "PAN Card", "Driving License", "Education", "PAN"].map(
             (cat, i) => (
               <View key={i} style={styles.gridCard}>
