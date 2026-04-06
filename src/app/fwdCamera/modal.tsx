@@ -26,7 +26,11 @@ export default function Modal() {
             onPress={async () => {
               try {
                 const sourceFile = new File(uri);
-                const destinationFile = new File(Paths.document, fileName);
+                const destinationFile = new File(
+                  Paths.document,
+                  "userData",
+                  fileName,
+                );
                 sourceFile.copy(destinationFile);
                 console.log("Saved to:", destinationFile.uri);
               } catch {}

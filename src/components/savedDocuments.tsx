@@ -27,11 +27,12 @@ export default function SavedDocuments({
           <Button
             title={file}
             onPress={async () => {
-              console.log("Pushing to view not modal");
               router.push({
                 pathname: "/fwdCamera",
                 params: {
-                  uri: "file:///data/user/0/host.exp.exponent/files/" + file,
+                  uri:
+                    "file:///data/user/0/host.exp.exponent/files/userData/" +
+                    file,
                 },
               });
             }}

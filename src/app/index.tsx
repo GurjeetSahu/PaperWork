@@ -1,19 +1,19 @@
 import { Ionicons } from "@expo/vector-icons";
-import { Paths } from "expo-file-system";
-import { useRouter } from "expo-router";
-import React from "react";
-import {
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Directory, Paths } from "expo-file-system";
+import React, { useEffect } from "react";
+import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import SavedDocuments from "../components/savedDocuments";
 import Camera from "../components/uploadSection";
+
 export default function HomeScreen() {
-  const router = useRouter();
+  const directory = new Directory(Paths.document, "userData");
+  useEffect(() => {
+    if (directory.exists) {
+    } else {
+      directory.createDirectory("userData");
+    }
+  }, [directory]);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -40,23 +40,13 @@ export default function HomeScreen() {
 
         <Text style={styles.sectionTitle}>My Documents</Text>
         <View style={styles.grid}>
-          <View style={styles.gridCard}>
-            <TouchableOpacity
-              onPress={async () => {
-                router.push({
-                  pathname: "/fwdCamera",
-                  params: {
-                    uri: "file:///data/user/0/host.exp.exponent/files/fine",
-                  },
-                });
-              }}
-            >
-              <Text style={{ fontWeight: "500" }}>d</Text>
-            </TouchableOpacity>
-          </View>
+          <View style={styles.gridCard}>{/*Placec*/}</View>
         </View>
         <View style={styles.grid}>
-          <SavedDocuments directory={Paths.document} />
+          {/* <SavedDocuments directory={Paths.document} /> */}
+          <SavedDocuments
+            directory={new Directory(Paths.document, "userData")}
+          />
           {/* {["Aadhaar", "PAN Card", "Driving License", "Education", "PAN"].map(
             (cat, i) => (
               <View key={i} style={styles.gridCard}>
