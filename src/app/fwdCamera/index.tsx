@@ -36,30 +36,20 @@ export default function Index() {
           <Text
             style={styles.primaryText}
             onPress={async () => {
-              // try {
-              const sourceFile = new File(uri);
+              try {
+                const sourceFile = new File(uri);
 
-              // 2. Define the destination (e.g., in the app's document directory)
-              const destinationFile = new File(Paths.document, "saved-age.jpg");
+                // 2. Define the destination (e.g., in the app's document directory)
+                const destinationFile = new File(Paths.document, "saved");
 
-              // 3. Execute the copy operation
-              sourceFile.copy(destinationFile);
+                // 3. Execute the copy operation
+                sourceFile.copy(destinationFile);
 
-              console.log("Saved to:", destinationFile.uri);
-              // } catch {
-              // const destinationFile = new File(Paths.document, "saved-age.jpg");
-              // await IntentLauncher.startActivityAsync(
-              //   "android.intent.action.VIEW",
-              //   {
-              //     data: destinationFile.uri,
-              //     flags: 1, // Intent.FLAG_GRANT_READ_URI_PERMISSION
-              //     type: "image/*",
-              //   },
-              // );
-              // }
+                console.log("Saved to:", destinationFile.uri);
+              } catch {}
             }}
           >
-            Proceed
+            Saved
           </Text>
         </TouchableOpacity>
       </View>

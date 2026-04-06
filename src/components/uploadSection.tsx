@@ -2,13 +2,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import {
-  Alert,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View
-} from "react-native";
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function ImagePickerExample() {
   const router = useRouter();
@@ -41,7 +35,6 @@ export default function ImagePickerExample() {
   };
 
   const openCamera = async () => {
-    console.log("Opening camera...");
     // No permissions request is necessary for launching the image library.
     // Manually request permissions for videos on iOS when `allowsEditing` is set to `false`
     // and `videoExportPreset` is `'Passthrough'` (the default), ideally before launching the picker
@@ -70,12 +63,12 @@ export default function ImagePickerExample() {
             pathname: "/fwdCamera",
             params: { uri: result.assets[0].uri },
           });
+          console.log(result.assets[0].uri);
         }
       })
       .catch((err) => {
         console.log(err);
       });
-    console.log(result);
   };
 
   return (

@@ -1,9 +1,18 @@
 import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 import React from "react";
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
-import Camera from "../components/Camera";
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import Camera from "../components/uploadSection";
 
 export default function HomeScreen() {
+  const router = useRouter();
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -30,10 +39,28 @@ export default function HomeScreen() {
 
         <Text style={styles.sectionTitle}>My Documents</Text>
         <View style={styles.grid}>
+          <View style={styles.gridCard}>
+            <TouchableOpacity
+              onPress={async () => {
+                router.push({
+                  pathname: "/fwdCamera",
+                  params: {
+                    uri: "file:///data/user/0/host.exp.exponent/files/saved",
+                  },
+                });
+              }}
+            >
+              <Text style={{ fontWeight: "500" }}>d</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={styles.grid}>
           {["Aadhaar", "PAN Card", "Driving License", "Education", "PAN"].map(
             (cat, i) => (
               <View key={i} style={styles.gridCard}>
-                <Text style={{ fontWeight: "500" }}>{cat}</Text>
+                <TouchableOpacity>
+                  <Text style={{ fontWeight: "500" }}>{cat}</Text>
+                </TouchableOpacity>
               </View>
             ),
           )}
