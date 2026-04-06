@@ -40,22 +40,12 @@ export default function HomeScreen() {
 
         <Text style={styles.sectionTitle}>My Documents</Text>
         <View style={styles.grid}>
-          <View style={styles.gridCard}>{/*Placec*/}</View>
+          {/* <View style={styles.gridCard}></View> */}
         </View>
         <View style={styles.grid}>
-          {/* <SavedDocuments directory={Paths.document} /> */}
           <SavedDocuments
             directory={new Directory(Paths.document, "userData")}
           />
-          {/* {["Aadhaar", "PAN Card", "Driving License", "Education", "PAN"].map(
-            (cat, i) => (
-              <View key={i} style={styles.gridCard}>
-                <TouchableOpacity>
-                  <Text style={{ fontWeight: "500" }}>{cat}</Text>
-                </TouchableOpacity>
-              </View>
-            ),
-          )} */}
         </View>
 
         <Text style={styles.sectionTitle}>Recent Documents</Text>

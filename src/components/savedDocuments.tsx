@@ -1,7 +1,7 @@
 import { Directory } from "expo-file-system";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { Button, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function SavedDocuments({
   directory,
@@ -21,11 +21,10 @@ export default function SavedDocuments({
   }, [directory]);
 
   return (
-    <View>
+    <View style={styles.grid}>
       {files.map((file, index) => (
-        <View key={index}>
-          <Button
-            title={file}
+        <View key={index} style={styles.gridCard}>
+          <TouchableOpacity
             onPress={async () => {
               router.push({
                 pathname: "/fwdCamera",
@@ -36,9 +35,87 @@ export default function SavedDocuments({
                 },
               });
             }}
-          />
+          >
+            <Text style={{ fontWeight: "500" }}>{file}</Text>
+          </TouchableOpacity>
         </View>
       ))}
     </View>
   );
 }
+const styles = StyleSheet.create({
+  container: { flex: 1, backgroundColor: "#f3f4f6" },
+
+  header: {
+    backgroundColor: "#2563eb",
+    padding: 20,
+    paddingTop: 50,
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
+  },
+  headerTop: { flexDirection: "row", justifyContent: "space-between" },
+  hello: { color: "white" },
+  name: { color: "white", fontSize: 20, fontWeight: "bold" },
+  avatar: { width: 40, height: 40, borderRadius: 20 },
+
+  search: {
+    backgroundColor: "white",
+    marginTop: 15,
+    padding: 10,
+    borderRadius: 10,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  searchText: { marginLeft: 10, color: "gray" },
+
+  content: { padding: 15 },
+
+  sectionTitle: { fontSize: 16, fontWeight: "bold", marginBottom: 10 },
+
+  row: { flexDirection: "row", justifyContent: "space-between" },
+  card: {
+    backgroundColor: "white",
+    width: "30%",
+    padding: 15,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+
+  grid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+  },
+  gridCard: {
+    backgroundColor: "white",
+    width: "48%",
+    padding: 15,
+    borderRadius: 10,
+    marginBottom: 10,
+  },
+
+  listItem: {
+    backgroundColor: "white",
+    padding: 15,
+    borderRadius: 10,
+    marginBottom: 10,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  iconBox: {
+    backgroundColor: "#dbeafe",
+    padding: 10,
+    borderRadius: 8,
+    marginRight: 10,
+  },
+
+  nav: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    padding: 10,
+    backgroundColor: "white",
+    borderTopWidth: 1,
+    borderColor: "#e5e7eb",
+  },
+});
