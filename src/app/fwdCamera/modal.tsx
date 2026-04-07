@@ -17,10 +17,20 @@ export default function Modal() {
     <View style={styles.container}>
       <View style={styles.footer}>
         <TextInput
-          style={{ borderColor: "green", color: "green", borderWidth: 2 }}
+          style={[
+            styles.primaryText,
+            {
+              borderColor: "black",
+              color: "black",
+              borderWidth: 2,
+              borderRadius: 10,
+              fontSize: 12,
+            },
+          ]}
           onChangeText={(newText) => setFileName(newText)}
+          placeholder="Ex- Aadhar Card, Driving Licence etc."
         ></TextInput>
-        <TouchableOpacity style={{}}>
+        <TouchableOpacity style={[styles.button, styles.primary]}>
           <Text
             style={styles.primaryText}
             onPress={async () => {
@@ -45,9 +55,14 @@ export default function Modal() {
 }
 
 const styles = StyleSheet.create({
+  button: {
+    paddingVertical: 14,
+    borderRadius: 16,
+    alignItems: "center",
+  },
   container: {
     flex: 1,
-    backgroundColor: "#0f172a", // dark modern bg
+    backgroundColor: "#ffffff", // dark modern bg
     justifyContent: "space-between",
   },
 
@@ -61,7 +76,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
   },
-
+  primary: {
+    backgroundColor: "#6366f1",
+  },
   link: {
     paddingTop: 20,
     fontSize: 20,

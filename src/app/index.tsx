@@ -37,11 +37,7 @@ export default function HomeScreen() {
       <ScrollView style={styles.content}>
         <Text style={styles.sectionTitle}>Quick Actions</Text>
         <Camera />
-
         <Text style={styles.sectionTitle}>My Documents</Text>
-        <View style={styles.grid}>
-          {/* <View style={styles.gridCard}></View> */}
-        </View>
         <View style={styles.grid}>
           <SavedDocuments
             directory={new Directory(Paths.document, "userData")}
