@@ -1,11 +1,20 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Directory, Paths } from "expo-file-system";
+import { useRouter } from "expo-router";
 import React, { useEffect } from "react";
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import SavedDocuments from "../components/savedDocuments";
 import Camera from "../components/uploadSection";
 
 export default function HomeScreen() {
+  const router = useRouter();
   const directory = new Directory(Paths.document, "userData");
   useEffect(() => {
     console.log("Dir changed");
@@ -42,6 +51,17 @@ export default function HomeScreen() {
           <SavedDocuments
             directory={new Directory(Paths.document, "userData")}
           />
+          <TouchableOpacity
+            style={[styles.button, styles.primary]}
+            onPress={() => {
+              router.push({
+                pathname: "/fwdCamera/modal",
+                params: {},
+              });
+            }}
+          >
+            <Text style={styles.primaryText}>Proceed</Text>
+          </TouchableOpacity>
         </View>
 
         <Text style={styles.sectionTitle}>Recent Documents</Text>
@@ -69,7 +89,20 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#f3f4f6" },
+  button: {
+    paddingVertical: 14,
+    borderRadius: 16,
+    alignItems: "center",
+  },
+  primary: {
+    backgroundColor: "#6366f1",
+  },
 
+  primaryText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "600",
+  },
   header: {
     backgroundColor: "#2563eb",
     padding: 20,

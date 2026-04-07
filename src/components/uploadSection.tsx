@@ -5,12 +5,10 @@ import {
   requestMediaLibraryPermissionsAsync,
 } from "expo-image-picker";
 import { useRouter } from "expo-router";
-import { useState } from "react";
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function ImagePickerExample() {
   const router = useRouter();
-  const [uri, setUri] = useState<string | null>(null);
 
   const pickImage = async () => {
     const permissionResult = await requestMediaLibraryPermissionsAsync();
@@ -23,18 +21,26 @@ export default function ImagePickerExample() {
       return;
     }
 
-    let result = await launchImageLibraryAsync({
-      mediaTypes: ["images", "videos"],
-      allowsEditing: true,
+    await launchImageLibraryAsync({
+      mediaTypes: ["images"],
       aspect: [4, 3],
       quality: 1,
-    });
-
-    console.log(result);
-
-    if (!result.canceled) {
-      setUri(result.assets[0].uri);
-    }
+      allowsMultipleSelection: true,
+    })
+      .then((result) => {
+        console.log(result);
+        if (result?.assets && result.assets[0]?.uri) {
+          router.push({
+            pathname: "/fwdCamera",
+            params: { uri: result.assets[0].uri },
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    // if (!result.canceled) {
+    // }
   };
 
   const openCamera = async () => {
@@ -60,7 +66,6 @@ export default function ImagePickerExample() {
     })
       .then((result) => {
         if (result?.assets && result.assets[0]?.uri) {
-          setUri(result.assets[0].uri);
           router.push({
             pathname: "/fwdCamera",
             params: { uri: result.assets[0].uri },
