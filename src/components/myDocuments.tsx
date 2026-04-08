@@ -29,9 +29,10 @@ export default function SavedDocuments({
               router.push({
                 pathname: "/fwdCamera",
                 params: {
-                  uri:
+                  uris: JSON.stringify([
                     "file:///data/user/0/host.exp.exponent/files/userData/" +
-                    file,
+                      file,
+                  ]),
                 },
               });
             }}

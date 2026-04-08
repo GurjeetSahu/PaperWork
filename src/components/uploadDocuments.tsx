@@ -29,7 +29,6 @@ export default function ImagePickerExample() {
       allowsMultipleSelection: true,
     })
       .then((result: ImagePickerResult) => {
-        console.log("uploadSection.tsx, 31, pickImage", result);
         if (result?.assets) {
           const uris = result.assets?.map((asset) => asset.uri) ?? [];
           router.push({
@@ -38,7 +37,6 @@ export default function ImagePickerExample() {
               uris: JSON.stringify(uris),
             },
           });
-          console.log(result.assets[0].uri);
         }
       })
       .catch((err) => {
@@ -70,7 +68,6 @@ export default function ImagePickerExample() {
       quality: 1,
     })
       .then((result: ImagePickerResult) => {
-        console.log("uploadSection.tsx, 68, openCamera", result);
         if (result?.assets) {
           const uris = result.assets?.map((asset) => asset.uri) ?? [];
           router.push({
@@ -79,7 +76,6 @@ export default function ImagePickerExample() {
               uris: JSON.stringify(uris),
             },
           });
-          console.log(result.assets[0].uri);
         }
       })
       .catch((err) => {

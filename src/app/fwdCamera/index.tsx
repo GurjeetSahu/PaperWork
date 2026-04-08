@@ -1,13 +1,14 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-import ImageViewer from "@/src/components/ImageViewer";
+import { Image } from "expo-image";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import PagerView from "react-native-pager-view";
 
 export default function Index() {
   const { uris } = useLocalSearchParams<{ uris?: string }>();
   const uriList = uris ? JSON.parse(uris) : [];
+
   const router = useRouter();
   return (
     <View style={styles.container}>
@@ -16,7 +17,7 @@ export default function Index() {
         {uriList.map((uri: string, index: string) => (
           <View style={styles.imageWrapper} key={index.toString()}>
             <View style={styles.imageCard}>
-              <ImageViewer imgSource={uri} />
+              <Image source={uri} style={styles.image} />;
             </View>
           </View>
         ))}
@@ -30,20 +31,20 @@ export default function Index() {
         <TouchableOpacity style={[styles.button, styles.outline]}>
           <Text style={styles.outlineText}>Add More</Text>
         </TouchableOpacity>
-        {/* 
+
         <TouchableOpacity
           style={[styles.button, styles.primary]}
           onPress={() => {
             router.push({
               pathname: "/fwdCamera/modal",
               params: {
-                uri: uri,
+                uri: uris,
               },
             });
           }}
         >
           <Text style={styles.primaryText}>Proceed</Text>
-        </TouchableOpacity> */}
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -61,6 +62,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 20,
+  },
+  image: {
+    width: "100%",
+    height: "100%",
+    borderRadius: 18,
   },
 
   imageCard: {
