@@ -7,8 +7,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
-  View,
+  View
 } from "react-native";
 import SavedDocuments from "../components/savedDocuments";
 import Camera from "../components/uploadSection";
@@ -51,7 +50,7 @@ export default function HomeScreen() {
           <SavedDocuments
             directory={new Directory(Paths.document, "userData")}
           />
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={[styles.button, styles.primary]}
             onPress={() => {
               router.push({
@@ -61,7 +60,7 @@ export default function HomeScreen() {
             }}
           >
             <Text style={styles.primaryText}>Proceed</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
 
         <Text style={styles.sectionTitle}>Recent Documents</Text>

@@ -1,5 +1,6 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import {
+  ImagePickerResult,
   launchCameraAsync,
   launchImageLibraryAsync,
   requestMediaLibraryPermissionsAsync,
@@ -27,13 +28,17 @@ export default function ImagePickerExample() {
       quality: 1,
       allowsMultipleSelection: true,
     })
-      .then((result) => {
-        console.log(result);
-        if (result?.assets && result.assets[0]?.uri) {
+      .then((result: ImagePickerResult) => {
+        console.log("uploadSection.tsx, 31, pickImage", result);
+        if (result?.assets) {
+          const uris = result.assets?.map((asset) => asset.uri) ?? [];
           router.push({
             pathname: "/fwdCamera",
-            params: { uri: result.assets[0].uri },
+            params: {
+              uris: JSON.stringify(uris),
+            },
           });
+          console.log(result.assets[0].uri);
         }
       })
       .catch((err) => {
@@ -59,16 +64,20 @@ export default function ImagePickerExample() {
       return;
     }
 
-    let result = await launchCameraAsync({
+    await launchCameraAsync({
       mediaTypes: ["images"],
       aspect: [4, 3],
       quality: 1,
     })
-      .then((result) => {
-        if (result?.assets && result.assets[0]?.uri) {
+      .then((result: ImagePickerResult) => {
+        console.log("uploadSection.tsx, 68, openCamera", result);
+        if (result?.assets) {
+          const uris = result.assets?.map((asset) => asset.uri) ?? [];
           router.push({
             pathname: "/fwdCamera",
-            params: { uri: result.assets[0].uri },
+            params: {
+              uris: JSON.stringify(uris),
+            },
           });
           console.log(result.assets[0].uri);
         }

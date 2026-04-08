@@ -1,25 +1,26 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import ImageViewer from "../../components/ImageViewer";
 
+import ImageViewer from "@/src/components/ImageViewer";
 import { useLocalSearchParams, useRouter } from "expo-router";
+import PagerView from "react-native-pager-view";
 
 export default function Index() {
-  const { uri }: { uri: string } = useLocalSearchParams();
+  const { uris } = useLocalSearchParams<{ uris?: string }>();
+  const uriList = uris ? JSON.parse(uris) : [];
   const router = useRouter();
   return (
     <View style={styles.container}>
       {/* Image Section */}
-      <View style={styles.imageWrapper}>
-        {uri ? (
-          <View style={styles.imageCard}>
-            <ImageViewer imgSource={uri} />
+      <PagerView style={styles.container} initialPage={0}>
+        {uriList.map((uri: string, index: string) => (
+          <View style={styles.imageWrapper} key={index.toString()}>
+            <View style={styles.imageCard}>
+              <ImageViewer imgSource={uri} />
+            </View>
           </View>
-        ) : (
-          <Text style={styles.placeholder}>No Image Selected</Text>
-        )}
-      </View>
-
+        ))}
+      </PagerView>
       {/* Footer Actions */}
       <View style={styles.footer}>
         <TouchableOpacity style={[styles.button, styles.secondary]}>
@@ -29,7 +30,7 @@ export default function Index() {
         <TouchableOpacity style={[styles.button, styles.outline]}>
           <Text style={styles.outlineText}>Add More</Text>
         </TouchableOpacity>
-
+        {/* 
         <TouchableOpacity
           style={[styles.button, styles.primary]}
           onPress={() => {
@@ -42,7 +43,7 @@ export default function Index() {
           }}
         >
           <Text style={styles.primaryText}>Proceed</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </View>
   );

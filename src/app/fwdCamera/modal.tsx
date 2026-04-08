@@ -1,12 +1,9 @@
 import {
   StyleSheet,
-  Text,
   TextInput,
-  TouchableOpacity,
-  View,
+  View
 } from "react-native";
 
-import { File, Paths } from "expo-file-system";
 import { useLocalSearchParams } from "expo-router";
 import { useState } from "react";
 
@@ -30,7 +27,7 @@ export default function Modal() {
           onChangeText={(newText) => setFileName(newText)}
           placeholder="Ex- Aadhar Card, Driving Licence etc."
         ></TextInput>
-        <TouchableOpacity style={[styles.button, styles.primary]}>
+        {/* <TouchableOpacity style={[styles.button, styles.primary]}>
           <Text
             style={styles.primaryText}
             onPress={async () => {
@@ -48,7 +45,7 @@ export default function Modal() {
           >
             Save
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </View>
   );
