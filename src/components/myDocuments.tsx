@@ -13,9 +13,7 @@ export default function SavedDocuments({
 
   useEffect(() => {
     try {
-      console.log(directory);
       const contents = directory.list();
-      console.log(contents.map((item) => item.name));
       setFiles(contents.map((item) => item.name));
     } catch (error) {
       console.error("Error reading directory:", error);

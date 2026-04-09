@@ -43,7 +43,7 @@ export default function HomeScreen() {
       </View>
 
       <ScrollView style={styles.content}>
-        <Text style={styles.sectionTitle}>Quick Actions</Text>
+        <Text style={styles.sectionTitle}>Quick Act ions</Text>
         <Camera />
         <Text style={styles.sectionTitle}>My Documents</Text>
         <View style={styles.grid}>

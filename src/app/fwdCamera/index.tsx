@@ -8,7 +8,6 @@ import PagerView from "react-native-pager-view";
 export default function Index() {
   const { uris } = useLocalSearchParams<{ uris?: string }>();
   const uriList = uris ? JSON.parse(uris) : [];
-  console.log(uriList);
   const router = useRouter();
   return (
     <View style={styles.container}>
