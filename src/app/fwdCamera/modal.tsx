@@ -12,6 +12,7 @@ import { useState } from "react";
 export default function Modal() {
   const { uris } = useLocalSearchParams<{ uris?: string }>();
   const uriList = uris ? JSON.parse(uris) : [];
+  //console.log(uriList);
   const [fileName, setFileName] = useState("");
   return (
     <View style={styles.container}>

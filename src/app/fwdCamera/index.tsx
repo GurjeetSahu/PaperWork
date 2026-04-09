@@ -18,7 +18,6 @@ export default function Index() {
             <View style={styles.imageCard}>
               <Image source={uri} style={styles.image} />
             </View>
-            <Text style={{ color: "white" }}>{uri}</Text>
           </View>
         ))}
       </PagerView>

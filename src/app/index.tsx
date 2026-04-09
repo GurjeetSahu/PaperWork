@@ -43,31 +43,31 @@ export default function HomeScreen() {
       </View>
 
       <ScrollView style={styles.content}>
-        <Text style={styles.sectionTitle}>Quick Act ions</Text>
+        <Text style={styles.sectionTitle}>Quick Actions</Text>
         <Camera />
-        <Text style={styles.sectionTitle}>My Documents</Text>
+        <Text style={styles.sectionTitle}>My Docucments</Text>
         <View style={styles.grid}>
           <SavedDocuments
             directory={new Directory(Paths.document, "userData")}
           />
-          {/* <TouchableOpacity
+          <TouchableOpacity
             style={styles.gridCard}
             onPress={() => {
               new Directory(Paths.document, "userData").delete();
             }}
           >
-            <Text>Proceed</Text>
-          </TouchableOpacity> */}
+            <Text>delte</Text>
+          </TouchableOpacity>
           <TouchableOpacity
             style={styles.gridCard}
             onPress={() => {
-              const directory = new Directory(Paths.document, "userData", "K");
-              // Check if it exists and is a directory
-              if (directory.exists && directory instanceof Directory) {
-                console.log("It's a directory");
-              } else {
-                console.log("idk");
-              }
+              // const directory = new Directory(Paths.document, "userData", "K");
+              // // Check if it exists and is a directory
+              // if (directory.exists && directory instanceof Directory) {
+              //   console.log("It's a directory");
+              // } else {
+              //   console.log("idk");
+              // }
             }}
           >
             <Text>isDirectory?</Text>
