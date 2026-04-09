@@ -17,7 +17,7 @@ export default function Index() {
         {uriList.map((uri: string, index: string) => (
           <View style={styles.imageWrapper} key={index.toString()}>
             <View style={styles.imageCard}>
-              <Image source={uri} style={styles.image} />;
+              <Image source={uri} style={styles.image} />
             </View>
           </View>
         ))}
@@ -38,7 +38,7 @@ export default function Index() {
             router.push({
               pathname: "/fwdCamera/modal",
               params: {
-                uri: uris,
+                uris: JSON.stringify(uriList),
               },
             });
           }}

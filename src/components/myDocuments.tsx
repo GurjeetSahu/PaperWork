@@ -25,19 +25,19 @@ export default function SavedDocuments({
       {files.map((file, index) => (
         <View key={index} style={styles.gridCard}>
           <TouchableOpacity
-            onPress={async () => {
-              router.push({
-                pathname: "/fwdCamera",
-                params: {
-                  uris: JSON.stringify([
-                    "file:///data/user/0/host.exp.exponent/files/userData/" +
-                      file,
-                  ]),
-                },
-              });
-            }}
+          // onPress={async () => {
+          //   router.push({
+          //     pathname: "/fwdCamera",
+          //     params: {
+          //       uris: JSON.stringify([
+          //         "file:///data/user/0/host.exp.exponent/files/userData/" +
+          //           file,
+          //       ]),
+          //     },
+          //   });
+          // }}
           >
-            <Text style={{ fontWeight: "500" }}>{file}</Text>
+            <Text style={{ fontWeight: "500" }}>{file} (Directory)</Text>
           </TouchableOpacity>
         </View>
       ))}

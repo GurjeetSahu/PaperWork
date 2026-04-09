@@ -1,14 +1,17 @@
 import {
   StyleSheet,
+  Text,
   TextInput,
-  View
+  TouchableOpacity,
+  View,
 } from "react-native";
 
+import { Directory, File, Paths } from "expo-file-system";
 import { useLocalSearchParams } from "expo-router";
 import { useState } from "react";
-
 export default function Modal() {
-  const { uri }: { uri: string } = useLocalSearchParams();
+  const { uris } = useLocalSearchParams<{ uris?: string }>();
+  const uriList = uris ? JSON.parse(uris) : [];
   const [fileName, setFileName] = useState("");
   return (
     <View style={styles.container}>
@@ -27,25 +30,28 @@ export default function Modal() {
           onChangeText={(newText) => setFileName(newText)}
           placeholder="Ex- Aadhar Card, Driving Licence etc."
         ></TextInput>
-        {/* <TouchableOpacity style={[styles.button, styles.primary]}>
-          <Text
-            style={styles.primaryText}
-            onPress={async () => {
-              try {
-                const sourceFile = new File(uri);
-                const destinationFile = new File(
-                  Paths.document,
-                  "userData",
-                  fileName,
-                );
-                sourceFile.copy(destinationFile);
-                console.log("Saved to:", destinationFile.uri);
-              } catch {}
-            }}
-          >
-            Save
-          </Text>
-        </TouchableOpacity> */}
+        <TouchableOpacity
+          onPress={async () => {
+            new Directory(Paths.document, "userData", fileName).create({
+              idempotent: true,
+            });
+            for (const uri of uriList) {
+              console.log(fileName + uri.toString());
+              const sourceFile = new File(uri); //improve here
+              const destinationFile = new File(
+                Paths.document,
+                "userData",
+                fileName,
+                fileName + uri.toString(),
+              );
+              sourceFile.copy(destinationFile);
+              console.log("Saved to:", destinationFile.uri);
+            }
+          }}
+          style={[styles.button, styles.primary]}
+        >
+          <Text style={styles.primaryText}>Save</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );

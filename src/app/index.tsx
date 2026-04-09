@@ -45,36 +45,14 @@ export default function HomeScreen() {
             directory={new Directory(Paths.document, "userData")}
           />
           {/* <TouchableOpacity
-            style={[styles.button, styles.primary]}
+            style={styles.gridCard}
             onPress={() => {
-              router.push({
-                pathname: "/fwdCamera/modal",
-                params: {},
-              });
+              new Directory(Paths.document, "userData").delete();
             }}
           >
-            <Text style={styles.primaryText}>Proceed</Text>
+            <Text>Proceed</Text>
           </TouchableOpacity> */}
         </View>
-
-        <Text style={styles.sectionTitle}>Recent Documents</Text>
-        {[
-          { name: "Aadhaar Card", date: "Updated Jan 2026" },
-          { name: "PAN Card", date: "Updated Dec 2025" },
-        ].map((doc, i) => (
-          <View key={i} style={styles.listItem}>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <View style={styles.iconBox}>
-                <Ionicons name="document-text" size={20} color="#2563eb" />
-              </View>
-              <View>
-                <Text>{doc.name}</Text>
-                <Text style={{ fontSize: 12, color: "gray" }}>{doc.date}</Text>
-              </View>
-            </View>
-            <Ionicons name="chevron-forward" size={20} color="gray" />
-          </View>
-        ))}
       </ScrollView>
     </View>
   );
