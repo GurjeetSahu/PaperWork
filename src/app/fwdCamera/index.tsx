@@ -8,7 +8,7 @@ import PagerView from "react-native-pager-view";
 export default function Index() {
   const { uris } = useLocalSearchParams<{ uris?: string }>();
   const uriList = uris ? JSON.parse(uris) : [];
-
+  console.log(uriList);
   const router = useRouter();
   return (
     <View style={styles.container}>
@@ -19,6 +19,7 @@ export default function Index() {
             <View style={styles.imageCard}>
               <Image source={uri} style={styles.image} />
             </View>
+            <Text style={{ color: "white" }}>{uri}</Text>
           </View>
         ))}
       </PagerView>

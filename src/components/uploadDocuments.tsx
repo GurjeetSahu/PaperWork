@@ -31,7 +31,6 @@ export default function ImagePickerExample() {
       .then((result: ImagePickerResult) => {
         if (result?.assets) {
           const uris = result.assets?.map((asset) => asset.uri) ?? [];
-          console.log("uris: ", uris);
           router.push({
             pathname: "/fwdCamera",
             params: {

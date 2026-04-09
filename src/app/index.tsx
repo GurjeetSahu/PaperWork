@@ -2,7 +2,14 @@ import { Ionicons } from "@expo/vector-icons";
 import { Directory, Paths } from "expo-file-system";
 import { useRouter } from "expo-router";
 import React, { useEffect } from "react";
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import SavedDocuments from "../components/myDocuments";
 import Camera from "../components/uploadDocuments";
 
@@ -10,7 +17,6 @@ export default function HomeScreen() {
   const router = useRouter();
   const directory = new Directory(Paths.document, "userData");
   useEffect(() => {
-    console.log("Dir changed");
     if (!directory.exists) {
       directory.createDirectory("userData");
     }
@@ -52,6 +58,20 @@ export default function HomeScreen() {
           >
             <Text>Proceed</Text>
           </TouchableOpacity> */}
+          <TouchableOpacity
+            style={styles.gridCard}
+            onPress={() => {
+              const directory = new Directory(Paths.document, "userData", "K");
+              // Check if it exists and is a directory
+              if (directory.exists && directory instanceof Directory) {
+                console.log("It's a directory");
+              } else {
+                console.log("idk");
+              }
+            }}
+          >
+            <Text>isDirectory?</Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </View>

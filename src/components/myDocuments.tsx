@@ -1,4 +1,4 @@
-import { Directory } from "expo-file-system";
+import { Directory, Paths } from "expo-file-system";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -13,7 +13,9 @@ export default function SavedDocuments({
 
   useEffect(() => {
     try {
+      console.log(directory);
       const contents = directory.list();
+      console.log(contents.map((item) => item.name));
       setFiles(contents.map((item) => item.name));
     } catch (error) {
       console.error("Error reading directory:", error);
@@ -25,17 +27,16 @@ export default function SavedDocuments({
       {files.map((file, index) => (
         <View key={index} style={styles.gridCard}>
           <TouchableOpacity
-          // onPress={async () => {
-          //   router.push({
-          //     pathname: "/fwdCamera",
-          //     params: {
-          //       uris: JSON.stringify([
-          //         "file:///data/user/0/host.exp.exponent/files/userData/" +
-          //           file,
-          //       ]),
-          //     },
-          //   });
-          // }}
+            onPress={async () => {
+              // console.log(directory);
+              const l = new Directory(Paths.document, "userData", file).list();
+              router.push({
+                pathname: "/fwdCamera",
+                params: {
+                  uris: JSON.stringify(l.map((x) => x.uri)),
+                },
+              });
+            }}
           >
             <Text style={{ fontWeight: "500" }}>{file} (Directory)</Text>
           </TouchableOpacity>

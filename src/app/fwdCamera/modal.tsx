@@ -35,22 +35,20 @@ export default function Modal() {
             new Directory(Paths.document, "userData", fileName).create({
               idempotent: true,
             });
+
             for (const uri of uriList) {
-              console.log(fileName + uri.toString());
               const sourceFile = new File(uri); //improve here
-              const destinationFile = new File(
+              const destinationDir = new Directory(
                 Paths.document,
                 "userData",
                 fileName,
-                fileName + uri.toString(),
               );
-              sourceFile.copy(destinationFile);
-              console.log("Saved to:", destinationFile.uri);
+              sourceFile.move(destinationDir);
             }
           }}
           style={[styles.button, styles.primary]}
         >
-          <Text style={styles.primaryText}>Save</Text>
+          <Text style={styles.primaryText}>S ave</Text>
         </TouchableOpacity>
       </View>
     </View>
