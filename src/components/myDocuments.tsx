@@ -36,7 +36,7 @@ export default function SavedDocuments({
               });
             }}
           >
-            <Text style={{ fontWeight: "500" }}>{file} (Directory)</Text>
+            <Text style={{ fontWeight: "500" }}>{file}</Text>
           </TouchableOpacity>
         </View>
       ))}

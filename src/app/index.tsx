@@ -17,9 +17,9 @@ export default function HomeScreen() {
   const router = useRouter();
   const directory = new Directory(Paths.document, "userData");
   useEffect(() => {
-    if (!directory.exists) {
-      directory.createDirectory("userData");
-    }
+    directory.create({
+      idempotent: true,
+    });
   }, [directory]);
 
   return (

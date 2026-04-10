@@ -7,9 +7,10 @@ import {
 } from "react-native";
 
 import { Directory, File, Paths } from "expo-file-system";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { useState } from "react";
 export default function Modal() {
+  const router = useRouter();
   const { uris } = useLocalSearchParams<{ uris?: string }>();
   const uriList = uris ? JSON.parse(uris) : [];
   //console.log(uriList);
@@ -46,6 +47,7 @@ export default function Modal() {
               );
               sourceFile.move(destinationDir);
             }
+            router.push("/");
           }}
           style={[styles.button, styles.primary]}
         >
