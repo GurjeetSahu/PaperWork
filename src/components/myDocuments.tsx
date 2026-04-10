@@ -1,6 +1,6 @@
 import { Directory, Paths } from "expo-file-system";
-import { useRouter } from "expo-router";
-import { useEffect, useState } from "react";
+import { useFocusEffect, useRouter } from "expo-router";
+import { useCallback, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function SavedDocuments({
@@ -11,14 +11,20 @@ export default function SavedDocuments({
   const router = useRouter();
   const [files, setFiles] = useState<string[]>([]);
 
-  useEffect(() => {
+  const loadFiles = () => {
     try {
       const contents = directory.list();
       setFiles(contents.map((item) => item.name));
     } catch (error) {
       console.error("Error reading directory:", error);
     }
-  }, [directory]);
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      loadFiles();
+    }, [directory]),
+  );
 
   return (
     <View style={styles.grid}>
@@ -27,11 +33,12 @@ export default function SavedDocuments({
           <TouchableOpacity
             onPress={async () => {
               // console.log(directory);
-              const l = new Directory(Paths.document, "userData", file).list();
               router.push({
                 pathname: "/fwdCamera",
                 params: {
-                  uris: JSON.stringify(l.map((x) => x.uri)),
+                  uris: JSON.stringify(
+                    new Directory(Paths.document, "userData", file).list(),
+                  ),
                 },
               });
             }}
