@@ -1,3 +1,4 @@
+import MenuBtn from "@/src/components/menuButton";
 import { Ionicons } from "@expo/vector-icons";
 import { Directory, Paths } from "expo-file-system";
 import { useRouter } from "expo-router";
@@ -12,7 +13,6 @@ import {
 } from "react-native";
 import SavedDocuments from "../components/myDocuments";
 import Camera from "../components/uploadDocuments";
-
 export default function HomeScreen() {
   const router = useRouter();
   const directory = new Directory(Paths.document, "userData");
@@ -44,6 +44,7 @@ export default function HomeScreen() {
 
       <ScrollView style={styles.content}>
         <Text style={styles.sectionTitle}>Quick Actions</Text>
+        <MenuBtn />
         <Camera />
         <Text style={styles.sectionTitle}>My Docucments</Text>
         <View style={styles.grid}>
