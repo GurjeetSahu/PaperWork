@@ -3,6 +3,9 @@ import { useFocusEffect, useRouter } from "expo-router";
 import { useCallback, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
+import { Menu, MenuItem, MenuItemLabel } from "@/src/components/ui/menu";
+import { Pressable } from "@/src/components/ui/pressable";
+
 export default function SavedDocuments({
   directory,
 }: {
@@ -29,27 +32,62 @@ export default function SavedDocuments({
   return (
     <View style={styles.grid}>
       {files.map((file, index) => (
-        <View key={index} style={styles.gridCard}>
-          <TouchableOpacity
-            onPress={async () => {
-              // console.log(directory);
-              router.push({
-                pathname: "/fwdCamera",
-                params: {
-                  uris: JSON.stringify(
-                    new Directory(Paths.document, "userData", file).list(),
-                  ),
-                },
-              });
-            }}
-          >
-            <Text style={{ fontWeight: "500" }}>{file}</Text>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity
+          key={index}
+          style={styles.gridCard}
+          activeOpacity={0.8}
+          onPress={() => {
+            router.push({
+              pathname: "/fwdCamera",
+              params: {
+                uris: JSON.stringify(
+                  new Directory(Paths.document, "userData", file).list(),
+                ),
+              },
+            });
+          }}
+        >
+          {/* Header */}
+          <View style={styles.headerRow}>
+            <Text style={styles.fileName} numberOfLines={1}>
+              {file}
+            </Text>
+
+            {/* Kebab Menu */}
+            <Menu
+              trigger={(triggerProps) => (
+                <Pressable
+                  {...triggerProps}
+                  onPress={(e) => {
+                    e.stopPropagation(); // 🔥 prevents card click
+                    triggerProps.onPress?.(e);
+                  }}
+                >
+                  <Text style={styles.kebab}>⋮</Text>
+                </Pressable>
+              )}
+            >
+              <MenuItem
+                textValue="f"
+                onPress={() => console.log("Rename", file)}
+              >
+                <MenuItemLabel>Rename</MenuItemLabel>
+              </MenuItem>
+
+              <MenuItem
+                textValue="f"
+                onPress={() => console.log("Delete", file)}
+              >
+                <MenuItemLabel style={{ color: "red" }}>Delete</MenuItemLabel>
+              </MenuItem>
+            </Menu>
+          </View>
+        </TouchableOpacity>
       ))}
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#f3f4f6" },
 
@@ -96,7 +134,7 @@ const styles = StyleSheet.create({
   gridCard: {
     backgroundColor: "white",
     width: "48%",
-    padding: 15,
+    padding: 7,
     borderRadius: 10,
     marginBottom: 10,
   },
@@ -124,5 +162,34 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderTopWidth: 1,
     borderColor: "#e5e7eb",
+  },
+  headerRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 10,
+  },
+
+  fileName: {
+    fontWeight: "500",
+    flex: 1,
+    marginRight: 6,
+  },
+
+  kebab: {
+    fontSize: 18,
+    paddingHorizontal: 6,
+  },
+
+  openArea: {
+    backgroundColor: "#eef4ff",
+    borderRadius: 8,
+    paddingVertical: 18,
+    alignItems: "center",
+  },
+
+  openText: {
+    fontSize: 13,
+    opacity: 0.8,
   },
 });

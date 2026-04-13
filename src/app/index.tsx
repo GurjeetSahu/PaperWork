@@ -1,16 +1,8 @@
-import MenuBtn from "@/src/components/menuButton";
 import { Ionicons } from "@expo/vector-icons";
 import { Directory, Paths } from "expo-file-system";
 import { useRouter } from "expo-router";
 import React, { useEffect } from "react";
-import {
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import SavedDocuments from "../components/myDocuments";
 import Camera from "../components/uploadDocuments";
 export default function HomeScreen() {
@@ -44,35 +36,35 @@ export default function HomeScreen() {
 
       <ScrollView style={styles.content}>
         <Text style={styles.sectionTitle}>Quick Actions</Text>
-        <MenuBtn />
+
         <Camera />
         <Text style={styles.sectionTitle}>My Docucments</Text>
         <View style={styles.grid}>
           <SavedDocuments
             directory={new Directory(Paths.document, "userData")}
           />
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={styles.gridCard}
             onPress={() => {
               new Directory(Paths.document, "userData").delete();
             }}
           >
-            <Text>delte</Text>
+            <Text>delete</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.gridCard}
             onPress={() => {
-              // const directory = new Directory(Paths.document, "userData", "K");
-              // // Check if it exists and is a directory
-              // if (directory.exists && directory instanceof Directory) {
-              //   console.log("It's a directory");
-              // } else {
-              //   console.log("idk");
-              // }
+              const directory = new Directory(Paths.document, "userData", "K");
+              // Check if it exists and is a directory
+              if (directory.exists && directory instanceof Directory) {
+                console.log("It's a directory");
+              } else {
+                console.log("idk");
+              }
             }}
           >
             <Text>isDirectory?</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </ScrollView>
     </View>
