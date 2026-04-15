@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -8,7 +9,9 @@ import {
 
 import { Directory, File, Paths } from "expo-file-system";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { useState } from "react";
+
+import { Badge, BadgeText } from "@/src/components/ui/badge";
+
 export default function Modal() {
   const router = useRouter();
   const { uris } = useLocalSearchParams<{ uris?: string }>();
@@ -31,7 +34,23 @@ export default function Modal() {
           ]}
           onChangeText={(newText) => setFileName(newText)}
           placeholder="Ex- Aadhar Card, Driving Licence etc."
-        ></TextInput>
+        />
+
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          <Badge style={{ marginRight: 8 }}>
+            <BadgeText>Verified</BadgeText>
+          </Badge>
+
+          <Badge>
+            <BadgeText>Verified</BadgeText>
+          </Badge>
+        </View>
+
         <TouchableOpacity
           onPress={async () => {
             new Directory(Paths.document, "userData", fileName).create({
@@ -39,7 +58,7 @@ export default function Modal() {
             });
 
             for (const uri of uriList) {
-              const sourceFile = new File(uri); //improve here
+              const sourceFile = new File(uri);
               const destinationDir = new Directory(
                 Paths.document,
                 "userData",
@@ -51,7 +70,7 @@ export default function Modal() {
           }}
           style={[styles.button, styles.primary]}
         >
-          <Text style={styles.primaryText}>S ave</Text>
+          <Text style={styles.primaryText}>Save</Text>
         </TouchableOpacity>
       </View>
     </View>

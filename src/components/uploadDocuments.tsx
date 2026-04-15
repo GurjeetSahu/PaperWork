@@ -88,7 +88,7 @@ export default function ImagePickerExample() {
       {[
         { icon: "upload-file" as const, label: "Upload", action: pickImage },
         { icon: "qr-code-scanner" as const, label: "Scan", action: openCamera },
-        { icon: "download" as const, label: "Fetch" },
+        // { icon: "download" as const, label: "Fetch" },
       ].map((item, i) => (
         <TouchableOpacity key={i} style={styles.card} onPress={item.action}>
           <MaterialIcons name={item.icon} size={28} color="#2563eb" />
