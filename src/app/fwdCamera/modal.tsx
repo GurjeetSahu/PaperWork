@@ -42,13 +42,16 @@ export default function Modal() {
             alignItems: "center",
           }}
         >
-          <Badge style={{ marginRight: 8 }}>
-            <BadgeText>Verified</BadgeText>
-          </Badge>
-
-          <Badge>
-            <BadgeText>Verified</BadgeText>
-          </Badge>
+          {[
+            "Aadhaar Card",
+            "Driving License",
+            "PAN Card",
+            // { icon: "download" as const, label: "Fetch" },
+          ].map((item, i) => (
+            <Badge style={{ marginLeft: 5 }} key={i}>
+              <BadgeText>{item}</BadgeText>
+            </Badge>
+          ))}
         </View>
 
         <TouchableOpacity
