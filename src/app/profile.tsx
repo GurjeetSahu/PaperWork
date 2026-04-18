@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#f5f5f5",
     justifyContent: "flex-start",
     alignItems: "center",
-    marginTop: 20,
+    marginTop: 100,
   },
   card: {
     width: "90%",

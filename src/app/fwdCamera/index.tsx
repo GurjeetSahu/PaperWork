@@ -6,7 +6,10 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import PagerView from "react-native-pager-view";
 
 export default function Index() {
-  const { uris } = useLocalSearchParams<{ uris?: string }>();
+  const { uris, viewMode } = useLocalSearchParams<{
+    uris?: string;
+    viewMode: string;
+  }>();
   const uriList = uris ? JSON.parse(uris) : [];
   const router = useRouter();
   return (
@@ -22,29 +25,31 @@ export default function Index() {
         ))}
       </PagerView>
       {/* Footer Actions */}
-      <View style={styles.footer}>
-        <TouchableOpacity style={[styles.button, styles.secondary]}>
-          <Text style={styles.secondaryText}>Retake</Text>
-        </TouchableOpacity>
+      {viewMode !== "true" && (
+        <View style={styles.footer}>
+          <TouchableOpacity style={[styles.button, styles.secondary]}>
+            <Text style={styles.secondaryText}>Retake</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity style={[styles.button, styles.outline]}>
-          <Text style={styles.outlineText}>Add More</Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={[styles.button, styles.outline]}>
+            <Text style={styles.outlineText}>Add More</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity
-          style={[styles.button, styles.primary]}
-          onPress={() => {
-            router.push({
-              pathname: "/fwdCamera/modal",
-              params: {
-                uris: JSON.stringify(uriList),
-              },
-            });
-          }}
-        >
-          <Text style={styles.primaryText}>Proceed</Text>
-        </TouchableOpacity>
-      </View>
+          <TouchableOpacity
+            style={[styles.button, styles.primary]}
+            onPress={() => {
+              router.push({
+                pathname: "/fwdCamera/modal",
+                params: {
+                  uris: JSON.stringify(uriList),
+                },
+              });
+            }}
+          >
+            <Text style={styles.primaryText}>Proceed</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 }

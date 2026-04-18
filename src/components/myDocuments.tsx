@@ -43,6 +43,7 @@ export default function SavedDocuments({
                 uris: JSON.stringify(
                   new Directory(Paths.document, "userData", file).list(),
                 ),
+                viewMode: true.toString(),
               },
             });
           }}
@@ -87,7 +88,7 @@ export default function SavedDocuments({
           </View>
         </TouchableOpacity>
       ))}
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={styles.gridCard}
         activeOpacity={0.8}
         onPress={() => {
@@ -99,13 +100,12 @@ export default function SavedDocuments({
           setFiles(contents.map((item) => item.name));
         }}
       >
-        {/* Header */}
         <View style={styles.headerRow}>
           <Text style={styles.fileName} numberOfLines={1}>
-            {"F"}
+            F
           </Text>
         </View>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 }
