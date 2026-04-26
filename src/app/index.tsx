@@ -2,7 +2,14 @@ import { Ionicons } from "@expo/vector-icons";
 import { Directory, Paths } from "expo-file-system";
 import { useRouter } from "expo-router";
 import React, { useEffect } from "react";
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import SavedDocuments from "../components/myDocuments";
 import Camera from "../components/uploadDocuments";
 export default function HomeScreen() {
@@ -65,6 +72,14 @@ export default function HomeScreen() {
           >
             <Text>isDirectory?</Text>
           </TouchableOpacity> */}
+          <TouchableOpacity
+            style={styles.gridCard}
+            onPress={() => {
+              router.push("/camera");
+            }}
+          >
+            <Text>camera</Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </View>
