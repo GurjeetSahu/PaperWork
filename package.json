@@ -61,5 +61,10 @@
     "tailwindcss": "^3.4.19",
     "typescript": "~5.9.2"
   },
+  "overrides": {
+    "@expo/metro-config": {
+      "postcss": "^8.5.14"
+    }
+  },
   "private": true
 }
