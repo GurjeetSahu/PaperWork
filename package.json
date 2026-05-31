@@ -64,7 +64,8 @@
   "overrides": {
     "@expo/metro-config": {
       "postcss": "^8.5.14"
-    }
+    },
+    "uuid": "^14.0.0"
   },
   "private": true
 }
