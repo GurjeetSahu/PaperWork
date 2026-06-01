@@ -12,7 +12,9 @@ import {
 } from "react-native";
 import SavedDocuments from "../components/myDocuments";
 import Camera from "../components/uploadDocuments";
+
 export default function HomeScreen() {
+  const Separator = () => <View style={styles.hr} />;
   const router = useRouter();
   const directory = new Directory(Paths.document, "userData");
   useEffect(() => {
@@ -50,36 +52,16 @@ export default function HomeScreen() {
           <SavedDocuments
             directory={new Directory(Paths.document, "userData")}
           />
-          {/* <TouchableOpacity
+          <Separator />
+          <TouchableOpacity
             style={styles.gridCard}
             onPress={() => {
               new Directory(Paths.document, "userData").delete();
             }}
           >
-            <Text>delete</Text>
+            <Text>Delete Full User Data</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.gridCard}
-            onPress={() => {
-              const directory = new Directory(Paths.document, "userData", "K");
-              // Check if it exists and is a directory
-              if (directory.exists && directory instanceof Directory) {
-                console.log("It's a directory");
-              } else {
-                console.log("idk");
-              }
-            }}
-          >
-            <Text>isDirectory?</Text>
-          </TouchableOpacity> */}
-          <TouchableOpacity
-            style={styles.gridCard}
-            onPress={() => {
-              router.push("/camera");
-            }}
-          >
-            <Text>camera</Text>
-          </TouchableOpacity>
+          <Separator />
         </View>
       </ScrollView>
     </View>
@@ -87,6 +69,12 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
+  hr: {
+    borderBottomColor: "#cccccc", // Line color
+    borderBottomWidth: StyleSheet.hairlineWidth, // Thin native line thickness
+    width: "100%", // Full width alignment
+    marginVertical: 15, // Spacing above and below the line
+  },
   container: { flex: 1, backgroundColor: "#f3f4f6" },
   button: {
     paddingVertical: 14,

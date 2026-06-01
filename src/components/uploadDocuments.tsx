@@ -1,9 +1,8 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import {
   ImagePickerResult,
-  launchCameraAsync,
   launchImageLibraryAsync,
-  requestMediaLibraryPermissionsAsync,
+  requestMediaLibraryPermissionsAsync
 } from "expo-image-picker";
 import { useRouter } from "expo-router";
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -62,25 +61,29 @@ export default function ImagePickerExample() {
       return;
     }
 
-    await launchCameraAsync({
-      mediaTypes: ["images"],
-      aspect: [4, 3],
-      quality: 1,
-    })
-      .then((result: ImagePickerResult) => {
-        if (result?.assets) {
-          const uris = result.assets?.map((asset) => asset.uri) ?? [];
-          router.push({
-            pathname: "/fwdCamera",
-            params: {
-              uris: JSON.stringify(uris),
-            },
-          });
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    router.push({
+      pathname: "/camera",
+    });
+
+    // await launchCameraAsync({
+    //   mediaTypes: ["images"],
+    //   aspect: [4, 3],
+    //   quality: 1,
+    // })
+    //   .then((result: ImagePickerResult) => {
+    //     if (result?.assets) {
+    //       const uris = result.assets?.map((asset) => asset.uri) ?? [];
+    //       router.push({
+    //         pathname: "/fwdCamera",
+    //         params: {
+    //           uris: JSON.stringify(uris),
+    //         },
+    //       });
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
   };
 
   return (

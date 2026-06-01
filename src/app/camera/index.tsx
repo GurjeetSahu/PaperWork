@@ -9,12 +9,10 @@ export default function App() {
   const cameraRef = useRef<CameraView | null>(null);
 
   if (!permission) {
-    // Camera permissions are still loading.
     return <View />;
   }
 
   if (!permission.granted) {
-    // Camera permissions are not granted yet.
     return (
       <View style={styles.container}>
         <Text style={styles.message}>
@@ -57,6 +55,12 @@ export default function App() {
         <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
           <Text style={styles.text}>Flip Camera</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={() => {}}>
+          <Text style={styles.text}>Retake</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={() => {}}>
+          <Text style={styles.text}>Proceed</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -86,9 +90,11 @@ const styles = StyleSheet.create({
   button: {
     flex: 1,
     alignItems: "center",
+    borderWidth: 2,
+    borderColor: "green",
   },
   text: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "bold",
     color: "white",
   },

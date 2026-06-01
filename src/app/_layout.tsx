@@ -35,6 +35,12 @@ export default function TabLayout() {
             href: null,
           }}
         />
+        <Tabs.Screen
+          name="camera/index"
+          options={{
+            href: null,
+          }}
+        />
       </Tabs>
     </GluestackUIProvider>
   );
