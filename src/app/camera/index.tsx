@@ -2,6 +2,7 @@ import { CameraType, CameraView, useCameraPermissions } from "expo-camera";
 import { useRef, useState } from "react";
 import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
+import { Directory, File, Paths } from "expo-file-system";
 export default function App() {
   const [facing, setFacing] = useState<CameraType>("back");
   const [capturedUri, setCapturedUri] = useState<string | null>(null);
@@ -31,10 +32,18 @@ export default function App() {
     if (!cameraRef.current) return;
 
     try {
-      const photo = await cameraRef.current.takePictureAsync({
-        quality: 0.1,
+      await cameraRef.current.takePictureAsync().then((photo) => {
+        console.log(photo.uri);
+        const tempDir = new Directory(Paths.document, "userData/ssdfsdfsdds");
+        try {
+          tempDir.create();
+          new File(photo.uri).move(tempDir);
+        } catch {
+          new File(photo.uri).move(tempDir);
+        }
+
+        setCapturedUri(photo.uri);
       });
-      setCapturedUri(photo.uri);
     } catch (error) {
       console.error("Failed to capture image", error);
     }
