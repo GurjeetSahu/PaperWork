@@ -80,6 +80,7 @@ export default function SavedDocuments({
                 onPress={() => {
                   console.log("Delete", file);
                   new Directory(Paths.document, "userData", file).delete();
+                  loadFiles();
                 }}
               >
                 <MenuItemLabel style={{ color: "red" }}>Delete</MenuItemLabel>
