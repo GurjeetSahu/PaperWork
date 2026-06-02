@@ -38,7 +38,7 @@ export default function SavedDocuments({
           activeOpacity={0.8}
           onPress={() => {
             router.push({
-              pathname: "/fwdCamera",
+              pathname: "/imgPreview",
               params: {
                 uris: JSON.stringify(
                   new Directory(Paths.document, "userData", file).list(),

@@ -29,7 +29,7 @@ export default function TabLayout() {
           }}
         />
         <Tabs.Screen
-          name="fwdCamera"
+          name="imgPreview"
           options={{
             headerShown: false,
             href: null,

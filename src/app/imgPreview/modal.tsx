@@ -14,7 +14,10 @@ import { Badge, BadgeText } from "@/src/components/ui/badge";
 
 export default function Modal() {
   const router = useRouter();
-  const { uris } = useLocalSearchParams<{ uris?: string }>();
+  const { uris, fromCamera } = useLocalSearchParams<{
+    uris?: string;
+    fromCamera?: string;
+  }>();
   const uriList = uris ? JSON.parse(uris) : [];
   //console.log(uriList);
   const [fileName, setFileName] = useState("");
@@ -56,20 +59,28 @@ export default function Modal() {
 
         <TouchableOpacity
           onPress={async () => {
-            new Directory(Paths.document, "userData", fileName).create({
-              idempotent: true,
-            });
+            if (fromCamera == "false") {
+              //document approach
+              console.log("I am document not coming from camera");
+              new Directory(Paths.document, "userData", fileName).create({
+                idempotent: true,
+              });
 
-            for (const uri of uriList) {
-              const sourceFile = new File(uri);
-              const destinationDir = new Directory(
-                Paths.document,
-                "userData",
-                fileName,
-              );
-              sourceFile.move(destinationDir);
+              for (const uri of uriList) {
+                const sourceFile = new File(uri);
+                const destinationDir = new Directory(
+                  Paths.document,
+                  "userData",
+                  fileName,
+                );
+                sourceFile.move(destinationDir);
+              }
+              router.push("/");
+            } else if (fromCamera == "true") {
+              //only renaming needes
+              console.log("I am coming from camera not a document");
+              new Directory(Paths.document, "userData/temp").rename(fileName);
             }
-            router.push("/");
           }}
           style={[styles.button, styles.primary]}
         >

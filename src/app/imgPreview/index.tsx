@@ -39,9 +39,10 @@ export default function Index() {
             style={[styles.button, styles.primary]}
             onPress={() => {
               router.push({
-                pathname: "/fwdCamera/modal",
+                pathname: "/imgPreview/modal",
                 params: {
                   uris: JSON.stringify(uriList),
+                  fromCamera: "false",
                 },
               });
             }}

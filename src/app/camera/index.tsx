@@ -3,12 +3,13 @@ import { useRef, useState } from "react";
 import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import { Directory, File, Paths } from "expo-file-system";
+import { useRouter } from "expo-router";
 export default function App() {
   const [facing, setFacing] = useState<CameraType>("back");
   const [capturedUri, setCapturedUri] = useState<string | null>(null);
   const [permission, requestPermission] = useCameraPermissions();
   const cameraRef = useRef<CameraView | null>(null);
-
+  const router = useRouter();
   if (!permission) {
     return <View />;
   }
@@ -34,7 +35,7 @@ export default function App() {
     try {
       await cameraRef.current.takePictureAsync().then((photo) => {
         console.log(photo.uri);
-        const tempDir = new Directory(Paths.document, "userData/ssdfsdfsdds");
+        const tempDir = new Directory(Paths.document, "userData/temp");
         try {
           tempDir.create();
           new File(photo.uri).move(tempDir);
@@ -67,7 +68,17 @@ export default function App() {
         <TouchableOpacity style={styles.button} onPress={() => {}}>
           <Text style={styles.text}>Retake</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => {}}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            router.push({
+              pathname: "/imgPreview/modal",
+              params: {
+                fromCamera: "true",
+              },
+            });
+          }}
+        >
           <Text style={styles.text}>Proceed</Text>
         </TouchableOpacity>
       </View>

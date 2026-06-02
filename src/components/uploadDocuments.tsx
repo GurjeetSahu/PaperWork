@@ -2,7 +2,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import {
   ImagePickerResult,
   launchImageLibraryAsync,
-  requestMediaLibraryPermissionsAsync
+  requestMediaLibraryPermissionsAsync,
 } from "expo-image-picker";
 import { useRouter } from "expo-router";
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -31,7 +31,7 @@ export default function ImagePickerExample() {
         if (result?.assets) {
           const uris = result.assets?.map((asset) => asset.uri) ?? [];
           router.push({
-            pathname: "/fwdCamera",
+            pathname: "/imgPreview",
             params: {
               uris: JSON.stringify(uris),
             },
