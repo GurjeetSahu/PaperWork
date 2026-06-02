@@ -77,7 +77,6 @@ export default function Modal() {
               }
               router.push("/");
             } else if (fromCamera == "true") {
-              //only renaming needes
               console.log("I am coming from camera not a document");
               new Directory(Paths.document, "userData/temp").rename(fileName);
             }

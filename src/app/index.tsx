@@ -61,6 +61,14 @@ export default function HomeScreen() {
           >
             <Text>Delete Full User Data</Text>
           </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.gridCard}
+            onPress={() => {
+              new Directory(Paths.document, "userData/temp").delete();
+            }}
+          >
+            <Text>Delete Temp</Text>
+          </TouchableOpacity>
           <Separator />
         </View>
       </ScrollView>

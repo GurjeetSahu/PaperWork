@@ -6,8 +6,8 @@ import { Directory, File, Paths } from "expo-file-system";
 import { useRouter } from "expo-router";
 export default function App() {
   const [facing, setFacing] = useState<CameraType>("back");
-  const [capturedUri, setCapturedUri] = useState<string | null>(null);
   const [permission, requestPermission] = useCameraPermissions();
+  const [count, setCount] = useState(0);
   const cameraRef = useRef<CameraView | null>(null);
   const router = useRouter();
   if (!permission) {
@@ -30,20 +30,14 @@ export default function App() {
   }
 
   async function captureImage() {
+    setCount(count + 1);
     if (!cameraRef.current) return;
 
     try {
       await cameraRef.current.takePictureAsync().then((photo) => {
-        console.log(photo.uri);
         const tempDir = new Directory(Paths.document, "userData/temp");
-        try {
-          tempDir.create();
-          new File(photo.uri).move(tempDir);
-        } catch {
-          new File(photo.uri).move(tempDir);
-        }
-
-        setCapturedUri(photo.uri);
+        tempDir.create({ idempotent: true });
+        new File(photo.uri).move(tempDir);
       });
     } catch (error) {
       console.error("Failed to capture image", error);
@@ -53,14 +47,10 @@ export default function App() {
   return (
     <View style={styles.container}>
       <CameraView ref={cameraRef} style={styles.camera} facing={facing} />
-      {capturedUri ? (
-        <View style={styles.previewBadge}>
-          <Text style={styles.previewText}>Captured: {capturedUri}</Text>
-        </View>
-      ) : null}
+
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={captureImage}>
-          <Text style={styles.text}>Capture</Text>
+          <Text style={styles.text}>Capture {count}</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
           <Text style={styles.text}>Flip Camera</Text>
