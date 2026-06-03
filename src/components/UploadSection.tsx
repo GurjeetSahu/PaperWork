@@ -64,26 +64,6 @@ export default function ImagePickerExample() {
     router.push({
       pathname: "/camera",
     });
-
-    // await launchCameraAsync({
-    //   mediaTypes: ["images"],
-    //   aspect: [4, 3],
-    //   quality: 1,
-    // })
-    //   .then((result: ImagePickerResult) => {
-    //     if (result?.assets) {
-    //       const uris = result.assets?.map((asset) => asset.uri) ?? [];
-    //       router.push({
-    //         pathname: "/fwdCamera",
-    //         params: {
-    //           uris: JSON.stringify(uris),
-    //         },
-    //       });
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
   };
 
   return (
