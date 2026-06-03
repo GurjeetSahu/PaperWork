@@ -1,3 +1,6 @@
+import SavedDocuments from "@/src/components/DocumentSection";
+import Camera from "@/src/components/UploadSection";
+
 import { Ionicons } from "@expo/vector-icons";
 import { Directory, Paths } from "expo-file-system";
 import { useRouter } from "expo-router";
@@ -10,8 +13,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import SavedDocuments from "../components/myDocuments";
-import Camera from "../components/uploadDocuments";
 
 export default function HomeScreen() {
   const Separator = () => <View style={styles.hr} />;
@@ -64,7 +65,7 @@ export default function HomeScreen() {
           <TouchableOpacity
             style={styles.gridCard}
             onPress={() => {
-              new Directory(Paths.document, "userData/temp").delete();
+              new Directory(Paths.document, "userData/temp").create();
             }}
           >
             <Text>Delete Temp</Text>

@@ -90,7 +90,11 @@ export default function ImagePickerExample() {
     <View style={styles.row}>
       {[
         { icon: "upload-file" as const, label: "Upload", action: pickImage },
-        { icon: "qr-code-scanner" as const, label: "Scan", action: openCamera },
+        {
+          icon: "document-scanner" as const,
+          label: "Scan",
+          action: openCamera,
+        },
         // { icon: "download" as const, label: "Fetch" },
       ].map((item, i) => (
         <TouchableOpacity key={i} style={styles.card} onPress={item.action}>
@@ -124,6 +128,10 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 10,
     alignItems: "center",
+    marginRight: 10,
   },
-  row: { flexDirection: "row", justifyContent: "space-between" },
+  row: {
+    flexDirection: "row",
+    justifyContent: "flex-start",
+  },
 });
