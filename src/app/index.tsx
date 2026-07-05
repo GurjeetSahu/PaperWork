@@ -1,9 +1,8 @@
 import SavedDocuments from "@/src/components/DocumentSection";
-import Camera from "@/src/components/UploadSection";
+import FabMenu from "@/src/components/FabMenu";
 
 import { Ionicons } from "@expo/vector-icons";
 import { Directory, Paths } from "expo-file-system";
-import { useRouter } from "expo-router";
 import React, { useEffect } from "react";
 import {
   Image,
@@ -16,7 +15,6 @@ import {
 
 export default function HomeScreen() {
   const Separator = () => <View style={styles.hr} />;
-  const router = useRouter();
   const directory = new Directory(Paths.document, "userData");
   useEffect(() => {
     directory.create({
@@ -45,10 +43,10 @@ export default function HomeScreen() {
       </View>
 
       <ScrollView style={styles.content}>
-        <Text style={styles.sectionTitle}>Upload Documents</Text>
+        {/*<Text style={styles.sectionTitle}>Upload Documents</Text>
 
-        <Camera />
-        <Text style={styles.sectionTitle}>My Docucments</Text>
+       *<Camera /> 
+        <Text style={styles.sectionTitle}>My Docucments</Text>*/}
         <View style={styles.grid}>
           <SavedDocuments
             directory={new Directory(Paths.document, "userData")}
@@ -73,6 +71,7 @@ export default function HomeScreen() {
           <Separator />
         </View>
       </ScrollView>
+      <FabMenu />
     </View>
   );
 }
