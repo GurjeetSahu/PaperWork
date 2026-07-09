@@ -1,17 +1,9 @@
 import SavedDocuments from "@/src/components/DocumentSection";
 import FabMenu from "@/src/components/FabMenu";
 
-import { Ionicons } from "@expo/vector-icons";
 import { Directory, Paths } from "expo-file-system";
 import React, { useEffect } from "react";
-import {
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 
 export default function HomeScreen() {
   const Separator = () => <View style={styles.hr} />;
@@ -36,10 +28,10 @@ export default function HomeScreen() {
           />
         </View>
 
-        <View style={styles.search}>
+        {/* <View style={styles.search}>
           <Ionicons name="search" size={20} color="gray" />
           <Text style={styles.searchText}>Search documents</Text>
-        </View>
+        </View> */}
       </View>
 
       <ScrollView style={styles.content}>
@@ -52,7 +44,7 @@ export default function HomeScreen() {
             directory={new Directory(Paths.document, "userData")}
           />
           <Separator />
-          <TouchableOpacity
+          {/** <TouchableOpacity
             style={styles.gridCard}
             onPress={() => {
               new Directory(Paths.document, "userData").delete();
@@ -69,6 +61,7 @@ export default function HomeScreen() {
             <Text>Delete Temp</Text>
           </TouchableOpacity>
           <Separator />
+          */}
         </View>
       </ScrollView>
       <FabMenu />
