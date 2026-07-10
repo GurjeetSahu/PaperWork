@@ -1,6 +1,5 @@
 import { Directory, Paths } from "expo-file-system";
-import { useRouter } from "expo-router";
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   LayoutChangeEvent,
   Pressable,
@@ -8,7 +7,6 @@ import {
   Text,
   View,
 } from "react-native";
-import PagerView from "react-native-pager-view";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -17,26 +15,22 @@ import Animated, {
 import SavedDocuments from "./DocumentSection";
 
 const TABS = [
-  {
-    key: "userData",
-    label: "userData",
-    preview: "userData",
-  },
-  {
-    key: "cache",
-    label: "cache",
-    preview: "cache",
-  },
+  { key: "userData", label: "My Documents" },
+  { key: "cache", label: "Cache" },
 ] as const;
 
 export default function TabBar() {
-  const router = useRouter();
-  const pagerRef = useRef<PagerView>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const tabLayouts = useRef<{ x: number; width: number }[]>([]);
 
   const indicatorX = useSharedValue(0);
   const indicatorWidth = useSharedValue(0);
+
+  useEffect(() => {
+    TABS.forEach((tab) => {
+      new Directory(Paths.document, tab.key).create({ idempotent: true });
+    });
+  }, []);
 
   const moveIndicator = useCallback(
     (index: number) => {
@@ -49,23 +43,14 @@ export default function TabBar() {
     [indicatorX, indicatorWidth],
   );
 
-  // const selectTab = (index: string) => {
-  //   router.replace({
-  //     pathname: "/tabs/[id]",
-  //     params: {
-  //       id: index,
-  //     },
-  //   });
-  //   console.log(index);
-  // };
   const selectTab = useCallback(
     (index: number) => {
       setActiveIndex(index);
       moveIndicator(index);
-      pagerRef.current?.setPage(index);
     },
     [moveIndicator],
   );
+
   const onTabLayout = useCallback(
     (index: number, event: LayoutChangeEvent) => {
       const { x, width } = event.nativeEvent.layout;
@@ -79,21 +64,17 @@ export default function TabBar() {
     [activeIndex, indicatorX, indicatorWidth],
   );
 
-  const onPageSelected = useCallback(
-    (index: number) => {
-      setActiveIndex(index);
-      moveIndicator(index);
-    },
-    [moveIndicator],
-  );
-
   const indicatorStyle = useAnimatedStyle(() => ({
     transform: [{ translateX: indicatorX.value }],
     width: indicatorWidth.value,
   }));
 
+  const activeTab = TABS[activeIndex];
+
   return (
     <View style={styles.wrapper}>
+      <Text style={styles.sectionTitle}>Saved Documents</Text>
+
       <View style={styles.tabBar}>
         <Animated.View style={[styles.indicator, indicatorStyle]} />
 
@@ -104,7 +85,6 @@ export default function TabBar() {
             <Pressable
               key={tab.key}
               style={styles.tab}
-              // onPress={() => selectTab(JSON.stringify(tab))}
               onPress={() => selectTab(index)}
               onLayout={(event) => onTabLayout(index, event)}
             >
@@ -118,35 +98,30 @@ export default function TabBar() {
         })}
       </View>
 
-      <PagerView
-        ref={pagerRef}
-        style={styles.pager}
-        initialPage={0}
-        onPageSelected={(event) => onPageSelected(event.nativeEvent.position)}
-      >
-        {TABS.map((tab) => (
-          <View key={tab.key} style={styles.page}>
-            <Text style={styles.preview}>{tab.preview}</Text>
-            <SavedDocuments
-              directory={new Directory(Paths.document, "userData")}
-            />
-          </View>
-        ))}
-      </PagerView>
+      <View style={styles.content}>
+        <SavedDocuments
+          key={activeTab.key}
+          directory={new Directory(Paths.document, activeTab.key)}
+        />
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   wrapper: {
-    marginTop: 16,
-    gap: 10,
+    gap: 12,
+  },
+  sectionTitle: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: "#111827",
   },
   tabBar: {
     flexDirection: "row",
     position: "relative",
-    backgroundColor: "rgba(255, 115, 0, 0.92)",
-    borderRadius: 14,
+    backgroundColor: "#dbeafe",
+    borderRadius: 12,
     padding: 4,
   },
   indicator: {
@@ -154,13 +129,13 @@ const styles = StyleSheet.create({
     top: 4,
     bottom: 4,
     left: 0,
-    backgroundColor: "#ffffff",
-    borderRadius: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.12,
-    shadowRadius: 3,
-    elevation: 2,
+    backgroundColor: "#2563eb",
+    borderRadius: 9,
+    shadowColor: "#1e40af",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 3,
   },
   tab: {
     flex: 1,
@@ -171,23 +146,13 @@ const styles = StyleSheet.create({
   },
   tabLabel: {
     fontSize: 14,
-    fontWeight: "500",
-    color: "rgba(255, 255, 255, 0.85)",
+    fontWeight: "600",
+    color: "#64748b",
   },
   tabLabelActive: {
-    color: "#2563eb",
-    fontWeight: "700",
+    color: "#ffffff",
   },
-  pager: {
-    height: 28,
-  },
-  page: {
-    flex: 1,
-    justifyContent: "center",
-  },
-  preview: {
-    color: "rgba(0, 0, 0, 0.92)",
-    fontSize: 13,
-    fontWeight: "500",
+  content: {
+    minHeight: 120,
   },
 });

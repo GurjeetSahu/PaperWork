@@ -40,9 +40,7 @@ export default function SavedDocuments({
             router.push({
               pathname: "/imgPreview",
               params: {
-                uris: JSON.stringify(
-                  new Directory(Paths.document, "userData", file).list(),
-                ),
+                uris: JSON.stringify(new Directory(directory, file).list()),
                 viewMode: true.toString(),
               },
             });
@@ -78,8 +76,7 @@ export default function SavedDocuments({
               <MenuItem
                 textValue="f"
                 onPress={() => {
-                  console.log("Delete", file);
-                  new Directory(Paths.document, "userData", file).delete();
+                  new Directory(directory, file).delete();
                   loadFiles();
                 }}
               >

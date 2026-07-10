@@ -9,7 +9,9 @@ export default function Users() {
   return (
     <View>
       <Text>User ID: {id}</Text>
-      <SavedDocuments directory={new Directory(Paths.document, "userData")} />
+      <SavedDocuments
+        directory={new Directory(Paths.document, String(id))}
+      />
     </View>
   );
 }
