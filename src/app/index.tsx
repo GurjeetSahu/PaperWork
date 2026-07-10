@@ -41,7 +41,7 @@ export default function HomeScreen() {
        *<Camera /> 
         <Text style={styles.sectionTitle}>My Docucments</Text>*/}
         <View style={styles.grid}>
-          {/* <SavedDocuments
+          {/* <DocumentSection
             directory={new Directory(Paths.document, "userData")}
           /> */}
           <Separator />

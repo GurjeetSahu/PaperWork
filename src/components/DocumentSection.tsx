@@ -1,4 +1,4 @@
-import { Directory, Paths } from "expo-file-system";
+import { Directory } from "expo-file-system";
 import { useFocusEffect, useRouter } from "expo-router";
 import { useCallback, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -6,7 +6,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Menu, MenuItem, MenuItemLabel } from "@/src/components/ui/menu";
 import { Pressable } from "@/src/components/ui/pressable";
 
-export default function SavedDocuments({
+export default function DocucmentSection({
   directory,
 }: {
   directory: Directory;

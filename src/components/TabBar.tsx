@@ -12,7 +12,7 @@ import Animated, {
   useSharedValue,
   withSpring,
 } from "react-native-reanimated";
-import SavedDocuments from "./DocumentSection";
+import DocumentSection from "./DocumentSection";
 
 const TABS = [
   { key: "userData", label: "My Documents" },
@@ -99,7 +99,7 @@ export default function TabBar() {
       </View>
 
       <View style={styles.content}>
-        <SavedDocuments
+        <DocumentSection
           key={activeTab.key}
           directory={new Directory(Paths.document, activeTab.key)}
         />
