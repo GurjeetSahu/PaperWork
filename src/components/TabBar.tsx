@@ -1,3 +1,5 @@
+import { Directory, Paths } from "expo-file-system";
+import { useRouter } from "expo-router";
 import React, { useCallback, useRef, useState } from "react";
 import {
   LayoutChangeEvent,
@@ -12,26 +14,23 @@ import Animated, {
   useSharedValue,
   withSpring,
 } from "react-native-reanimated";
+import SavedDocuments from "./DocumentSection";
 
 const TABS = [
   {
-    key: "recent",
-    label: "Recent",
-    preview: "Documents you opened lately",
+    key: "userData",
+    label: "userData",
+    preview: "userData",
   },
   {
-    key: "starred",
-    label: "Starred",
-    preview: "Your pinned favorites",
-  },
-  {
-    key: "all",
-    label: "All",
-    preview: "Browse everything",
+    key: "cache",
+    label: "cache",
+    preview: "cache",
   },
 ] as const;
 
 export default function TabBar() {
+  const router = useRouter();
   const pagerRef = useRef<PagerView>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const tabLayouts = useRef<{ x: number; width: number }[]>([]);
@@ -50,6 +49,15 @@ export default function TabBar() {
     [indicatorX, indicatorWidth],
   );
 
+  // const selectTab = (index: string) => {
+  //   router.replace({
+  //     pathname: "/tabs/[id]",
+  //     params: {
+  //       id: index,
+  //     },
+  //   });
+  //   console.log(index);
+  // };
   const selectTab = useCallback(
     (index: number) => {
       setActiveIndex(index);
@@ -58,7 +66,6 @@ export default function TabBar() {
     },
     [moveIndicator],
   );
-
   const onTabLayout = useCallback(
     (index: number, event: LayoutChangeEvent) => {
       const { x, width } = event.nativeEvent.layout;
@@ -97,6 +104,7 @@ export default function TabBar() {
             <Pressable
               key={tab.key}
               style={styles.tab}
+              // onPress={() => selectTab(JSON.stringify(tab))}
               onPress={() => selectTab(index)}
               onLayout={(event) => onTabLayout(index, event)}
             >
@@ -119,6 +127,9 @@ export default function TabBar() {
         {TABS.map((tab) => (
           <View key={tab.key} style={styles.page}>
             <Text style={styles.preview}>{tab.preview}</Text>
+            <SavedDocuments
+              directory={new Directory(Paths.document, "userData")}
+            />
           </View>
         ))}
       </PagerView>

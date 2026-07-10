@@ -1,6 +1,15 @@
+import SavedDocuments from "@/src/components/DocumentSection";
+import { Directory, Paths } from "expo-file-system";
+import { useLocalSearchParams } from "expo-router";
+import { Text, View } from "react-native";
 
-import { View } from "react-native";
+export default function Users() {
+  const { id } = useLocalSearchParams();
 
-export default function Page() {
-  return <View></View>;
+  return (
+    <View>
+      <Text>User ID: {id}</Text>
+      <SavedDocuments directory={new Directory(Paths.document, "userData")} />
+    </View>
+  );
 }

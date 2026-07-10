@@ -44,6 +44,7 @@ export default function TabLayout() {
         <Tabs.Screen
           name="tabs/[id]"
           options={{
+            title: "[id]",
             href: null,
           }}
         />

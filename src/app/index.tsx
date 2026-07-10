@@ -1,4 +1,3 @@
-import SavedDocuments from "@/src/components/DocumentSection";
 import FabMenu from "@/src/components/FabMenu";
 
 import TabBar from "@/src/components/TabBar";
@@ -42,9 +41,9 @@ export default function HomeScreen() {
        *<Camera /> 
         <Text style={styles.sectionTitle}>My Docucments</Text>*/}
         <View style={styles.grid}>
-          <SavedDocuments
+          {/* <SavedDocuments
             directory={new Directory(Paths.document, "userData")}
-          />
+          /> */}
           <Separator />
           {/** <TouchableOpacity
             style={styles.gridCard}
