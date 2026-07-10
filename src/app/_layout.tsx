@@ -36,7 +36,13 @@ export default function TabLayout() {
           }}
         />
         <Tabs.Screen
-          name="camera/index"
+          name="liveCamera/index"
+          options={{
+            href: null,
+          }}
+        />
+        <Tabs.Screen
+          name="tabs/[id]"
           options={{
             href: null,
           }}

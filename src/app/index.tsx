@@ -1,6 +1,7 @@
 import SavedDocuments from "@/src/components/DocumentSection";
 import FabMenu from "@/src/components/FabMenu";
 
+import MyTabs from "@/src/components/TabBar";
 import { Directory, Paths } from "expo-file-system";
 import React, { useEffect } from "react";
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
@@ -32,6 +33,7 @@ export default function HomeScreen() {
           <Ionicons name="search" size={20} color="gray" />
           <Text style={styles.searchText}>Search documents</Text>
         </View> */}
+        <MyTabs />
       </View>
 
       <ScrollView style={styles.content}>

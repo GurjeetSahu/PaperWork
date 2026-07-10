@@ -60,7 +60,7 @@ export default function FabMenu() {
   };
 
   const openCamera = () => {
-    router.push({ pathname: "/camera" });
+    router.push({ pathname: "/liveCamera" });
   };
 
   const options: FabOption[] = [
