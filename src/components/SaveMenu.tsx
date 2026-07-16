@@ -78,8 +78,9 @@ export default function SaveMenu(props: SaveMenuProps) {
             <TouchableOpacity
               style={[styles.actionButton, styles.save]}
               onPress={async () => {
+                setShowModal(false);
                 if (fromCamera == false) {
-                  console.log("not from camera", fromCamera, uriList);
+                  console.log("not from camera", uriList);
                   new Directory(Paths.document, "userData", fileName).create({
                     idempotent: true,
                   });
@@ -95,7 +96,7 @@ export default function SaveMenu(props: SaveMenuProps) {
                   }
                   router.push("/");
                 } else if (fromCamera == true) {
-                  console.log("from camera", fromCamera, uriList);
+                  console.log("from camera", uriList);
                   new Directory(Paths.document, "userData/temp").rename(
                     fileName,
                   );

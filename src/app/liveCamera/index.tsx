@@ -79,17 +79,6 @@ export default function CameraScreen() {
         </TouchableOpacity>
 
         <SaveMenu fromCamera={true} />
-        {/* <TouchableOpacity
-          style={[styles.button, styles.proceedButton]}
-          onPress={() => {
-            router.push({
-              pathname: "/imgPreview/modal",
-              params: { fromCamera: "true" },
-            });
-          }}
-        >
-          <Text style={styles.primaryText}>Proceed</Text>
-        </TouchableOpacity> */}
       </View>
     </View>
   );

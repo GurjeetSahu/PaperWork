@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import SaveMenu from "@/src/components/SaveMenu";
 import { Image } from "expo-image";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 import PagerView from "react-native-pager-view";
 
 export default function Index() {
@@ -12,7 +12,6 @@ export default function Index() {
     viewMode: string;
   }>();
   const uriList = uris ? JSON.parse(uris) : [];
-  const router = useRouter();
   return (
     <View style={styles.container}>
       {/* Image Section */}
@@ -35,23 +34,7 @@ export default function Index() {
           <TouchableOpacity style={[styles.button, styles.outline]}>
             <Text style={styles.outlineText}>Add More</Text>
           </TouchableOpacity>
-
-          {/* {SaveMenu(false, uriList)} */}
-          <SaveMenu fromCamera={true} uriList={uriList} />
-          {/* <TouchableOpacity
-            style={[styles.button, styles.primary]}
-            onPress={() => {
-              router.push({
-                pathname: "/imgPreview/modal",
-                params: {
-                  uris: JSON.stringify(uriList),
-                  fromCamera: "false",
-                },
-              });
-            }}
-          >
-            <Text style={styles.primaryText}>Proceed</Text>
-          </TouchableOpacity> */}
+          <SaveMenu fromCamera={false} uriList={uriList} />
         </View>
       )}
     </View>
