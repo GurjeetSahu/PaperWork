@@ -97,7 +97,7 @@ export default function TabBar() {
           );
         })}
       </View>
-
+      {/**Here's the Connection to all documents view via activeTab.key */}
       <View style={styles.content}>
         <DocumentSection
           key={activeTab.key}

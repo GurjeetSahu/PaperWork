@@ -38,6 +38,7 @@ export default function TabLayout() {
         <Tabs.Screen
           name="liveCamera/index"
           options={{
+            headerShown: false,
             href: null,
           }}
         />

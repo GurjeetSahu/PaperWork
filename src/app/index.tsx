@@ -3,7 +3,7 @@ import FabMenu from "@/src/components/FabMenu";
 import TabBar from "@/src/components/TabBar";
 import { Directory, Paths } from "expo-file-system";
 import React, { useEffect } from "react";
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 
 export default function HomeScreen() {
   const Separator = () => <View style={styles.hr} />;
@@ -16,7 +16,7 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
+      {/* <View style={styles.header}>
         <View style={styles.headerTop}>
           <View>
             <Text style={styles.hello}>Hello,</Text>
@@ -28,11 +28,11 @@ export default function HomeScreen() {
           />
         </View>
 
-        {/* <View style={styles.search}>
+        <View style={styles.search}>
           <Ionicons name="search" size={20} color="gray" />
           <Text style={styles.searchText}>Search documents</Text>
-        </View> */}
-      </View>
+        </View>
+      </View> */}
 
       <ScrollView style={styles.content}>
         <TabBar />
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     width: "100%", // Full width alignment
     marginVertical: 15, // Spacing above and below the line
   },
-  container: { flex: 1, backgroundColor: "#f3f4f6" },
+  container: { flex: 1, backgroundColor: "#f3f4f6", marginTop: 50 },
   button: {
     paddingVertical: 14,
     borderRadius: 16,
