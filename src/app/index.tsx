@@ -1,4 +1,3 @@
-import SavedDocuments from "@/src/components/DocumentSection";
 import FabMenu from "@/src/components/FabMenu";
 
 import { Directory, Paths } from "expo-file-system";
@@ -11,6 +10,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import TabBar from "../components/TabBar";
 
 export default function HomeScreen() {
   const Separator = () => <View style={styles.hr} />;
@@ -42,14 +42,8 @@ export default function HomeScreen() {
       </View>
 
       <ScrollView style={styles.content}>
-        {/*<Text style={styles.sectionTitle}>Upload Documents</Text>
-
-       *<Camera /> 
-        <Text style={styles.sectionTitle}>My Docucments</Text>*/}
+        <TabBar />
         <View style={styles.grid}>
-          <SavedDocuments
-            directory={new Directory(Paths.document, "userData")}
-          />
           <Separator />
           <TouchableOpacity
             style={styles.gridCard}
@@ -58,14 +52,6 @@ export default function HomeScreen() {
             }}
           >
             <Text>Delete Full User Data</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.gridCard}
-            onPress={() => {
-              // new Directory(Paths.document, "userData/temp").create();
-            }}
-          >
-            <Text>Delete Temp</Text>
           </TouchableOpacity>
           <Separator />
         </View>
