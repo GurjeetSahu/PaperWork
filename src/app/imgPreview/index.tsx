@@ -35,6 +35,7 @@ export default function Index() {
             <Text style={styles.outlineText}>Add More</Text>
           </TouchableOpacity>
 
+          {/* {SaveMenu(false, uriList)} */}
           <TouchableOpacity
             style={[styles.button, styles.primary]}
             onPress={() => {

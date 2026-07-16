@@ -77,6 +77,7 @@ export default function CameraScreen() {
           <View style={styles.shutterInner} />
         </TouchableOpacity>
 
+        {/* {SaveMenu(true)} */}
         <TouchableOpacity
           style={[styles.button, styles.proceedButton]}
           onPress={() => {
