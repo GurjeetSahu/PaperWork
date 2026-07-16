@@ -10,7 +10,7 @@ import {
 } from "@/src/components/ui/modal";
 import { Directory, File, Paths } from "expo-file-system";
 import { router } from "expo-router";
-import React from "react";
+import React, { useState } from "react";
 
 import {
   StyleSheet,
@@ -19,14 +19,18 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-
-export default function SaveMenu(fromCamera: any, uriList?: any) {
-  const [showModal, setShowModal] = React.useState(false);
-  const [fileName, setFileName] = React.useState("");
+type SaveMenuProps = {
+  fromCamera: boolean;
+  uriList?: any;
+};
+export default function SaveMenu(props: SaveMenuProps) {
+  const { fromCamera, uriList } = props;
+  const [showModal, setShowModal] = useState(false);
+  const [fileName, setFileName] = useState("");
   return (
     <View>
       <Button onPress={() => setShowModal(true)}>
-        <ButtonText>Open Modal</ButtonText>
+        <ButtonText>Proceed</ButtonText>
       </Button>
 
       <Modal isOpen={showModal} onClose={() => setShowModal(false)} size="md">
@@ -34,7 +38,7 @@ export default function SaveMenu(fromCamera: any, uriList?: any) {
 
         <ModalContent style={styles.modal}>
           <ModalHeader style={styles.header}>
-            <Text style={styles.title}>Save File</Text>
+            <Text style={styles.title}>Rename</Text>
 
             <ModalCloseButton>
               <TouchableOpacity
@@ -74,10 +78,8 @@ export default function SaveMenu(fromCamera: any, uriList?: any) {
             <TouchableOpacity
               style={[styles.actionButton, styles.save]}
               onPress={async () => {
-                // setShowModal(false)
-                if (fromCamera == "false") {
-                  //document approach
-                  console.log("I am document not coming from camera");
+                if (fromCamera == false) {
+                  console.log("not from camera", fromCamera, uriList);
                   new Directory(Paths.document, "userData", fileName).create({
                     idempotent: true,
                   });
@@ -92,8 +94,8 @@ export default function SaveMenu(fromCamera: any, uriList?: any) {
                     sourceFile.move(destinationDir);
                   }
                   router.push("/");
-                } else if (fromCamera == "true") {
-                  console.log("I am coming from camera not a document");
+                } else if (fromCamera == true) {
+                  console.log("from camera", fromCamera, uriList);
                   new Directory(Paths.document, "userData/temp").rename(
                     fileName,
                   );

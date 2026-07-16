@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
+import SaveMenu from "@/src/components/SaveMenu";
 import { Image } from "expo-image";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import PagerView from "react-native-pager-view";
@@ -36,7 +37,8 @@ export default function Index() {
           </TouchableOpacity>
 
           {/* {SaveMenu(false, uriList)} */}
-          <TouchableOpacity
+          <SaveMenu fromCamera={true} uriList={uriList} />
+          {/* <TouchableOpacity
             style={[styles.button, styles.primary]}
             onPress={() => {
               router.push({
@@ -49,7 +51,7 @@ export default function Index() {
             }}
           >
             <Text style={styles.primaryText}>Proceed</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       )}
     </View>

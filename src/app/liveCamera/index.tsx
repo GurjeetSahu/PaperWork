@@ -1,3 +1,4 @@
+import SaveMenu from "@/src/components/SaveMenu";
 import { Ionicons } from "@expo/vector-icons";
 import { CameraType, CameraView, useCameraPermissions } from "expo-camera";
 import { Directory, File, Paths } from "expo-file-system";
@@ -77,8 +78,8 @@ export default function CameraScreen() {
           <View style={styles.shutterInner} />
         </TouchableOpacity>
 
-        {/* {SaveMenu(true)} */}
-        <TouchableOpacity
+        <SaveMenu fromCamera={true} />
+        {/* <TouchableOpacity
           style={[styles.button, styles.proceedButton]}
           onPress={() => {
             router.push({
@@ -88,7 +89,7 @@ export default function CameraScreen() {
           }}
         >
           <Text style={styles.primaryText}>Proceed</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </View>
   );

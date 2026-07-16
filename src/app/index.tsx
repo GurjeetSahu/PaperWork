@@ -3,8 +3,14 @@ import FabMenu from "@/src/components/FabMenu";
 
 import { Directory, Paths } from "expo-file-system";
 import React, { useEffect } from "react";
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
-import SaveMenu from "../components/SaveMenu";
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 export default function HomeScreen() {
   const Separator = () => <View style={styles.hr} />;
@@ -45,7 +51,7 @@ export default function HomeScreen() {
             directory={new Directory(Paths.document, "userData")}
           />
           <Separator />
-          {/** <TouchableOpacity
+          <TouchableOpacity
             style={styles.gridCard}
             onPress={() => {
               new Directory(Paths.document, "userData").delete();
@@ -56,16 +62,14 @@ export default function HomeScreen() {
           <TouchableOpacity
             style={styles.gridCard}
             onPress={() => {
-              new Directory(Paths.document, "userData/temp").create();
+              // new Directory(Paths.document, "userData/temp").create();
             }}
           >
             <Text>Delete Temp</Text>
           </TouchableOpacity>
           <Separator />
-          */}
         </View>
       </ScrollView>
-      <SaveMenu />
       <FabMenu />
     </View>
   );
