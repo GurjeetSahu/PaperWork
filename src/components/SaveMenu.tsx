@@ -11,7 +11,6 @@ import {
 import { Directory, File, Paths } from "expo-file-system";
 import { router } from "expo-router";
 import React, { useState } from "react";
-
 import {
   StyleSheet,
   Text,
@@ -19,10 +18,12 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+
 type SaveMenuProps = {
   fromCamera: boolean;
   uriList?: any;
 };
+
 export default function SaveMenu(props: SaveMenuProps) {
   const { fromCamera, uriList } = props;
   const [showModal, setShowModal] = useState(false);

@@ -1,10 +1,10 @@
-import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-
-import SaveMenu from "@/src/components/SaveMenu";
 import { Image } from "expo-image";
 import { useLocalSearchParams } from "expo-router";
+import React from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import PagerView from "react-native-pager-view";
+
+import SaveMenu from "@/src/components/SaveMenu";
 
 export default function Index() {
   const { uris, viewMode } = useLocalSearchParams<{

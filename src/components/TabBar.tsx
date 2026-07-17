@@ -12,7 +12,8 @@ import Animated, {
   useSharedValue,
   withSpring,
 } from "react-native-reanimated";
-import DocumentSection from "./DocumentSection";
+
+import DocumentSection from "@/src/components/DocumentSection";
 
 const TABS = [
   { key: "userData", label: "My Documents" },

@@ -1,4 +1,5 @@
 import FabMenu from "@/src/components/FabMenu";
+import TabBar from "@/src/components/TabBar";
 
 import { Directory, Paths } from "expo-file-system";
 import React, { useEffect } from "react";
@@ -10,7 +11,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import TabBar from "../components/TabBar";
 
 export default function HomeScreen() {
   const Separator = () => <View style={styles.hr} />;
@@ -63,26 +63,12 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   hr: {
-    borderBottomColor: "#cccccc", // Line color
-    borderBottomWidth: StyleSheet.hairlineWidth, // Thin native line thickness
-    width: "100%", // Full width alignment
-    marginVertical: 15, // Spacing above and below the line
+    borderBottomColor: "#cccccc",
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    width: "100%",
+    marginVertical: 15,
   },
   container: { flex: 1, backgroundColor: "#f3f4f6" },
-  button: {
-    paddingVertical: 14,
-    borderRadius: 16,
-    alignItems: "center",
-  },
-  primary: {
-    backgroundColor: "#6366f1",
-  },
-
-  primaryText: {
-    color: "white",
-    fontSize: 16,
-    fontWeight: "600",
-  },
   header: {
     backgroundColor: "#2563eb",
     padding: 20,
@@ -103,21 +89,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
-  searchText: { marginLeft: 10, color: "gray" },
-
   content: { padding: 15 },
-
-  sectionTitle: { fontSize: 16, fontWeight: "bold", marginBottom: 10 },
-
-  row: { flexDirection: "row", justifyContent: "space-between" },
-  card: {
-    backgroundColor: "white",
-    width: "30%",
-    padding: 15,
-    borderRadius: 10,
-    alignItems: "center",
-  },
-
   grid: {
     flexDirection: "row",
     flexWrap: "wrap",
@@ -129,30 +101,5 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 10,
     marginBottom: 10,
-  },
-
-  listItem: {
-    backgroundColor: "white",
-    padding: 15,
-    borderRadius: 10,
-    marginBottom: 10,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  iconBox: {
-    backgroundColor: "#dbeafe",
-    padding: 10,
-    borderRadius: 8,
-    marginRight: 10,
-  },
-
-  nav: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    padding: 10,
-    backgroundColor: "white",
-    borderTopWidth: 1,
-    borderColor: "#e5e7eb",
   },
 });
