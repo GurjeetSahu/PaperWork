@@ -4,11 +4,16 @@ import { Ionicons } from "@expo/vector-icons";
 import { CameraType, CameraView, useCameraPermissions } from "expo-camera";
 import { Directory, File, Paths } from "expo-file-system";
 import { useRouter } from "expo-router";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function CameraScreen() {
+  useEffect(() => {
+    const directory = new Directory(Paths.document, "userData", "temp").list();
+    setImageCount(directory.length);
+  }, []);
+
   const [facing, setFacing] = useState<CameraType>("back");
   const [permission, requestPermission] = useCameraPermissions();
   const [imageCount, setImageCount] = useState(0);
@@ -46,13 +51,19 @@ export default function CameraScreen() {
     setImageCount(directory.length);
   }
   async function captureImage() {
+    setImageCount(imageCount + 1);
     if (!cameraRef.current) return;
 
     try {
-      const photo = await cameraRef.current.takePictureAsync();
-      const tempDir = new Directory(Paths.document, "userData/temp");
-      tempDir.create({ idempotent: true });
-      new File(photo.uri).move(tempDir);
+      const photo = await cameraRef.current.takePictureAsync({
+        shutterSound: false,
+      });
+      const tempDir = new Directory(Paths.document, "userData", "temp");
+
+      tempDir.create({
+        idempotent: true,
+      });
+      new File(photo.uri).move(tempDir!);
     } catch (error) {
       console.error("Failed to capture image", error);
     }

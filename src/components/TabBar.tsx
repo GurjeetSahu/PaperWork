@@ -76,8 +76,6 @@ export default function TabBar() {
   }));
   return (
     <View style={styles.wrapper}>
-      <Text style={styles.sectionTitle}>Saved Documents</Text>
-
       <View style={styles.tabBar}>
         <Animated.View style={[styles.indicator, indicatorStyle]} />
 
