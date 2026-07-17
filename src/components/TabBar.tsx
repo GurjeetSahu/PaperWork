@@ -12,26 +12,30 @@ import Animated, {
   useSharedValue,
   withSpring,
 } from "react-native-reanimated";
-
-import DocumentSection from "@/src/components/DocumentSection";
-
-const TABS = [
-  { key: "userData", label: "My Documents" },
-  { key: "cache", label: "Cache" },
-] as const;
+import DocumentSection from "./DocumentSection";
 
 export default function TabBar() {
+  const [tabs, setTabs] = useState<string[]>([]);
+
+  useEffect(() => {
+    const loadTabs = async () => {
+      const entries = new Directory(Paths.document).list();
+
+      setTabs(
+        entries
+          .filter((entry) => entry instanceof Directory)
+          .map((folder) => folder.name),
+      );
+    };
+
+    loadTabs();
+  }, []);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [tabName, setTabName] = useState("");
   const tabLayouts = useRef<{ x: number; width: number }[]>([]);
 
   const indicatorX = useSharedValue(0);
   const indicatorWidth = useSharedValue(0);
-
-  useEffect(() => {
-    TABS.forEach((tab) => {
-      new Directory(Paths.document, tab.key).create({ idempotent: true });
-    });
-  }, []);
 
   const moveIndicator = useCallback(
     (index: number) => {
@@ -45,7 +49,8 @@ export default function TabBar() {
   );
 
   const selectTab = useCallback(
-    (index: number) => {
+    (index: number, tabName: string) => {
+      setTabName(tabName);
       setActiveIndex(index);
       moveIndicator(index);
     },
@@ -69,9 +74,6 @@ export default function TabBar() {
     transform: [{ translateX: indicatorX.value }],
     width: indicatorWidth.value,
   }));
-
-  const activeTab = TABS[activeIndex];
-
   return (
     <View style={styles.wrapper}>
       <Text style={styles.sectionTitle}>Saved Documents</Text>
@@ -79,31 +81,37 @@ export default function TabBar() {
       <View style={styles.tabBar}>
         <Animated.View style={[styles.indicator, indicatorStyle]} />
 
-        {TABS.map((tab, index) => {
+        {tabs.map((tab, index) => {
           const isActive = activeIndex === index;
 
           return (
             <Pressable
-              key={tab.key}
+              key={tab}
               style={styles.tab}
-              onPress={() => selectTab(index)}
+              onPress={() => selectTab(index, tab)}
               onLayout={(event) => onTabLayout(index, event)}
             >
               <Text
                 style={[styles.tabLabel, isActive && styles.tabLabelActive]}
               >
-                {tab.label}
+                {tab}
               </Text>
             </Pressable>
           );
         })}
+        {/* <Pressable
+          style={styles.tab}
+          onPress={() => {
+            const directory = new Directory(Paths.document, "userData").list();
+            console.log(directory);
+          }}
+        >
+          <Text style={[styles.tabLabel]}>Lf</Text>
+        </Pressable> */}
       </View>
-      {/**Here's the Connection to all documents view via activeTab.key */}
+      {/**Here's the Connection to all documents view via  activeTab.key */}
       <View style={styles.content}>
-        <DocumentSection
-          key={activeTab.key}
-          directory={new Directory(Paths.document, activeTab.key)}
-        />
+        <DocumentSection directory={new Directory(Paths.document, tabName)} />
       </View>
     </View>
   );
