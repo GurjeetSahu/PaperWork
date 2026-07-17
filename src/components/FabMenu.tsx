@@ -15,6 +15,7 @@ import {
   View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import NewFolder from "./NewFolder";
 
 type FabOption = {
   icon: React.ComponentProps<typeof MaterialIcons>["name"];
@@ -66,8 +67,6 @@ export default function FabMenu() {
   const options: FabOption[] = [
     { icon: "upload-file", label: "Upload", onPress: pickImage },
     { icon: "document-scanner", label: "Scan", onPress: openCamera },
-    { icon: "folder-open", label: "New Folder", onPress: () => {} },
-    { icon: "share", label: "Share", onPress: () => {} },
   ];
 
   const handleOptionPress = (option: FabOption) => {
@@ -103,6 +102,7 @@ export default function FabMenu() {
               </TouchableOpacity>
             </View>
           ))}
+        {open && <NewFolder />}
 
         <TouchableOpacity
           style={[styles.mainFab, open && styles.mainFabOpen]}
