@@ -153,13 +153,6 @@ const styles = StyleSheet.create({
     color: "#6B7280",
     fontWeight: "600",
   },
-
-  body: {
-    fontSize: 16,
-    lineHeight: 24,
-    color: "#4B5563",
-  },
-
   footer: {
     flexDirection: "row",
     justifyContent: "flex-end",
@@ -197,22 +190,10 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     alignItems: "center",
   },
-  container: {
-    flex: 1,
-    backgroundColor: "#ffffff", // dark modern bg
-    justifyContent: "space-between",
-  },
 
   primaryText: {
     color: "white",
     fontSize: 16,
     fontWeight: "600",
-  },
-  primary: {
-    backgroundColor: "#6366f1",
-  },
-  link: {
-    paddingTop: 20,
-    fontSize: 20,
   },
 });
