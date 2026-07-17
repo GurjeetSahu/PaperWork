@@ -29,14 +29,14 @@ export default function TabLayout() {
           }}
         />
         <Tabs.Screen
-          name="imgPreview"
+          name="imgPreview/index"
           options={{
             headerShown: false,
             href: null,
           }}
         />
         <Tabs.Screen
-          name="liveCamera/index"
+          name="cameraScreen/index"
           options={{
             headerShown: false,
             href: null,
