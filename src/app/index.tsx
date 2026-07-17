@@ -12,6 +12,8 @@ import {
   View,
 } from "react-native";
 
+import FileSystemDumpButton, { dir } from "@/src/components/DummyComp";
+
 export default function HomeScreen() {
   const Separator = () => <View style={styles.hr} />;
   const directory = new Directory(Paths.document, "userData");
@@ -53,6 +55,10 @@ export default function HomeScreen() {
           >
             <Text>Delete Full User Data</Text>
           </TouchableOpacity>
+          <FileSystemDumpButton
+            root={dir(Paths.document, "userData")}
+            title="Pathssdfdsfsfsfsd"
+          />
           <Separator />
         </View>
       </ScrollView>
