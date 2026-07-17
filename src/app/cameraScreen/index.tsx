@@ -11,6 +11,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 export default function CameraScreen() {
   const [facing, setFacing] = useState<CameraType>("back");
   const [permission, requestPermission] = useCameraPermissions();
+  const [imageCount, setImageCount] = useState(0);
   const cameraRef = useRef<CameraView | null>(null);
   const router = useRouter();
   const insets = useSafeAreaInsets();
@@ -40,7 +41,10 @@ export default function CameraScreen() {
   function toggleCameraFacing() {
     setFacing((current) => (current === "back" ? "front" : "back"));
   }
-
+  function countImage() {
+    const directory = new Directory(Paths.document, "userData/temp").list();
+    setImageCount(directory.length);
+  }
   async function captureImage() {
     if (!cameraRef.current) return;
 
@@ -79,6 +83,10 @@ export default function CameraScreen() {
           <View style={styles.shutterInner} />
         </TouchableOpacity>
 
+        <TouchableOpacity style={styles.imageCount} onPress={countImage}>
+          <Text>{imageCount}</Text>
+        </TouchableOpacity>
+
         <SaveMenu fromCamera={true} />
       </View>
     </View>
@@ -86,6 +94,14 @@ export default function CameraScreen() {
 }
 
 const styles = StyleSheet.create({
+  imageCount: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: "rgba(30, 255, 0, 0.66)",
+    alignItems: "center",
+    justifyContent: "center",
+  },
   container: {
     flex: 1,
     backgroundColor: "#0f172a",
