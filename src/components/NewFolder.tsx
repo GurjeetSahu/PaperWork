@@ -8,6 +8,7 @@ import {
   ModalHeader,
 } from "@/src/components/ui/modal";
 import { MaterialIcons } from "@expo/vector-icons";
+import { Directory, Paths } from "expo-file-system";
 import React, { useState } from "react";
 import {
   StyleSheet,
@@ -19,7 +20,7 @@ import {
 
 export default function NewFolder() {
   const [showModal, setShowModal] = useState(false);
-  const [fileName, setFileName] = useState("");
+  const [folderName, setFolderName] = useState("");
   return (
     <View>
       <View style={styles.optionRow}>
@@ -66,7 +67,7 @@ export default function NewFolder() {
                   fontSize: 12,
                 },
               ]}
-              onChangeText={(newText) => setFileName(newText)}
+              onChangeText={(newText) => setFolderName(newText)}
               placeholder="Ex- Aadhar Card, Driving Licence etc."
             />
           </ModalBody>
@@ -84,7 +85,7 @@ export default function NewFolder() {
               onPress={async () => {
                 setShowModal(false);
                 //work here
-                //new Directory(Paths.document, fileName).create();
+                new Directory(Paths.document, "userData", folderName).create();
               }}
             >
               <Text style={styles.saveText}>Save</Text>

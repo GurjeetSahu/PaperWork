@@ -19,7 +19,7 @@ export default function TabBar() {
 
   useEffect(() => {
     const loadTabs = async () => {
-      const entries = new Directory(Paths.document).list();
+      const entries = new Directory(Paths.document, "userData").list();
 
       setTabs(
         entries
