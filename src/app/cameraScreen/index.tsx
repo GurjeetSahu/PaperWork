@@ -9,10 +9,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function CameraScreen() {
-  useEffect(() => {
-    const directory = new Directory(Paths.document, "userData", "temp").list();
-    setImageCount(directory.length);
-  }, []);
+  useEffect(() => {}, []);
 
   const [facing, setFacing] = useState<CameraType>("back");
   const [permission, requestPermission] = useCameraPermissions();
@@ -46,12 +43,8 @@ export default function CameraScreen() {
   function toggleCameraFacing() {
     setFacing((current) => (current === "back" ? "front" : "back"));
   }
-  function countImage() {
-    const directory = new Directory(Paths.document, "userData/temp").list();
-    setImageCount(directory.length);
-  }
+
   async function captureImage() {
-    setImageCount(imageCount + 1);
     if (!cameraRef.current) return;
 
     try {
@@ -66,6 +59,13 @@ export default function CameraScreen() {
       new File(photo.uri).move(tempDir!);
     } catch (error) {
       console.error("Failed to capture image", error);
+    } finally {
+      const directory = new Directory(
+        Paths.document,
+        "userData",
+        "temp",
+      ).list();
+      setImageCount(directory.length);
     }
   }
 
@@ -90,11 +90,16 @@ export default function CameraScreen() {
           <Ionicons name="camera-reverse-outline" size={26} color="#fff" />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.shutterOuter} onPress={captureImage}>
+        <TouchableOpacity
+          style={styles.shutterOuter}
+          onPress={() => {
+            captureImage();
+          }}
+        >
           <View style={styles.shutterInner} />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.imageCount} onPress={countImage}>
+        <TouchableOpacity style={styles.imageCount}>
           <Text>{imageCount}</Text>
         </TouchableOpacity>
 
