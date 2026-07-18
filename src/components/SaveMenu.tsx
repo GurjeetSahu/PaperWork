@@ -28,6 +28,7 @@ export default function SaveMenu(props: SaveMenuProps) {
   const { fromCamera, uriList } = props;
   const [showModal, setShowModal] = useState(false);
   const [fileName, setFileName] = useState("");
+  const [subCat, setSubCat] = useState("");
   return (
     <View>
       <Button onPress={() => setShowModal(true)}>
@@ -66,6 +67,20 @@ export default function SaveMenu(props: SaveMenuProps) {
               onChangeText={(newText) => setFileName(newText)}
               placeholder="Ex- Aadhar Card, Driving Licence etc."
             />
+            <TextInput
+              defaultValue="School"
+              style={[
+                styles.primaryText,
+                {
+                  borderColor: "black",
+                  color: "black",
+                  borderWidth: 2,
+                  borderRadius: 10,
+                  fontSize: 12,
+                },
+              ]}
+              onChangeText={(newText) => setSubCat(newText)}
+            />
           </ModalBody>
 
           <ModalFooter style={styles.footer}>
@@ -82,7 +97,12 @@ export default function SaveMenu(props: SaveMenuProps) {
                 setShowModal(false);
                 if (fromCamera == false) {
                   console.log("not from camera", uriList);
-                  new Directory(Paths.document, "userData", fileName).create({
+                  new Directory(
+                    Paths.document,
+                    "userData",
+                    "School",
+                    fileName,
+                  ).create({
                     idempotent: true,
                   });
 
@@ -97,10 +117,21 @@ export default function SaveMenu(props: SaveMenuProps) {
                   }
                   router.push("/");
                 } else if (fromCamera == true) {
-                  console.log("from camera", uriList);
-                  new Directory(Paths.document, "userData/temp").rename(
+                  console.log("from camera");
+                  const subCategory = new Directory(
+                    Paths.document,
+                    "userData",
+                    "School",
+                  );
+                  new Directory(Paths.document, "userData", "temp").rename(
                     fileName,
                   );
+                  const file = new Directory(
+                    Paths.document,
+                    "userData",
+                    fileName,
+                  );
+                  file.move(subCategory!);
                 }
               }}
             >
