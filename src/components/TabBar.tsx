@@ -15,8 +15,6 @@ import Animated, {
 import DocumentSection from "./DocumentSection";
 
 export default function TabBar() {
-  const [tabs, setTabs] = useState<string[]>([]);
-
   useEffect(() => {
     const loadTabs = async () => {
       const entries = new Directory(Paths.document, "userData").list();
@@ -30,10 +28,11 @@ export default function TabBar() {
 
     loadTabs();
   }, []);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [tabName, setTabName] = useState("");
-  const tabLayouts = useRef<{ x: number; width: number }[]>([]);
+  const [tabs, setTabs] = useState<string[]>([]);
+  const [currentTab, setCurrentTab] = useState("");
 
+  const [activeIndex, setActiveIndex] = useState(0);
+  const tabLayouts = useRef<{ x: number; width: number }[]>([]);
   const indicatorX = useSharedValue(0);
   const indicatorWidth = useSharedValue(0);
 
@@ -50,7 +49,7 @@ export default function TabBar() {
 
   const selectTab = useCallback(
     (index: number, tabName: string) => {
-      setTabName(tabName);
+      setCurrentTab(tabName);
       setActiveIndex(index);
       moveIndicator(index);
     },
@@ -97,19 +96,13 @@ export default function TabBar() {
             </Pressable>
           );
         })}
-        {/* <Pressable
-          style={styles.tab}
-          onPress={() => {
-            const directory = new Directory(Paths.document, "userData").list();
-            console.log(directory);
-          }}
-        >
-          <Text style={[styles.tabLabel]}>Lf</Text>
-        </Pressable> */}
       </View>
       {/**Here's the Connection to all documents view via  activeTab.key */}
       <View style={styles.content}>
-        <DocumentSection directory={new Directory(Paths.document, tabName)} />
+        <DocumentSection
+          directory={new Directory(Paths.document, "userData", "School")}
+          //directory={new Directory(Paths.document, "userData", currentTab)}
+        />
       </View>
     </View>
   );
