@@ -11,31 +11,43 @@ export default function FileSystemDumpButton({
   root,
   title = "Dump File System",
 }: Props) {
-  async function walk(dir: Directory, indent = ""): Promise<string> {
-    let output = `${indent}📁 ${dir.uri}\n`;
+  async function walk(
+    dir: Directory,
+    prefix = "",
+    isLast = true,
+    isRoot = true,
+  ): Promise<string> {
+    let output = isRoot
+      ? `📁 ${dir.uri}\n`
+      : `${prefix}${isLast ? "└── " : "├── "}📁 ${dir.name}\n`;
 
     try {
       const entries = await dir.list();
 
-      for (const entry of entries) {
+      for (let i = 0; i < entries.length; i++) {
+        const entry = entries[i];
+        const last = i === entries.length - 1;
+        const childPrefix = isRoot ? "" : prefix + (isLast ? "    " : "│   ");
+
         if (entry instanceof Directory) {
-          output += await walk(entry, indent + "  ");
+          output += await walk(entry, childPrefix, last, false);
         } else {
           const info = await entry.info();
-          output += `${indent}  📄 ${entry.name} (${info.size ?? 0} bytes)\n`;
+          output += `${childPrefix}${last ? "└── " : "├── "}📄 ${
+            entry.name
+          } (${info.size ?? 0} bytes)\n`;
         }
       }
     } catch (e: any) {
-      output += `${indent}❌ ${e.message}\n`;
+      output += `${prefix}❌ ${e.message}\n`;
     }
 
     return output;
   }
-
   return (
     <TouchableOpacity
       onPress={async () => {
-        console.log(await walk(root));
+        console.log("\n", await walk(root));
       }}
       style={{
         padding: 12,

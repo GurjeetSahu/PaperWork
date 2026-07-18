@@ -47,19 +47,21 @@ export default function HomeScreen() {
         <TabBar />
         <View style={styles.grid}>
           <Separator />
-          <TouchableOpacity
-            style={styles.gridCard}
-            onPress={() => {
-              new Directory(Paths.document, "userData").delete();
-            }}
-          >
-            <Text>Delete Full User Data</Text>
-          </TouchableOpacity>
-          <FileSystemDumpButton
-            root={dir(Paths.document, "userData")}
-            title="Pathssdfdsfsfsfsd"
-          />
-          <Separator />
+          <View>
+            <TouchableOpacity
+              style={styles.gridCard}
+              onPress={() => {
+                new Directory(Paths.document, "userData").delete();
+              }}
+            >
+              <Text>Delete Full User Data</Text>
+            </TouchableOpacity>
+            <FileSystemDumpButton
+              root={dir(Paths.document, "userData")}
+              title="Dump"
+            />
+            <Separator />
+          </View>
         </View>
       </ScrollView>
       <FabMenu />
