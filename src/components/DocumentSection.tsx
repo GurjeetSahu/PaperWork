@@ -66,15 +66,17 @@ export default function DocucmentSection({
                 </Pressable>
               )}
             >
-              {/* <MenuItem
-                textValue="f"
-                onPress={() => console.log("Rename", file)}
+              <MenuItem
+                textValue="Rename"
+                onPress={() => {
+                  console.log(new Directory(directory, file));
+                }}
               >
                 <MenuItemLabel>Rename</MenuItemLabel>
-              </MenuItem> */}
+              </MenuItem>
 
               <MenuItem
-                textValue="f"
+                textValue="Delete"
                 onPress={() => {
                   new Directory(directory, file).delete();
                   loadFiles();
@@ -86,24 +88,6 @@ export default function DocucmentSection({
           </View>
         </TouchableOpacity>
       ))}
-      {/* <TouchableOpacity
-        style={styles.gridCard}
-        activeOpacity={0.8}
-        onPress={() => {
-          const contents = new Directory(
-            Paths.document,
-            "userData",
-            "Y",
-          ).list();
-          setFiles(contents.map((item) => item.name));
-        }}
-      >
-        <View style={styles.headerRow}>
-          <Text style={styles.fileName} numberOfLines={1}>
-            F
-          </Text>
-        </View>
-      </TouchableOpacity> */}
     </View>
   );
 }
