@@ -42,13 +42,6 @@ export default function TabLayout() {
             href: null,
           }}
         />
-        <Tabs.Screen
-          name="tabs/[id]"
-          options={{
-            title: "[id]",
-            href: null,
-          }}
-        />
       </Tabs>
     </GluestackUIProvider>
   );

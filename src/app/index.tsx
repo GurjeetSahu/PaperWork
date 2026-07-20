@@ -8,8 +8,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
-  View,
+  View
 } from "react-native";
 
 import FileSystemDumpButton, { dir } from "@/src/components/DummyComp";
@@ -48,14 +47,14 @@ export default function HomeScreen() {
         <View style={styles.grid}>
           <Separator />
           <View>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               style={styles.gridCard}
               onPress={() => {
                 new Directory(Paths.document, "userData").delete();
               }}
             >
               <Text>Delete Full User Data</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <FileSystemDumpButton
               root={dir(Paths.document, "userData")}
               title="Dump"
