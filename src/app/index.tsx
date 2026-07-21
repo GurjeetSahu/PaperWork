@@ -9,13 +9,11 @@ import FileSystemDumpButton, { dir } from "@/src/components/DummyComp";
 
 export default function HomeScreen() {
   const Separator = () => <View style={styles.hr} />;
-  const directory = new Directory(Paths.document, "userData");
+
   //const directory = new Directory(Paths.document, "userData", user);
   useEffect(() => {
-    directory.create({
-      idempotent: true,
-    });
-  }, [directory]);
+    new Directory(Paths.document, "userData").create({ idempotent: true });
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -38,7 +36,7 @@ export default function HomeScreen() {
       </View>
 
       <ScrollView style={styles.content}>
-        <TabBar />
+        <TabBar user="" />
         <View style={styles.grid}>
           <Separator />
           <View>

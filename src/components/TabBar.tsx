@@ -15,10 +15,10 @@ import Animated, {
 
 import DocumentSection from "@/src/components/DocumentSection";
 
-export default function TabBar() {
+export default function TabBar({ user }: { user: string }) {
   useEffect(() => {
     const loadTabs = async () => {
-      const entries = new Directory(Paths.document, "userData").list();
+      const entries = new Directory(Paths.document, "userData", user).list();
 
       setTabs(
         entries
