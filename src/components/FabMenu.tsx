@@ -15,7 +15,8 @@ import {
   View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import NewFolder from "./NewFolder";
+
+import NewFolder from "@/src/components/NewFolder";
 
 type FabOption = {
   icon: React.ComponentProps<typeof MaterialIcons>["name"];

@@ -3,19 +3,14 @@ import TabBar from "@/src/components/TabBar";
 
 import { Directory, Paths } from "expo-file-system";
 import React, { useEffect } from "react";
-import {
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View
-} from "react-native";
+import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 
 import FileSystemDumpButton, { dir } from "@/src/components/DummyComp";
 
 export default function HomeScreen() {
   const Separator = () => <View style={styles.hr} />;
   const directory = new Directory(Paths.document, "userData");
+  //const directory = new Directory(Paths.document, "userData", user);
   useEffect(() => {
     directory.create({
       idempotent: true,
