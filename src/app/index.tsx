@@ -6,6 +6,7 @@ import React, { useEffect } from "react";
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 
 import FileSystemDumpButton, { dir } from "@/src/components/DummyComp";
+import User from "@/src/components/User";
 
 export default function HomeScreen() {
   const Separator = () => <View style={styles.hr} />;
@@ -19,7 +20,8 @@ export default function HomeScreen() {
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.headerTop}>
-          <View>
+          <View className="user">
+            <User />
             <Text style={styles.hello}>Hello,</Text>
             <Text style={styles.name}>Gurjeet 👋</Text>
           </View>
