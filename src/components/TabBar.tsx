@@ -14,11 +14,18 @@ import Animated, {
 } from "react-native-reanimated";
 
 import DocumentSection from "@/src/components/DocumentSection";
+import { useUsers } from "@/src/components/User";
 
-export default function TabBar({ user }: { user: string }) {
+export default function TabBar() {
+  const { users: USERS, currentUser } = useUsers();
   useEffect(() => {
+    console.log(currentUser);
     const loadTabs = async () => {
-      const entries = new Directory(Paths.document, "userData", user).list();
+      const entries = new Directory(
+        Paths.document,
+        "userData",
+        currentUser,
+      ).list();
 
       setTabs(
         entries
@@ -28,7 +35,7 @@ export default function TabBar({ user }: { user: string }) {
     };
 
     loadTabs();
-  }, []);
+  }, [currentUser]);
   const [tabs, setTabs] = useState<string[]>([]);
   const [currentTab, setCurrentTab] = useState("");
 

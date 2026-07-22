@@ -38,7 +38,7 @@ export default function HomeScreen() {
       </View>
 
       <ScrollView style={styles.content}>
-        <TabBar user="" />
+        <TabBar />
         <View style={styles.grid}>
           <Separator />
           <View>
