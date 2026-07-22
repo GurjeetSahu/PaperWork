@@ -18,7 +18,10 @@ import {
   View,
 } from "react-native";
 
+import { useUsers } from "@/src/components/User";
+
 export default function NewFolder() {
+  const { currentUser } = useUsers();
   const [showModal, setShowModal] = useState(false);
   const [folderName, setFolderName] = useState("");
   return (
@@ -85,7 +88,12 @@ export default function NewFolder() {
               onPress={async () => {
                 setShowModal(false);
                 //work here
-                new Directory(Paths.document, "userData", folderName).create();
+                new Directory(
+                  Paths.document,
+                  "userData",
+                  currentUser,
+                  folderName,
+                ).create({ idempotent: true });
               }}
             >
               <Text style={styles.saveText}>Save</Text>

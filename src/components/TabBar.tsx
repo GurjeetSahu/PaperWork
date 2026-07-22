@@ -17,9 +17,8 @@ import DocumentSection from "@/src/components/DocumentSection";
 import { useUsers } from "@/src/components/User";
 
 export default function TabBar() {
-  const { users: USERS, currentUser } = useUsers();
+  const { currentUser } = useUsers();
   useEffect(() => {
-    console.log(currentUser);
     const loadTabs = async () => {
       const entries = new Directory(
         Paths.document,
