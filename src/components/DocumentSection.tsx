@@ -6,7 +6,8 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Menu, MenuItem, MenuItemLabel } from "@/src/components/ui/menu";
 import { Pressable } from "@/src/components/ui/pressable";
 
-export default function DocucmentSection({
+
+export default function DocumentSection({
   directory,
 }: {
   directory: Directory;
@@ -58,7 +59,7 @@ export default function DocucmentSection({
                 <Pressable
                   {...triggerProps}
                   onPress={(e) => {
-                    e.stopPropagation(); // 🔥 prevents card click
+                    e.stopPropagation();
                     triggerProps.onPress?.(e);
                   }}
                 >

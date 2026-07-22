@@ -109,7 +109,9 @@ export default function TabBar() {
       {/**Here's the Connection to all documents view via  activeTab.key */}
       <View style={styles.content}>
         <DocumentSection
-          directory={new Directory(Paths.document, "userData", currentTab)}
+          directory={
+            new Directory(Paths.document, "userData", currentUser, currentTab)
+          }
         />
       </View>
     </View>

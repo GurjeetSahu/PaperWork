@@ -1,4 +1,3 @@
-import { Button, ButtonText } from "@/src/components/ui/button";
 import {
   Modal,
   ModalBackdrop,
@@ -8,8 +7,8 @@ import {
   ModalFooter,
   ModalHeader,
 } from "@/src/components/ui/modal";
-import { Directory, File, Paths } from "expo-file-system";
-import { router } from "expo-router";
+import { MaterialIcons } from "@expo/vector-icons";
+import { Directory, Paths } from "expo-file-system";
 import React, { useState } from "react";
 import {
   StyleSheet,
@@ -18,31 +17,33 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useUsers } from "./User";
 
-type SaveMenuProps = {
-  fromCamera: boolean;
-  uriList?: any;
-};
-
-export default function SaveMenu(props: SaveMenuProps) {
-  const { currentUser } = useUsers();
-  const { fromCamera, uriList } = props;
+export default function Rename(prevName: string) {
   const [showModal, setShowModal] = useState(false);
-  const [fileName, setFileName] = useState("");
-  const [subCat, setSubCat] = useState("");
+  const [folderName, setFolderName] = useState("");
   return (
     <View>
-      <Button onPress={() => setShowModal(true)}>
-        <ButtonText>Proceed</ButtonText>
-      </Button>
+      <View style={styles.optionRow}>
+        <View style={styles.labelChip}>
+          <Text style={styles.labelText}>New Folder</Text>
+        </View>
+        <TouchableOpacity
+          style={styles.optionButton}
+          activeOpacity={0.85}
+          onPress={() => {
+            setShowModal(true);
+          }}
+        >
+          <MaterialIcons name={"folder-open"} size={22} color="#fff" />
+        </TouchableOpacity>
+      </View>
 
       <Modal isOpen={showModal} onClose={() => setShowModal(false)} size="md">
         <ModalBackdrop />
 
         <ModalContent style={styles.modal}>
           <ModalHeader style={styles.header}>
-            <Text style={styles.title}>Rename</Text>
+            <Text style={styles.title}>New Folder</Text>
 
             <ModalCloseButton>
               <TouchableOpacity
@@ -66,22 +67,8 @@ export default function SaveMenu(props: SaveMenuProps) {
                   fontSize: 12,
                 },
               ]}
-              onChangeText={(newText) => setFileName(newText)}
+              onChangeText={(newText) => setFolderName(newText)}
               placeholder="Ex- Aadhar Card, Driving Licence etc."
-            />
-            <TextInput
-              defaultValue="Notes"
-              style={[
-                styles.primaryText,
-                {
-                  borderColor: "black",
-                  color: "black",
-                  borderWidth: 2,
-                  borderRadius: 10,
-                  fontSize: 12,
-                },
-              ]}
-              onChangeText={(newText) => setSubCat(newText)}
             />
           </ModalBody>
 
@@ -97,48 +84,10 @@ export default function SaveMenu(props: SaveMenuProps) {
               style={[styles.actionButton, styles.save]}
               onPress={async () => {
                 setShowModal(false);
-                if (fromCamera == false) {
-                  console.log("not from camera", uriList);
-                  //first create the exact folder in user's specific category
-                  new Directory(
-                    Paths.document,
-                    "userData",
-                    currentUser,
-                    subCat,
-                    fileName,
-                  ).create({});
-                  //now move each image from uri which is from cache to that exact folder ok
-                  for (const uri of uriList) {
-                    const sourceFile = new File(uri);
-                    const destinationDir = new Directory(
-                      Paths.document,
-                      "userData",
-                      currentUser,
-                      subCat,
-                      fileName,
-                    );
-                    sourceFile.move(destinationDir);
-                  }
-                  router.push("/");
-                } else if (fromCamera == true) {
-                  //camera images are automatially saved to temp dir whi is then rename to choice of user and then moved to subcat dir
-                  console.log("from camera");
-                  const subCategory = new Directory(
-                    Paths.document,
-                    "userData",
-                    currentUser,
-                    subCat,
-                  );
-                  new Directory(Paths.document, "userData", "temp").rename(
-                    fileName,
-                  );
-                  const file = new Directory(
-                    Paths.document,
-                    "userData",
-                    fileName,
-                  );
-                  file.move(subCategory!);
-                }
+                //work here
+                console.log(
+                  new Directory(Paths.document, "userData", folderName),
+                );
               }}
             >
               <Text style={styles.saveText}>Save</Text>
@@ -232,5 +181,58 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 16,
     fontWeight: "600",
+  },
+
+  backdrop: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0, 0, 0, 0.25)",
+    zIndex: 10,
+  },
+  optionRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+  },
+  labelChip: {
+    backgroundColor: "#fff",
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 8,
+    elevation: 3,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.15,
+    shadowRadius: 3,
+  },
+  labelText: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#1f2937",
+  },
+  optionButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: "#2563eb",
+    alignItems: "center",
+    justifyContent: "center",
+    elevation: 4,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+  },
+  mainFab: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: "#6366f1",
+    alignItems: "center",
+    justifyContent: "center",
+    elevation: 6,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.25,
+    shadowRadius: 6,
   },
 });

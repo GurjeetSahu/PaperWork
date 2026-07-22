@@ -3,7 +3,14 @@ import TabBar from "@/src/components/TabBar";
 
 import { Directory, Paths } from "expo-file-system";
 import React, { useEffect } from "react";
-import { Image, ScrollView, StyleSheet, View } from "react-native";
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 import FileSystemDumpButton, { dir } from "@/src/components/DummyComp";
 import User from "@/src/components/User";
@@ -41,14 +48,14 @@ export default function HomeScreen() {
         <View style={styles.grid}>
           <Separator />
           <View>
-            {/* <TouchableOpacity
+            <TouchableOpacity
               style={styles.gridCard}
               onPress={() => {
                 new Directory(Paths.document, "userData").delete();
               }}
             >
               <Text>Delete Full User Data</Text>
-            </TouchableOpacity> */}
+            </TouchableOpacity>
             <FileSystemDumpButton
               root={dir(Paths.document, "userData")}
               title="Dump"
