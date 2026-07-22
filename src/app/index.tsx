@@ -13,6 +13,7 @@ export default function HomeScreen() {
 
   //const directory = new Directory(Paths.document, "userData", user);
   useEffect(() => {
+    //console.log("Creating Master Directory");
     new Directory(Paths.document, "userData").create({ idempotent: true });
   }, []);
 

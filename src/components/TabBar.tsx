@@ -19,6 +19,7 @@ import { useUsers } from "@/src/components/User";
 export default function TabBar() {
   const { currentUser } = useUsers();
   useEffect(() => {
+    //console.log("Loading Tabs Of Current User: ", currentUser);
     const loadTabs = async () => {
       const entries = new Directory(
         Paths.document,

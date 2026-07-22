@@ -38,6 +38,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
   const [users, setUsers] = useState<string[]>([]);
   const [currentUser, setCurrentUser] = useState("");
   useEffect(() => {
+    //console.log("Loading All Users");
     const r: string[] = [];
     const usersList = new Directory(Paths.document, "userData").list();
     usersList.forEach((element) => {
