@@ -1,7 +1,9 @@
 import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
+import { useUsers } from "../components/User";
 
 export default function ProfileScreen() {
+  const { currentUser } = useUsers();
   const user = {
     name: "Gurjeet Sahu",
     age: 20,
@@ -16,7 +18,7 @@ export default function ProfileScreen() {
       <Image source={{ uri: user.image }} style={styles.image} />
 
       {/* Name */}
-      <Text style={styles.name}>{user.name}</Text>
+      <Text style={styles.name}>{currentUser}</Text>
 
       {/* Age */}
       <Text style={styles.info}>Age: {user.age}</Text>

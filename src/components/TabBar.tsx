@@ -18,6 +18,14 @@ import { useUsers } from "@/src/components/User";
 
 export default function TabBar() {
   const { currentUser } = useUsers();
+  const [tabs, setTabs] = useState<string[]>([]);
+  const [currentTab, setCurrentTab] = useState("");
+
+  const [activeIndex, setActiveIndex] = useState(0);
+  const tabLayouts = useRef<{ x: number; width: number }[]>([]);
+  const indicatorX = useSharedValue(0);
+  const indicatorWidth = useSharedValue(0);
+
   useEffect(() => {
     //console.log("Loading Tabs Of Current User: ", currentUser);
     const loadTabs = async () => {
@@ -36,13 +44,6 @@ export default function TabBar() {
 
     loadTabs();
   }, [currentUser]);
-  const [tabs, setTabs] = useState<string[]>([]);
-  const [currentTab, setCurrentTab] = useState("");
-
-  const [activeIndex, setActiveIndex] = useState(0);
-  const tabLayouts = useRef<{ x: number; width: number }[]>([]);
-  const indicatorX = useSharedValue(0);
-  const indicatorWidth = useSharedValue(0);
 
   const moveIndicator = useCallback(
     (index: number) => {
