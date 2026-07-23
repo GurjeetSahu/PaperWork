@@ -44,6 +44,12 @@ export default function TabLayout() {
               href: null,
             }}
           />
+          <Tabs.Screen
+            name="tools"
+            options={{
+              headerShown: false,
+            }}
+          />
         </Tabs>
       </GluestackUIProvider>
     </UserProvider>

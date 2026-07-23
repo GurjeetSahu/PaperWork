@@ -177,11 +177,6 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontSize: 15,
   },
-  button: {
-    paddingVertical: 14,
-    borderRadius: 16,
-    alignItems: "center",
-  },
 
   primaryText: {
     color: "white",
@@ -189,11 +184,6 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
 
-  backdrop: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(0, 0, 0, 0.25)",
-    zIndex: 10,
-  },
   optionRow: {
     flexDirection: "row",
     alignItems: "center",
@@ -227,18 +217,5 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
-  },
-  mainFab: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    backgroundColor: "#6366f1",
-    alignItems: "center",
-    justifyContent: "center",
-    elevation: 6,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.25,
-    shadowRadius: 6,
   },
 });
