@@ -21,9 +21,29 @@ import {
 import { useUsers } from "@/src/components/User";
 
 export default function NewFolder() {
-  const { currentUser } = useUsers();
+  const { currentUser, refreshFolders } = useUsers();
   const [showModal, setShowModal] = useState(false);
   const [folderName, setFolderName] = useState("");
+
+  const resetModal = () => {
+    setShowModal(false);
+    setFolderName("");
+  };
+
+  const handleSave = () => {
+    const trimmedName = folderName.trim();
+    if (!currentUser || !trimmedName) return;
+
+    new Directory(
+      Paths.document,
+      "userData",
+      currentUser,
+      trimmedName,
+    ).create({ idempotent: true });
+    refreshFolders();
+    resetModal();
+  };
+
   return (
     <View>
       <View style={styles.optionRow}>
@@ -41,7 +61,7 @@ export default function NewFolder() {
         </TouchableOpacity>
       </View>
 
-      <Modal isOpen={showModal} onClose={() => setShowModal(false)} size="md">
+      <Modal isOpen={showModal} onClose={resetModal} size="md">
         <ModalBackdrop />
 
         <ModalContent style={styles.modal}>
@@ -51,7 +71,7 @@ export default function NewFolder() {
             <ModalCloseButton>
               <TouchableOpacity
                 style={styles.closeButton}
-                onPress={() => setShowModal(false)}
+                onPress={resetModal}
               >
                 <Text style={styles.closeText}>✕</Text>
               </TouchableOpacity>
@@ -70,7 +90,8 @@ export default function NewFolder() {
                   fontSize: 12,
                 },
               ]}
-              onChangeText={(newText) => setFolderName(newText)}
+              value={folderName}
+              onChangeText={setFolderName}
               placeholder="Ex- Aadhar Card, Driving Licence etc."
             />
           </ModalBody>
@@ -78,23 +99,14 @@ export default function NewFolder() {
           <ModalFooter style={styles.footer}>
             <TouchableOpacity
               style={[styles.actionButton, styles.cancel]}
-              onPress={() => setShowModal(false)}
+              onPress={resetModal}
             >
               <Text style={styles.cancelText}>Cancel</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
               style={[styles.actionButton, styles.save]}
-              onPress={async () => {
-                setShowModal(false);
-                //work here
-                new Directory(
-                  Paths.document,
-                  "userData",
-                  currentUser,
-                  folderName,
-                ).create({ idempotent: true });
-              }}
+              onPress={handleSave}
             >
               <Text style={styles.saveText}>Save</Text>
             </TouchableOpacity>

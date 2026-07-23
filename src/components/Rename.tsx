@@ -18,9 +18,18 @@ import {
   View,
 } from "react-native";
 
-export default function Rename(prevName: string) {
+type RenameProps = {
+  prevName: string;
+};
+
+export default function Rename({ prevName }: RenameProps) {
   const [showModal, setShowModal] = useState(false);
-  const [folderName, setFolderName] = useState("");
+  const [folderName, setFolderName] = useState(prevName);
+
+  const resetModal = () => {
+    setShowModal(false);
+    setFolderName(prevName);
+  };
   return (
     <View>
       <View style={styles.optionRow}>
@@ -38,7 +47,7 @@ export default function Rename(prevName: string) {
         </TouchableOpacity>
       </View>
 
-      <Modal isOpen={showModal} onClose={() => setShowModal(false)} size="md">
+      <Modal isOpen={showModal} onClose={resetModal} size="md">
         <ModalBackdrop />
 
         <ModalContent style={styles.modal}>
@@ -48,48 +57,48 @@ export default function Rename(prevName: string) {
             <ModalCloseButton>
               <TouchableOpacity
                 style={styles.closeButton}
-                onPress={() => setShowModal(false)}
-              >
-                <Text style={styles.closeText}>✕</Text>
-              </TouchableOpacity>
-            </ModalCloseButton>
-          </ModalHeader>
-
-          <ModalBody>
-            <TextInput
-              style={[
-                styles.primaryText,
-                {
-                  borderColor: "black",
-                  color: "black",
-                  borderWidth: 2,
-                  borderRadius: 10,
-                  fontSize: 12,
-                },
-              ]}
-              onChangeText={(newText) => setFolderName(newText)}
-              placeholder="Ex- Aadhar Card, Driving Licence etc."
-            />
-          </ModalBody>
-
-          <ModalFooter style={styles.footer}>
-            <TouchableOpacity
-              style={[styles.actionButton, styles.cancel]}
-              onPress={() => setShowModal(false)}
+              onPress={resetModal}
             >
+              <Text style={styles.closeText}>✕</Text>
+            </TouchableOpacity>
+          </ModalCloseButton>
+        </ModalHeader>
+
+        <ModalBody>
+          <TextInput
+            style={[
+              styles.primaryText,
+              {
+                borderColor: "black",
+                color: "black",
+                borderWidth: 2,
+                borderRadius: 10,
+                fontSize: 12,
+              },
+            ]}
+            value={folderName}
+            onChangeText={setFolderName}
+            placeholder="Ex- Aadhar Card, Driving Licence etc."
+          />
+        </ModalBody>
+
+        <ModalFooter style={styles.footer}>
+          <TouchableOpacity
+            style={[styles.actionButton, styles.cancel]}
+            onPress={resetModal}
+          >
               <Text style={styles.cancelText}>Cancel</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
               style={[styles.actionButton, styles.save]}
-              onPress={async () => {
-                setShowModal(false);
-                //work here
-                console.log(
-                  new Directory(Paths.document, "userData", folderName),
-                );
-              }}
-            >
+            onPress={() => {
+              resetModal();
+              console.log(
+                new Directory(Paths.document, "userData", folderName.trim()),
+              );
+            }}
+          >
               <Text style={styles.saveText}>Save</Text>
             </TouchableOpacity>
           </ModalFooter>

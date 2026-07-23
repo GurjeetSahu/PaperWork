@@ -1,34 +1,47 @@
-import { Directory } from "expo-file-system";
+import { Directory, Paths } from "expo-file-system";
 import { useFocusEffect, useRouter } from "expo-router";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import { Menu, MenuItem, MenuItemLabel } from "@/src/components/ui/menu";
 import { Pressable } from "@/src/components/ui/pressable";
-
+import { useUsers } from "@/src/components/User";
 
 export default function DocumentSection({
-  directory,
+  user,
+  category,
 }: {
-  directory: Directory;
+  user: string;
+  category: string;
 }) {
   const router = useRouter();
+  const { foldersVersion } = useUsers();
   const [files, setFiles] = useState<string[]>([]);
 
-  const loadFiles = () => {
+  const directory = useMemo(
+    () => new Directory(Paths.document, "userData", user, category),
+    [user, category],
+  );
+
+  const loadFiles = useCallback(() => {
     try {
       const contents = directory.list();
       setFiles(contents.map((item) => item.name));
     } catch (error) {
       console.error("Error reading directory:", error);
+      setFiles([]);
     }
-  };
+  }, [directory]);
 
   useFocusEffect(
     useCallback(() => {
       loadFiles();
-    }, [directory]),
+    }, [loadFiles]),
   );
+
+  useEffect(() => {
+    loadFiles();
+  }, [loadFiles, foldersVersion]);
 
   return (
     <View style={styles.grid}>
@@ -74,6 +87,7 @@ export default function DocumentSection({
                 }}
               >
                 <MenuItemLabel>Rename</MenuItemLabel>
+                {/* <Rename prevName={""} /> */}
               </MenuItem>
 
               <MenuItem

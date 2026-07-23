@@ -17,33 +17,49 @@ import DocumentSection from "@/src/components/DocumentSection";
 import { useUsers } from "@/src/components/User";
 
 export default function TabBar() {
-  const { currentUser } = useUsers();
+  const { currentUser, foldersVersion } = useUsers();
   const [tabs, setTabs] = useState<string[]>([]);
   const [currentTab, setCurrentTab] = useState("");
-
   const [activeIndex, setActiveIndex] = useState(0);
   const tabLayouts = useRef<{ x: number; width: number }[]>([]);
   const indicatorX = useSharedValue(0);
   const indicatorWidth = useSharedValue(0);
 
   useEffect(() => {
-    //console.log("Loading Tabs Of Current User: ", currentUser);
-    const loadTabs = async () => {
-      const entries = new Directory(
-        Paths.document,
-        "userData",
-        currentUser,
-      ).list();
+    if (!currentUser) {
+      setTabs([]);
+      setCurrentTab("");
+      setActiveIndex(0);
+      tabLayouts.current = [];
+      return;
+    }
 
-      setTabs(
-        entries
-          .filter((entry) => entry instanceof Directory)
-          .map((folder) => folder.name),
-      );
-    };
+    const entries = new Directory(
+      Paths.document,
+      "userData",
+      currentUser,
+    ).list();
 
-    loadTabs();
-  }, [currentUser]);
+    const nextTabs = entries
+      .filter((entry) => entry instanceof Directory)
+      .map((folder) => folder.name);
+
+    setTabs(nextTabs);
+    setCurrentTab((previousTab) => {
+      if (previousTab && nextTabs.includes(previousTab)) {
+        return previousTab;
+      }
+      return nextTabs[0] ?? "";
+    });
+    tabLayouts.current = [];
+  }, [currentUser, foldersVersion]);
+
+  useEffect(() => {
+    const index = tabs.indexOf(currentTab);
+    if (index >= 0) {
+      setActiveIndex(index);
+    }
+  }, [tabs, currentTab]);
 
   const moveIndicator = useCallback(
     (index: number) => {
@@ -108,11 +124,9 @@ export default function TabBar() {
       </View>
       {/**Here's the Connection to all documents view via  activeTab.key */}
       <View style={styles.content}>
-        <DocumentSection
-          directory={
-            new Directory(Paths.document, "userData", currentUser, currentTab)
-          }
-        />
+        {currentUser && currentTab ? (
+          <DocumentSection user={currentUser} category={currentTab} />
+        ) : null}
       </View>
     </View>
   );

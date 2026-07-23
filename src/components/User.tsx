@@ -4,6 +4,7 @@ import { Directory, Paths } from "expo-file-system";
 import {
   createContext,
   ReactNode,
+  useCallback,
   useContext,
   useEffect,
   useState,
@@ -25,31 +26,65 @@ import {
   ModalFooter,
   ModalHeader,
 } from "./ui/modal";
+
 type UserContextValue = {
   users: string[];
-  setUsers: React.Dispatch<React.SetStateAction<string[]>>;
   currentUser: string;
   setCurrentUser: React.Dispatch<React.SetStateAction<string>>;
+  refreshUsers: () => void;
+  foldersVersion: number;
+  refreshFolders: () => void;
 };
 
 const UserContext = createContext<UserContextValue | undefined>(undefined);
 
+function loadUsersFromDisk(): string[] {
+  //this guy isreturn string list of all users in main dir
+  try {
+    return new Directory(Paths.document, "userData")
+      .list()
+      .filter((entry) => entry instanceof Directory)
+      .map((folder) => folder.name)
+      .filter((name) => name !== "temp");
+  } catch {
+    return [];
+  }
+}
+
 export function UserProvider({ children }: { children: ReactNode }) {
   const [users, setUsers] = useState<string[]>([]);
   const [currentUser, setCurrentUser] = useState("");
-  useEffect(() => {
-    //console.log("Loading All Users");
-    const r: string[] = [];
-    const usersList = new Directory(Paths.document, "userData").list();
-    usersList.forEach((element) => {
-      r.push(element.uri.split("/").filter(Boolean).pop() as string);
+  const [foldersVersion, setFoldersVersion] = useState(0);
+
+  const refreshUsers = useCallback(() => {
+    const loadedUsers = loadUsersFromDisk();
+    setUsers(loadedUsers);
+    setCurrentUser((previousUser) => {
+      if (previousUser && loadedUsers.includes(previousUser)) {
+        return previousUser;
+      }
+      return loadedUsers[0] ?? "";
     });
-    setUsers(r);
   }, []);
+
+  const refreshFolders = useCallback(() => {
+    setFoldersVersion((version) => version + 1);
+  }, []);
+
+  useEffect(() => {
+    refreshUsers();
+  }, [refreshUsers]);
 
   return (
     <UserContext.Provider
-      value={{ users, setUsers, currentUser, setCurrentUser }}
+      value={{
+        users,
+        currentUser,
+        setCurrentUser,
+        refreshUsers,
+        foldersVersion,
+        refreshFolders,
+      }}
     >
       {children}
     </UserContext.Provider>
@@ -67,7 +102,12 @@ export function useUsers() {
 export default function User() {
   const [showModal, setShowModal] = useState(false);
   const [userName, setUserName] = useState("");
-  const { users: USERS, setCurrentUser, currentUser } = useUsers();
+  const { users, currentUser, setCurrentUser, refreshUsers } = useUsers();
+
+  const resetModal = () => {
+    setShowModal(false);
+    setUserName("");
+  };
 
   return (
     <Menu
@@ -88,7 +128,7 @@ export default function User() {
         );
       }}
     >
-      {USERS.map((user) => (
+      {users.map((user) => (
         <MenuItem
           key={user}
           textValue={user}
@@ -115,11 +155,7 @@ export default function User() {
             </TouchableOpacity>
           </View>
 
-          <Modal
-            isOpen={showModal}
-            onClose={() => setShowModal(false)}
-            size="md"
-          >
+          <Modal isOpen={showModal} onClose={resetModal} size="md">
             <ModalBackdrop />
 
             <ModalContent style={styles.modal}>
@@ -129,7 +165,7 @@ export default function User() {
                 <ModalCloseButton>
                   <TouchableOpacity
                     style={styles.closeButton}
-                    onPress={() => setShowModal(false)}
+                    onPress={resetModal}
                   >
                     <Text style={styles.closeText}>✕</Text>
                   </TouchableOpacity>
@@ -148,15 +184,16 @@ export default function User() {
                       fontSize: 12,
                     },
                   ]}
-                  onChangeText={(newText) => setUserName(newText)}
-                  placeholder="Ex- Aadhar Card, Driving Licence etc."
+                  //value={userName}
+                  onChangeText={setUserName}
+                  placeholder="Ex- John Doe"
                 />
               </ModalBody>
 
               <ModalFooter style={styles.footer}>
                 <TouchableOpacity
                   style={[styles.actionButton, styles.cancel]}
-                  onPress={() => setShowModal(false)}
+                  onPress={resetModal}
                 >
                   <Text style={styles.cancelText}>Cancel</Text>
                 </TouchableOpacity>
@@ -164,11 +201,19 @@ export default function User() {
                 <TouchableOpacity
                   style={[styles.actionButton, styles.save]}
                   onPress={async () => {
-                    setShowModal(false);
-                    //work here
-                    new Directory(Paths.document, "userData", userName).create({
+                    const trimmedName = userName.trim();
+                    if (!trimmedName) return;
+
+                    new Directory(
+                      Paths.document,
+                      "userData",
+                      trimmedName,
+                    ).create({
                       idempotent: true,
                     });
+                    setCurrentUser(trimmedName);
+                    refreshUsers();
+                    resetModal();
                   }}
                 >
                   <Text style={styles.saveText}>Save</Text>

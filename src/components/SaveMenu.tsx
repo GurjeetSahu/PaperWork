@@ -22,22 +22,85 @@ import { useUsers } from "./User";
 
 type SaveMenuProps = {
   fromCamera: boolean;
-  uriList?: any;
+  uriList?: string[];
 };
 
 export default function SaveMenu(props: SaveMenuProps) {
-  const { currentUser } = useUsers();
-  const { fromCamera, uriList } = props;
+  const { currentUser, refreshFolders } = useUsers();
+  const { fromCamera, uriList = [] } = props;
   const [showModal, setShowModal] = useState(false);
   const [fileName, setFileName] = useState("");
   const [subCat, setSubCat] = useState("");
+
+  const resetModal = () => {
+    setShowModal(false);
+    setFileName("");
+    setSubCat("");
+  };
+
+  const openModal = () => {
+    setFileName("");
+    setSubCat("");
+    setShowModal(true);
+  };
+
+  const handleSave = async () => {
+    const trimmedFileName = fileName.trim();
+    const trimmedSubCat = subCat.trim();
+
+    if (!currentUser || !trimmedFileName || !trimmedSubCat) {
+      return;
+    }
+
+    resetModal();
+
+    if (!fromCamera) {
+      new Directory(
+        Paths.document,
+        "userData",
+        currentUser,
+        trimmedSubCat,
+        trimmedFileName,
+      ).create({});
+
+      for (const uri of uriList) {
+        const sourceFile = new File(uri);
+        const destinationDir = new Directory(
+          Paths.document,
+          "userData",
+          currentUser,
+          trimmedSubCat,
+          trimmedFileName,
+        );
+        sourceFile.move(destinationDir);
+      }
+      refreshFolders();
+      router.push("/");
+      return;
+    }
+
+    const subCategory = new Directory(
+      Paths.document,
+      "userData",
+      currentUser,
+      trimmedSubCat,
+    );
+    subCategory.create({ idempotent: true });
+
+    new Directory(Paths.document, "userData", "temp").rename(trimmedFileName);
+    const file = new Directory(Paths.document, "userData", trimmedFileName);
+    file.move(subCategory);
+    refreshFolders();
+    router.push("/");
+  };
+
   return (
     <View>
-      <Button onPress={() => setShowModal(true)}>
+      <Button onPress={openModal}>
         <ButtonText>Proceed</ButtonText>
       </Button>
 
-      <Modal isOpen={showModal} onClose={() => setShowModal(false)} size="md">
+      <Modal isOpen={showModal} onClose={resetModal} size="md">
         <ModalBackdrop />
 
         <ModalContent style={styles.modal}>
@@ -45,10 +108,7 @@ export default function SaveMenu(props: SaveMenuProps) {
             <Text style={styles.title}>Rename</Text>
 
             <ModalCloseButton>
-              <TouchableOpacity
-                style={styles.closeButton}
-                onPress={() => setShowModal(false)}
-              >
+              <TouchableOpacity style={styles.closeButton} onPress={resetModal}>
                 <Text style={styles.closeText}>✕</Text>
               </TouchableOpacity>
             </ModalCloseButton>
@@ -66,11 +126,12 @@ export default function SaveMenu(props: SaveMenuProps) {
                   fontSize: 12,
                 },
               ]}
-              onChangeText={(newText) => setFileName(newText)}
+              value={fileName}
+              onChangeText={setFileName}
               placeholder="Ex- Aadhar Card, Driving Licence etc."
             />
             <TextInput
-              defaultValue="Notes"
+              value={subCat}
               style={[
                 styles.primaryText,
                 {
@@ -81,65 +142,22 @@ export default function SaveMenu(props: SaveMenuProps) {
                   fontSize: 12,
                 },
               ]}
-              onChangeText={(newText) => setSubCat(newText)}
+              onChangeText={setSubCat}
+              placeholder="Category"
             />
           </ModalBody>
 
           <ModalFooter style={styles.footer}>
             <TouchableOpacity
               style={[styles.actionButton, styles.cancel]}
-              onPress={() => setShowModal(false)}
+              onPress={resetModal}
             >
               <Text style={styles.cancelText}>Cancel</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
               style={[styles.actionButton, styles.save]}
-              onPress={async () => {
-                setShowModal(false);
-                if (fromCamera == false) {
-                  console.log("not from camera", uriList);
-                  //first create the exact folder in user's specific category
-                  new Directory(
-                    Paths.document,
-                    "userData",
-                    currentUser,
-                    subCat,
-                    fileName,
-                  ).create({});
-                  //now move each image from uri which is from cache to that exact folder ok
-                  for (const uri of uriList) {
-                    const sourceFile = new File(uri);
-                    const destinationDir = new Directory(
-                      Paths.document,
-                      "userData",
-                      currentUser,
-                      subCat,
-                      fileName,
-                    );
-                    sourceFile.move(destinationDir);
-                  }
-                  router.push("/");
-                } else if (fromCamera == true) {
-                  //camera images are automatially saved to temp dir whi is then rename to choice of user and then moved to subcat dir
-                  console.log("from camera");
-                  const subCategory = new Directory(
-                    Paths.document,
-                    "userData",
-                    currentUser,
-                    subCat,
-                  );
-                  new Directory(Paths.document, "userData", "temp").rename(
-                    fileName,
-                  );
-                  const file = new Directory(
-                    Paths.document,
-                    "userData",
-                    fileName,
-                  );
-                  file.move(subCategory!);
-                }
-              }}
+              onPress={handleSave}
             >
               <Text style={styles.saveText}>Save</Text>
             </TouchableOpacity>
