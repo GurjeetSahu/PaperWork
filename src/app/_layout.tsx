@@ -21,6 +21,16 @@ export default function TabLayout() {
             }}
           />
           <Tabs.Screen
+            name="tools"
+            options={{
+              title: "Tools",
+              headerShown: false,
+              tabBarIcon: ({ color }) => (
+                <FontAwesome size={28} name="gear" color={color} />
+              ),
+            }}
+          />
+          <Tabs.Screen
             name="profile"
             options={{
               title: "Profile",
@@ -42,12 +52,6 @@ export default function TabLayout() {
             options={{
               headerShown: false,
               href: null,
-            }}
-          />
-          <Tabs.Screen
-            name="tools"
-            options={{
-              headerShown: false,
             }}
           />
         </Tabs>

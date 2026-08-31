@@ -3,24 +3,15 @@ import TabBar from "@/src/components/TabBar";
 
 import { Directory, Paths } from "expo-file-system";
 import React, { useEffect } from "react";
-import {
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Image, ScrollView, StyleSheet, View } from "react-native";
 
 import FileSystemDumpButton, { dir } from "@/src/components/DummyComp";
 import User from "@/src/components/User";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function HomeScreen() {
   const Separator = () => <View style={styles.hr} />;
-
-  //const directory = new Directory(Paths.document, "userData", user);
   useEffect(() => {
-    //console.log("Creating Master Directory");
     new Directory(Paths.document, "userData").create({ idempotent: true });
   }, []);
 
@@ -31,36 +22,32 @@ export default function HomeScreen() {
           <View className="user">
             <User />
           </View>
-          <Image
-            source={{ uri: "https://i.pravatar.cc/100" }}
-            style={styles.avatar}
-          />
+          <View style={styles.headerTopRight}>
+            <Ionicons name="search" size={40} color="white" />
+            <Image
+              source={{ uri: "https://i.pravatar.cc/100" }}
+              style={styles.avatar}
+            />
+          </View>
         </View>
-
-        {/* <View style={styles.search}>
-          <Ionicons name="search" size={20} color="gray" />
-          <Text style={styles.searchText}>Search documents</Text>
-        </View> */}
       </View>
 
       <ScrollView style={styles.content}>
         <TabBar />
         <View style={styles.grid}>
-          <Separator />
           <View>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               style={styles.gridCard}
               onPress={() => {
                 new Directory(Paths.document, "userData").delete();
               }}
             >
               <Text>Delete Full User Data</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <FileSystemDumpButton
               root={dir(Paths.document, "userData")}
               title="Dump"
             />
-            <Separator />
           </View>
         </View>
       </ScrollView>
@@ -81,14 +68,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#2563eb",
     padding: 20,
     paddingTop: 50,
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
   },
   headerTop: { flexDirection: "row", justifyContent: "space-between" },
   hello: { color: "white" },
   name: { color: "white", fontSize: 20, fontWeight: "bold" },
   avatar: { width: 40, height: 40, borderRadius: 20 },
 
+  headerTopRight: { flexDirection: "row", justifyContent: "space-between" },
   search: {
     backgroundColor: "white",
     marginTop: 15,
@@ -97,7 +83,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
-  content: { padding: 15 },
+  content: {
+    paddingRight: 15,
+    paddingBottom: 15,
+    paddingLeft: 15,
+  },
   grid: {
     flexDirection: "row",
     flexWrap: "wrap",

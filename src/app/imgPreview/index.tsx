@@ -19,7 +19,7 @@ export default function Index() {
         {uriList.map((uri: string, index: string) => (
           <View style={styles.imageWrapper} key={index.toString()}>
             <View style={styles.imageCard}>
-              <Image source={uri} style={styles.image} />
+              <Image source={uri} style={styles.image} contentFit="contain" />
             </View>
           </View>
         ))}
@@ -44,56 +44,55 @@ export default function Index() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#0f172a", // dark modern bg
-    justifyContent: "space-between",
+    backgroundColor: "#06113d",
   },
 
   imageWrapper: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    padding: 20,
-  },
-  image: {
-    width: "100%",
-    height: "100%",
-    borderRadius: 18,
+    paddingHorizontal: 12,
+    paddingVertical: 12,
   },
 
   imageCard: {
     width: "100%",
-    height: "90%",
-    borderRadius: 24,
-    overflow: "hidden",
-    backgroundColor: "#1e293b",
-    elevation: 10,
-    shadowColor: "#000",
-    shadowOpacity: 0.3,
-    shadowRadius: 20,
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  image: {
+    width: "100%",
+    height: "100%",
   },
 
   placeholder: {
-    color: "#94a3b8",
+    color: "#999",
     fontSize: 16,
   },
 
   footer: {
-    padding: 20,
-    gap: 12,
+    paddingHorizontal: 16,
+    paddingBottom: 20,
+    paddingTop: 12,
+    gap: 10,
+    backgroundColor: "#000",
   },
 
   button: {
-    paddingVertical: 14,
-    borderRadius: 16,
+    height: 46,
+    borderRadius: 10,
+    justifyContent: "center",
     alignItems: "center",
   },
 
   primary: {
-    backgroundColor: "#6366f1",
+    backgroundColor: "#fff",
   },
 
   primaryText: {
-    color: "white",
+    color: "#000",
     fontSize: 16,
     fontWeight: "600",
   },
@@ -103,20 +102,21 @@ const styles = StyleSheet.create({
   },
 
   secondaryText: {
-    color: "white",
+    color: "#fff",
     fontSize: 15,
-    fontWeight: "500",
+    fontWeight: "600",
   },
 
   outline: {
     borderWidth: 1,
-    borderColor: "#475569",
+    borderColor: "#444",
   },
 
   outlineText: {
-    color: "#cbd5f5",
+    color: "#fff",
     fontSize: 15,
   },
+
   link: {
     paddingTop: 20,
     fontSize: 20,

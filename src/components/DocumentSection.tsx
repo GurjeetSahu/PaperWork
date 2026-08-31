@@ -69,17 +69,24 @@ export default function DocumentSection({
             {/* Kebab Menu */}
             <Menu
               trigger={(triggerProps) => (
+                //usual suspects
                 <Pressable
-                  {...triggerProps}
+                  {...(triggerProps ?? {})}
                   onPress={(e) => {
-                    e.stopPropagation();
-                    triggerProps.onPress?.(e);
+                    e.stopPropagation?.();
+
+                    if (typeof triggerProps?.onPress === "function") {
+                      triggerProps.onPress(e);
+                    }
                   }}
                 >
                   <Text style={styles.kebab}>⋮</Text>
                 </Pressable>
               )}
             >
+              <MenuItem textValue="export" onPress={() => {}}>
+                <MenuItemLabel>Export To PDF</MenuItemLabel>
+              </MenuItem>
               <MenuItem
                 textValue="Rename"
                 onPress={() => {

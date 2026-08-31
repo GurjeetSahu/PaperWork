@@ -1,4 +1,3 @@
-import { Button } from "@/src/components/ui/button";
 import { Menu, MenuItem, MenuItemLabel } from "@/src/components/ui/menu";
 import { Directory, Paths } from "expo-file-system";
 import {
@@ -10,6 +9,7 @@ import {
   useState,
 } from "react";
 import {
+  Pressable,
   StyleSheet,
   Text,
   TextInput,
@@ -17,6 +17,7 @@ import {
   View,
 } from "react-native";
 
+import { Ionicons } from "@expo/vector-icons";
 import {
   Modal,
   ModalBackdrop,
@@ -121,10 +122,12 @@ export default function User() {
       closeOnSelect={true}
       trigger={({ ...triggerProps }) => {
         return (
-          <Button {...triggerProps}>
-            <Text>Hello,</Text>
-            <Text>{currentUser} 👋</Text>
-          </Button>
+          <View style={styles.user}>
+            <Text style={styles.greeting}>Hello, {currentUser} 👋</Text>
+            <Pressable {...triggerProps}>
+              <Ionicons name="caret-down" size={40} color="white" />
+            </Pressable>
+          </View>
         );
       }}
     >
@@ -326,4 +329,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: "#000000",
   },
+
+  user: { flexDirection: "row" },
+  greeting: { color: "white" },
 });

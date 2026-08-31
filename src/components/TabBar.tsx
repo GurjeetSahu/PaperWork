@@ -145,7 +145,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     position: "relative",
     backgroundColor: "#dbeafe",
-    borderRadius: 12,
     padding: 4,
   },
   indicator: {
