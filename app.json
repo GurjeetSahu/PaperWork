@@ -61,11 +61,14 @@
           }
         }
       ],
-      ["expo-file-system"],
+      [
+        "expo-file-system"
+      ],
       "expo-font",
       "expo-image",
       "expo-sharing",
-      "expo-web-browser"
+      "expo-web-browser",
+      "expo-status-bar"
     ],
     "experiments": {
       "typedRoutes": true,
