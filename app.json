@@ -7,7 +7,6 @@
     "icon": "./assets/images/icon.png",
     "scheme": "onlydocs",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.gurjeetsahu.onlyDocs"
@@ -19,7 +18,6 @@
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
-      "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
       "package": "com.gurjeetsahu.onlyDocs"
     },
@@ -63,7 +61,11 @@
           }
         }
       ],
-      ["expo-file-system"]
+      ["expo-file-system"],
+      "expo-font",
+      "expo-image",
+      "expo-sharing",
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true,
