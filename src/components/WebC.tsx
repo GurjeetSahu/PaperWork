@@ -1,7 +1,11 @@
 "use dom";
+import { createPdfToolkit } from "pdfstudio";
 
-import { View } from "react-native";
-
-export default function MyComponent({ name }: { name: string }) {
-  return <View></View>;
+export default async function MyComponent() {
+  const pdf = await createPdfToolkit();
+  return (
+    <div>
+      <h1>Hello, {}</h1>
+    </div>
+  );
 }

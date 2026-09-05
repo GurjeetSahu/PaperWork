@@ -51,7 +51,7 @@ export default function HomeScreen() {
               title="Dump"
             />
             <View style={{ flex: 1 }}>
-              <MyComponent name="Europa" />
+              <MyComponent />
               <Button title="focus" onPress={() => {}} />
             </View>
           </View>
