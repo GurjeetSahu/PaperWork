@@ -1,4 +1,3 @@
-import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { useUsers } from "../components/User";
 
@@ -40,10 +39,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 20,
     alignItems: "center",
-    elevation: 4, // Android shadow
-    shadowColor: "#000", // iOS shadow
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
+    boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)",
   },
   image: {
     width: 120,

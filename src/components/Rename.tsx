@@ -9,7 +9,7 @@ import {
 } from "@/src/components/ui/modal";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Directory, Paths } from "expo-file-system";
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -55,50 +55,47 @@ export default function Rename({ prevName }: RenameProps) {
             <Text style={styles.title}>New Folder</Text>
 
             <ModalCloseButton>
-              <TouchableOpacity
-                style={styles.closeButton}
+              <TouchableOpacity style={styles.closeButton} onPress={resetModal}>
+                <Text style={styles.closeText}>✕</Text>
+              </TouchableOpacity>
+            </ModalCloseButton>
+          </ModalHeader>
+
+          <ModalBody>
+            <TextInput
+              style={[
+                styles.primaryText,
+                {
+                  borderColor: "black",
+                  color: "black",
+                  borderWidth: 2,
+                  borderRadius: 10,
+                  fontSize: 12,
+                },
+              ]}
+              value={folderName}
+              onChangeText={setFolderName}
+              placeholder="Ex- Aadhar Card, Driving Licence etc."
+            />
+          </ModalBody>
+
+          <ModalFooter style={styles.footer}>
+            <TouchableOpacity
+              style={[styles.actionButton, styles.cancel]}
               onPress={resetModal}
             >
-              <Text style={styles.closeText}>✕</Text>
-            </TouchableOpacity>
-          </ModalCloseButton>
-        </ModalHeader>
-
-        <ModalBody>
-          <TextInput
-            style={[
-              styles.primaryText,
-              {
-                borderColor: "black",
-                color: "black",
-                borderWidth: 2,
-                borderRadius: 10,
-                fontSize: 12,
-              },
-            ]}
-            value={folderName}
-            onChangeText={setFolderName}
-            placeholder="Ex- Aadhar Card, Driving Licence etc."
-          />
-        </ModalBody>
-
-        <ModalFooter style={styles.footer}>
-          <TouchableOpacity
-            style={[styles.actionButton, styles.cancel]}
-            onPress={resetModal}
-          >
               <Text style={styles.cancelText}>Cancel</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
               style={[styles.actionButton, styles.save]}
-            onPress={() => {
-              resetModal();
-              console.log(
-                new Directory(Paths.document, "userData", folderName.trim()),
-              );
-            }}
-          >
+              onPress={() => {
+                resetModal();
+                console.log(
+                  new Directory(Paths.document, "userData", folderName.trim()),
+                );
+              }}
+            >
               <Text style={styles.saveText}>Save</Text>
             </TouchableOpacity>
           </ModalFooter>
@@ -208,10 +205,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderRadius: 8,
     elevation: 3,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.15,
-    shadowRadius: 3,
+    boxShadow: "0px 1px 3px rgba(0, 0, 0, 0.15)",
   },
   labelText: {
     fontSize: 14,
@@ -226,9 +220,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     elevation: 4,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
+    boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)",
   },
 });

@@ -319,10 +319,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderRadius: 8,
     elevation: 3,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.15,
-    shadowRadius: 3,
+    boxShadow: "0px 1px 3px rgba(0, 0, 0, 0.15)",
   },
   labelText: {
     fontSize: 14,

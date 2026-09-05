@@ -9,7 +9,7 @@ import {
 } from "@/src/components/ui/modal";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Directory, Paths } from "expo-file-system";
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -34,12 +34,9 @@ export default function NewFolder() {
     const trimmedName = folderName.trim();
     if (!currentUser || !trimmedName) return;
 
-    new Directory(
-      Paths.document,
-      "userData",
-      currentUser,
-      trimmedName,
-    ).create({ idempotent: true });
+    new Directory(Paths.document, "userData", currentUser, trimmedName).create({
+      idempotent: true,
+    });
     refreshFolders();
     resetModal();
   };
@@ -69,10 +66,7 @@ export default function NewFolder() {
             <Text style={styles.title}>New Folder</Text>
 
             <ModalCloseButton>
-              <TouchableOpacity
-                style={styles.closeButton}
-                onPress={resetModal}
-              >
+              <TouchableOpacity style={styles.closeButton} onPress={resetModal}>
                 <Text style={styles.closeText}>✕</Text>
               </TouchableOpacity>
             </ModalCloseButton>
@@ -207,10 +201,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderRadius: 8,
     elevation: 3,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.15,
-    shadowRadius: 3,
+    boxShadow: "0px 1px 3px rgba(0, 0, 0, 0.15)",
   },
   labelText: {
     fontSize: 14,
@@ -225,9 +216,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     elevation: 4,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
+    boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)",
   },
 });

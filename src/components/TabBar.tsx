@@ -1,5 +1,5 @@
 import { Directory, Paths } from "expo-file-system";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   LayoutChangeEvent,
   Pressable,
@@ -154,10 +154,7 @@ const styles = StyleSheet.create({
     left: 0,
     backgroundColor: "#2563eb",
     borderRadius: 9,
-    shadowColor: "#1e40af",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
+    boxShadow: "0px 2px 4px rgba(30, 64, 175, 0.2)",
     elevation: 3,
   },
   tab: {
