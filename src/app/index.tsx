@@ -2,17 +2,16 @@ import FabMenu from "@/src/components/FabMenu";
 import TabBar from "@/src/components/TabBar";
 
 import { Directory, Paths } from "expo-file-system";
-import React, { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { Button, Image, ScrollView, StyleSheet, View } from "react-native";
 
 import FileSystemDumpButton, { dir } from "@/src/components/DummyComp";
 import User from "@/src/components/User";
 import { Ionicons } from "@expo/vector-icons";
 
-import DOMComponent, { type DOMRef } from "@/src/components/WebC";
+import MyComponent from "@/src/components/WebC";
 
 export default function HomeScreen() {
-  const ref = useRef<DOMRef>(null);
   const Separator = () => <View style={styles.hr} />;
   useEffect(() => {
     new Directory(Paths.document, "userData").create({ idempotent: true });
@@ -52,13 +51,8 @@ export default function HomeScreen() {
               title="Dump"
             />
             <View style={{ flex: 1 }}>
-              <DOMComponent ref={ref} />
-              <Button
-                title="focus"
-                onPress={() => {
-                  ref.current?.focus();
-                }}
-              />
+              <MyComponent name="Europa" />
+              <Button title="focus" onPress={() => {}} />
             </View>
           </View>
         </View>
