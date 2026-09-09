@@ -6,6 +6,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 import {
@@ -76,20 +77,19 @@ export function UserProvider({ children }: { children: ReactNode }) {
     refreshUsers();
   }, [refreshUsers]);
 
-  return (
-    <UserContext.Provider
-      value={{
-        users,
-        currentUser,
-        setCurrentUser,
-        refreshUsers,
-        foldersVersion,
-        refreshFolders,
-      }}
-    >
-      {children}
-    </UserContext.Provider>
+  const value = useMemo<UserContextValue>(
+    () => ({
+      users,
+      currentUser,
+      setCurrentUser,
+      refreshUsers,
+      foldersVersion,
+      refreshFolders,
+    }),
+    [users, currentUser, refreshUsers, foldersVersion, refreshFolders],
   );
+
+  return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 }
 
 export function useUsers() {

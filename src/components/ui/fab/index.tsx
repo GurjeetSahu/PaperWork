@@ -30,7 +30,7 @@ cssInterop(UIIcon, {
       stroke: true,
     },
   },
-});
+} as any);
 
 const fabShadowStyle = {
   boxShadow: "0px 3px 10px 0px rgba(38, 38, 38, 0.20)",
@@ -117,7 +117,11 @@ const Fab = React.forwardRef<React.ComponentRef<typeof UIFab>, IFabProps>(
       <UIFab
         ref={ref}
         {...props}
-        style={[style, fabShadowStyle]}
+        style={
+          [style, fabShadowStyle] as unknown as React.ComponentPropsWithoutRef<
+            typeof UIFab
+          >["style"]
+        }
         className={fabStyle({ size, placement, class: className })}
         context={{ size }}
       />

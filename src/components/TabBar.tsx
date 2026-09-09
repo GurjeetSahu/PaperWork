@@ -44,12 +44,21 @@ export default function TabBar() {
       .filter((entry) => entry instanceof Directory)
       .map((folder) => folder.name);
 
-    setTabs(nextTabs);
+    setTabs((previousTabs) => {
+      const sameTabs =
+        previousTabs.length === nextTabs.length &&
+        previousTabs.every((tab, index) => tab === nextTabs[index]);
+
+      return sameTabs ? previousTabs : nextTabs;
+    });
+
     setCurrentTab((previousTab) => {
       if (previousTab && nextTabs.includes(previousTab)) {
         return previousTab;
       }
-      return nextTabs[0] ?? "";
+
+      const nextCurrentTab = nextTabs[0] ?? "";
+      return nextCurrentTab === previousTab ? previousTab : nextCurrentTab;
     });
     tabLayouts.current = [];
   }, [currentUser, foldersVersion]);

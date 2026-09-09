@@ -119,7 +119,7 @@ export default function FabMenu() {
 
 const styles = StyleSheet.create({
   backdrop: {
-    ...StyleSheet.absoluteFillObject,
+    ...StyleSheet.absoluteFill,
     backgroundColor: "rgba(0, 0, 0, 0.25)",
     zIndex: 10,
   },
