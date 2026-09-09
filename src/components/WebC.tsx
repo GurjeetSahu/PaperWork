@@ -1,19 +1,28 @@
 "use dom";
 import { useEffect, useState } from "react";
-import { Text, View } from "react-native";
+import { Platform, Text, View } from "react-native";
 
 import { createPdfToolkit } from "pdfstudio";
 
 export default function MyComponent() {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function loadData() {
+      if (Platform.OS !== "web") {
+        setData("PDF toolkit is only supported on web.");
+        setLoading(false);
+        return;
+      }
+
       try {
-        const pdf = await createPdfToolkit({ wasmUrl: "./qpdf.wasm" });
-      } catch {
-        setLoading(true);
+        const wasmUrl = `${process.env.EXPO_PUBLIC_BASE_URL ?? ""}/qpdf.wasm`;
+        const pdf = await createPdfToolkit({ wasmUrl });
+        setData(`ready: ${pdf ? "initialized" : "missing"}`);
+      } catch (error) {
+        console.error("Failed to initialize PDF toolkit:", error);
+        setData("PDF failed to initialize");
       } finally {
         setLoading(false);
       }
