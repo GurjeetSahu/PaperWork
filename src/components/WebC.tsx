@@ -1,12 +1,8 @@
 "use dom";
 
+import { createPdfToolkit } from "pdfstudio";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, Button, Text, View } from "react-native";
-
-import * as DocumentPicker from "expo-document-picker";
-import { File } from "expo-file-system";
-
-import { createPdfToolkit } from "pdfstudio";
 
 export default function MyComponent() {
   const [pdf, setPdf] = useState<any>(null);
@@ -19,11 +15,15 @@ export default function MyComponent() {
     async function loadData() {
       try {
         const wasmUrl = `${process.env.EXPO_PUBLIC_BASE_URL ?? ""}/qpdf.wasm`;
-        const toolkit = await createPdfToolkit({ wasmUrl });
-        setPdf(`ready: ${pdf ? "initialized" : "missing"}`);
+
+        const toolkit = await createPdfToolkit({
+          wasmUrl,
+        });
+
+        setPdf(toolkit);
       } catch (error) {
         console.error("Failed to initialize PDF toolkit:", error);
-        setPdf("PDF failed to initialize");
+        setPdf(null);
       } finally {
         setLoading(false);
       }
@@ -32,34 +32,53 @@ export default function MyComponent() {
     loadData();
   }, []);
 
-  // Pick PDF and rotate it
-  async function pickAndRotatePdf() {
+  // Convert Base64 → Uint8Array
+  function base64ToUint8Array(base64: string): Uint8Array {
+    // Remove possible data URL prefix:
+    // data:application/pdf;base64,AAAA...
+    const cleanBase64 = base64.includes(",") ? base64.split(",")[1] : base64;
+
+    const binaryString = atob(cleanBase64);
+
+    const bytes = new Uint8Array(binaryString.length);
+
+    for (let i = 0; i < binaryString.length; i++) {
+      bytes[i] = binaryString.charCodeAt(i);
+    }
+
+    return bytes;
+  }
+
+  // Base64 PDF → rotate
+  async function rotatePdf() {
     if (!pdf) return;
 
     try {
       setProcessing(true);
-      const result = await DocumentPicker.getDocumentAsync({
-        type: "application/pdf",
-        copyToCacheDirectory: true,
-      });
-      if (result.canceled) {
-        return;
-      }
-      const asset = result.assets[0];
-      // Convert the selected file into Uint8Array
-      const file = new File(asset.uri);
-      const bytes = await file.bytes();
+      setResult(null);
+
+      // Your Base64 PDF goes here
+      const base64Pdf =
+        "JVBERi0xLjEKMSAwIG9iago8PCAvVHlwZSAvQ2F0YWxvZyAvUGFnZXMgMiAwIFIgPj4KZW5kb2JqCjIgMCBvYmoKPDwgL1R5cGUgL1BhZ2VzIC9LaWRzIFszIDAgUl0gL0NvdW50IDEgPj4KZW5kb2JqCjMgMCBvYmoKPDwgL1R5cGUgL1BhZ2UgL1BhcmVudCAyIDAgUiAvTWVkaWFCb3ggWzAgMCAzMDAgMTAwXSA+PgplbmRvYmoKdHJhaWxlcgo8PCAvUm9vdCAxIDAgUiA+PgpFT0YK";
+
+      // Convert Base64 → Uint8Array
+      const bytes = base64ToUint8Array(base64Pdf);
+
       console.log("Input PDF bytes:", bytes.length);
-      // Send Uint8Array to pdfstudio
+
+      // Give Uint8Array directly to pdfstudio
       const rotated = await pdf.rotate(bytes, {
         angle: 90,
       });
+
       console.log("Rotated PDF bytes:", rotated.length);
+
       setResult(rotated);
     } catch (error) {
       console.error("PDF processing failed:", error);
     } finally {
       setProcessing(false);
+      console.log("success");
     }
   }
 
@@ -82,18 +101,14 @@ export default function MyComponent() {
 
   return (
     <View style={{ gap: 12 }}>
+      <Text>PDF Toolkit Ready</Text>
+
       <Button
-        title={processing ? "Processing..." : "Pick PDF"}
-        onPress={pickAndRotatePdf}
+        title={processing ? "Processing..." : "Rotate Base64 PDF"}
+        onPress={rotatePdf}
         disabled={processing}
       />
-      <Button
-        title={processing ? "Processing..." : "Pick PDF"}
-        onPress={() => {
-          //console.log("hi");
-        }}
-        disabled={processing}
-      />
+
       {result && (
         <Text>
           PDF rotated successfully!{"\n"}
@@ -103,3 +118,4 @@ export default function MyComponent() {
     </View>
   );
 }
+//"JVBERi0xLjEKMSAwIG9iago8PCAvVHlwZSAvQ2F0YWxvZyAvUGFnZXMgMiAwIFIgPj4KZW5kb2JqCjIgMCBvYmoKPDwgL1R5cGUgL1BhZ2VzIC9LaWRzIFszIDAgUl0gL0NvdW50IDEgPj4KZW5kb2JqCjMgMCBvYmoKPDwgL1R5cGUgL1BhZ2UgL1BhcmVudCAyIDAgUiAvTWVkaWFCb3ggWzAgMCAzMDAgMTAwXSA+PgplbmRvYmoKdHJhaWxlcgo8PCAvUm9vdCAxIDAgUiA+PgpFT0YK";
