@@ -4,13 +4,13 @@ import TabBar from "@/src/components/TabBar";
 import { Directory, Paths } from "expo-file-system";
 import { useEffect } from "react";
 
-import { Button, Image, ScrollView, StyleSheet, View } from "react-native";
+import { Image, ScrollView, StyleSheet, View } from "react-native";
 
 import FileSystemDumpButton, { dir } from "@/src/components/DummyComp";
 
 import User from "@/src/components/User";
-import MyComponent from "@/src/components/WebC";
 import { Ionicons } from "@expo/vector-icons";
+import MyComponent from "../components/WebC";
 
 export default function HomeScreen() {
   const Separator = () => <View style={styles.hr} />;
@@ -61,8 +61,6 @@ export default function HomeScreen() {
             <View style={styles.pdfContainer}>
               <MyComponent />
             </View>
-
-            <Button title="focus" onPress={() => {}} />
           </View>
         </View>
       </ScrollView>

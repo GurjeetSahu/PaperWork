@@ -1,10 +1,5 @@
-import React from "react";
-import { Text, View } from "react-native";
+import Tools from "@/src/components/Tools";
 
-export default function Component() {
-  return (
-    <View>
-      <Text>tools</Text>
-    </View>
-  );
+export default function ToolsPage() {
+  return <Tools />;
 }
