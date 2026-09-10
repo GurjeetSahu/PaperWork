@@ -10,7 +10,6 @@ import FileSystemDumpButton, { dir } from "@/src/components/DummyComp";
 
 import User from "@/src/components/User";
 import { Ionicons } from "@expo/vector-icons";
-import MyComponent from "../components/WebC";
 
 export default function HomeScreen() {
   const Separator = () => <View style={styles.hr} />;
@@ -44,23 +43,12 @@ export default function HomeScreen() {
       </View>
 
       {/* CONTENT */}
-      <ScrollView
-        style={styles.content}
-        contentContainerStyle={styles.contentContainer}
-      >
+      <ScrollView style={styles.content} contentContainerStyle={styles.contentContainer}>
         <TabBar />
 
         <View style={styles.grid}>
           <View style={styles.mainColumn}>
-            <FileSystemDumpButton
-              root={dir(Paths.document, "userData")}
-              title="Dump"
-            />
-
-            {/* PDF VIEWER */}
-            <View style={styles.pdfContainer}>
-              <MyComponent />
-            </View>
+            <FileSystemDumpButton root={dir(Paths.document, "userData")} title="Dump" />
           </View>
         </View>
       </ScrollView>
@@ -149,7 +137,7 @@ const styles = StyleSheet.create({
    */
   pdfContainer: {
     width: "100%",
-    height: 750,
+    height: 70,
     marginTop: 20,
     marginBottom: 20,
     backgroundColor: "white",

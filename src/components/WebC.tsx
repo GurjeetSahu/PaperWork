@@ -120,29 +120,13 @@ export default function MyComponent() {
     <View
       style={{
         width: "100%",
-        height: "100%",
+
         gap: 12,
       }}
     >
       <Text>QPDF Ready 🚀</Text>
 
-      <Button
-        title={processing ? "Processing..." : "Rotate PDF 90°"}
-        onPress={rotatePdf}
-        disabled={processing}
-      />
-
-      {resultUrl && (
-        <iframe
-          src={resultUrl}
-          style={{
-            width: "100%",
-            height: "100%",
-            minHeight: 600,
-            border: "1px solid black",
-          }}
-        />
-      )}
+      <Button title={processing ? "Processing..." : "Rotate PDF 90°"} onPress={rotatePdf} disabled={processing} />
     </View>
   );
 }
