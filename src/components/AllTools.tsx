@@ -10,7 +10,7 @@ export default function AllTools() {
   async function loadData() {
     if (!pdf) {
       try {
-        const wasmUrl = `${process.env.EXPO_PUBLIC_BASE_URL ?? ""}/qpdf.wasm`;
+        const wasmUrl = `${process.env.EXPO_PUBLIC_BASE_URL}/qpdf.wasm`;
         const toolkit: PdfToolkit = await createPdfToolkit({ wasmUrl });
         setPdf(toolkit);
         console.log("PDF toolkit initialized");
