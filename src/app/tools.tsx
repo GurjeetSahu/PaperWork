@@ -6,8 +6,6 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 const tools = [
   { emoji: "🔒", label: "Lock", category: "Security", name: "RotatePd" },
   { emoji: "🔓", label: "Remove password", category: "Security", name: "RotatePdf" },
-  // { emoji: "🔓", label: "Unlock", category: "Security", name: "RotatePdf" },
-  // { emoji: "🔁", label: "Change password", category: "Security", name: "RotatePdf" },
 
   { emoji: "➕", label: "Merge", category: "Pages", name: "RotatePdf" },
   { emoji: "✂️", label: "Split", category: "Pages", name: "RotatePdf" },
@@ -22,18 +20,21 @@ const tools = [
   { emoji: "🔍", label: "Inspect", category: "PDF", name: "RotatePdf" },
 
   { emoji: "🖼", label: "Images → PDF", category: "Convert", name: "RotatePdf" },
-
+  // { emoji: "🔓", label: "Unlock", category: "Security", name: "RotatePdf" },
+  // { emoji: "🔁", label: "Change password", category: "Security", name: "RotatePdf" },
   // { emoji: "🂠", label: "Collate", category: "Pages", name: "RotatePdf" },
   // { emoji: "🛠", label: "Escape hatch", category: "Advanced", name: "RotatePdf" },
   // { emoji: "💧", label: "Watermark", category: "PDF", name: "RotatePdf" },
 ];
 
 const categories = [...new Set(tools.map((tool) => tool.category))];
+const BASE64_PDF =
+  "JVBERi0xLjQKMSAwIG9iago8PCAvVHlwZSAvQ2F0YWxvZyAvUGFnZXMgMiAwIFIgPj4KZW5kb2JqCjIgMCBvYmoKPDwgL1R5cGUgL1BhZ2VzIC9LaWRzIFszIDAgUl0gL0NvdW50IDEgPj4KZW5kb2JqCjMgMCBvYmoKPDwgL1R5cGUgL1BhZ2UgL1BhcmVudCAyIDAgUiAvTWVkaWFCb3ggWzAgMCAzMDAgMTAwXSAvQ29udGVudHMgNCAwIFIgL1Jlc291cmNlcyA8PCAvRm9udCA8PCAvRjEgNSAwIFIgPj4gPj4gPj4KZW5kb2JqCjQgMCBvYmoKPDwgL0xlbmd0aCA0NCA+PgpzdHJlYW0KQlQKL0YxIDI0IFRmCjUwIDUwIFRkCihIZWxsbyBXb3JsZCkgVGoKRVQKZW5kc3RyZWFtCmVuZG9iago1IDAgb2JqCjw8IC9UeXBlIC9Gb250IC9TdWJ0eXBlIC9UeXBlMSAvQmFzZUZvbnQgL0hlbHZldGljYSA+PgplbmRvYmoKeHJlZgowIDYKMDAwMDAwMDAwMCA2NTUzNSBmIAowMDAwMDAwMDA5IDAwMDAwIG4gCjAwMDAwMDA1OCAwMDAwMCBuIAowMDAwMDAwMTE1IDAwMDAwIG4gCjAwMDAwMDAyNjEgMDAwMDAgbiAKMDAwMDAwMDM1NCAwMDAwMCBuIAp0cmFpbGVyCjw8IC9TaXplIDYgL1Jvb3QgMSAwIFIgPj4Kc3RhcnR4cmVmCjQyNAolJUVPRgo=";
 
 export default function Tools() {
   const [pickedFiles, setPickedFiles] = useState<DocumentPicker.DocumentPickerAsset[]>([]);
 
-  const RotatePdf = async () => {
+  const PickFile = async () => {
     try {
       const result = await DocumentPicker.getDocumentAsync({
         type: "application/pdf",
@@ -54,7 +55,7 @@ export default function Tools() {
   };
 
   const functionRegistry = {
-    RotatePdf,
+    PickFile,
   } as const;
 
   const executeFunctionByName = (functionName: keyof typeof functionRegistry) => {
@@ -68,7 +69,7 @@ export default function Tools() {
   return (
     <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
       <View style={styles.pdfContainer}>
-        <AllTools />
+        <AllTools base64={BASE64_PDF} />
       </View>
       <View style={styles.header}>
         <Text style={styles.title}>PDF Tools</Text>
