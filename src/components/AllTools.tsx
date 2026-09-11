@@ -10,6 +10,8 @@ export default function AllTools({ base64 }: { base64: string }) {
   const [processing, setProcessing] = useState(false);
   const [resultUrl, setResultUrl] = useState<string | null>(null);
 
+  const base645 =
+    "JVBERi0xLjQKJb/3ov4KMSAwIG9iago8PCAvUGFnZXMgMiAwIFIgL1R5cGUgL0NhdGFsb2cgPj4KZW5kb2JqCjIgMCBvYmoKPDwgL0NvdW50IDEgL0tpZHMgWyAzIDAgUiBdIC9UeXBlIC9QYWdlcyA+PgplbmRvYmoKMyAwIG9iago8PCAvQ29udGVudHMgNCAwIFIgL01lZGlhQm94IFsgMCAwIDMwMCAxMDAgXSAvUGFyZW50IDIgMCBSIC9SZXNvdXJjZXMgPDwgL0ZvbnQgPDwgL0YxIDUgMCBSID4+ID4+IC9Sb3RhdGUgMCAvVHlwZSAvUGFnZSA+PgplbmRvYmoKNCAwIG9iago8PCAvRmlsdGVyIC9GbGF0ZURlY29kZSAvTGVuZ3RoIDQ4ID4+CnN0cmVhbQp4nHMK4dJ3M1QwMlEISeMyNVAAopAULg2P1JycfIXw/KKcFE2FkCwu1xAuANGMCnVlbmRzdHJlYW0KZW5kb2JqCjUgMCBvYmoKPDwgL0Jhc2VGb250IC9IZWx2ZXRpY2EgL1N1YnR5cGUgL1R5cGUxIC9UeXBlIC9Gb250ID4+CmVuZG9iagp4cmVmCjAgNgowMDAwMDAwMDAwIDY1NTM1IGYgCjAwMDAwMDAwMTUgMDAwMDAgbiAKMDAwMDAwMDA2NCAwMDAwMCBuIAowMDAwMDAwMTIzIDAwMDAwIG4gCjAwMDAwMDAyNjEgMDAwMDAgbiAKMDAwMDAwMDM3OSAwMDAwMCBuIAp0cmFpbGVyIDw8IC9Sb290IDEgMCBSIC9TaXplIDYgL0lEIFs8MDE4NDE1MTBmMWJmZWE2MmE2ZGUwOTk4ODlkZDg4NDM+PDRkMzc0ODA1MDNlMDUyZDc4NjhjYjkwNWNhMDEyMTkxPl0gPj4Kc3RhcnR4cmVmCjQ0OQolJUVPRgo=";
   useEffect(() => {
     async function loadData() {
       if (!pdf) {
@@ -45,13 +47,14 @@ export default function AllTools({ base64 }: { base64: string }) {
     if (!pdf) return;
     try {
       setProcessing(true);
-      const binary = atob(base64);
+      const binary = atob(base645);
       const bytes = new Uint8Array(binary.length);
       for (let i = 0; i < binary.length; i++) {
         bytes[i] = binary.charCodeAt(i);
       }
       const inputBytes = bytes;
-      const rotated = await pdf.rotate(inputBytes, { angle: 90 });
+
+      const rotated = await pdf.rotate(inputBytes, { angle: 180 });
       console.log(byteArrayToBase64(rotated));
       const blob = new Blob([rotated], { type: "application/pdf" });
       const url = URL.createObjectURL(blob);

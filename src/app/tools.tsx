@@ -1,10 +1,10 @@
 import AllTools from "@/src/components/AllTools";
 import * as DocumentPicker from "expo-document-picker";
+import { File } from "expo-file-system";
 import { useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
-
 const tools = [
-  { emoji: "🔒", label: "Lock", category: "Security", name: "RotatePd" },
+  { emoji: "🔒", label: "Lock", category: "Security", name: "PickFile" },
   { emoji: "🔓", label: "Remove password", category: "Security", name: "RotatePdf" },
 
   { emoji: "➕", label: "Merge", category: "Pages", name: "RotatePdf" },
@@ -29,7 +29,7 @@ const tools = [
 
 const categories = [...new Set(tools.map((tool) => tool.category))];
 const BASE64_PDF =
-  "JVBERi0xLjQKMSAwIG9iago8PCAvVHlwZSAvQ2F0YWxvZyAvUGFnZXMgMiAwIFIgPj4KZW5kb2JqCjIgMCBvYmoKPDwgL1R5cGUgL1BhZ2VzIC9LaWRzIFszIDAgUl0gL0NvdW50IDEgPj4KZW5kb2JqCjMgMCBvYmoKPDwgL1R5cGUgL1BhZ2UgL1BhcmVudCAyIDAgUiAvTWVkaWFCb3ggWzAgMCAzMDAgMTAwXSAvQ29udGVudHMgNCAwIFIgL1Jlc291cmNlcyA8PCAvRm9udCA8PCAvRjEgNSAwIFIgPj4gPj4gPj4KZW5kb2JqCjQgMCBvYmoKPDwgL0xlbmd0aCA0NCA+PgpzdHJlYW0KQlQKL0YxIDI0IFRmCjUwIDUwIFRkCihIZWxsbyBXb3JsZCkgVGoKRVQKZW5kc3RyZWFtCmVuZG9iago1IDAgb2JqCjw8IC9UeXBlIC9Gb250IC9TdWJ0eXBlIC9UeXBlMSAvQmFzZUZvbnQgL0hlbHZldGljYSA+PgplbmRvYmoKeHJlZgowIDYKMDAwMDAwMDAwMCA2NTUzNSBmIAowMDAwMDAwMDA5IDAwMDAwIG4gCjAwMDAwMDA1OCAwMDAwMCBuIAowMDAwMDAwMTE1IDAwMDAwIG4gCjAwMDAwMDAyNjEgMDAwMDAgbiAKMDAwMDAwMDM1NCAwMDAwMCBuIAp0cmFpbGVyCjw8IC9TaXplIDYgL1Jvb3QgMSAwIFIgPj4Kc3RhcnR4cmVmCjQyNAolJUVPRgo=";
+  "JVBERi0xLjQKJb/3ov4KMSAwIG9iago8PCAvUGFnZXMgMiAwIFIgL1R5cGUgL0NhdGFsb2cgPj4KZW5kb2JqCjIgMCBvYmoKPDwgL0NvdW50IDEgL0tpZHMgWyAzIDAgUiBdIC9UeXBlIC9QYWdlcyA+PgplbmRvYmoKMyAwIG9iago8PCAvQ29udGVudHMgNCAwIFIgL01lZGlhQm94IFsgMCAwIDMwMCAxMDAgXSAvUGFyZW50IDIgMCBSIC9SZXNvdXJjZXMgPDwgL0ZvbnQgPDwgL0YxIDUgMCBSID4+ID4+IC9Sb3RhdGUgOTAgL1R5cGUgL1BhZ2UgPj4KZW5kb2JqCjQgMCBvYmoKPDwgL0xlbmd0aCA0OCAvRmlsdGVyIC9GbGF0ZURlY29kZSA+PgpzdHJlYW0KeJxzCuHSdzNUMDJRCEnjMjVQAKKQFC4Nj9ScnHyF8PyinBRNhZAsLtcQLgDRjAp1ZW5kc3RyZWFtCmVuZG9iago1IDAgb2JqCjw8IC9CYXNlRm9udCAvSGVsdmV0aWNhIC9TdWJ0eXBlIC9UeXBlMSAvVHlwZSAvRm9udCA+PgplbmRvYmoKeHJlZgowIDYKMDAwMDAwMDAwMCA2NTUzNSBmIAowMDAwMDAwMDE1IDAwMDAwIG4gCjAwMDAwMDAwNjQgMDAwMDAgbiAKMDAwMDAwMDEyMyAwMDAwMCBuIAowMDAwMDAwMjYyIDAwMDAwIG4gCjAwMDAwMDAzODAgMDAwMDAgbiAKdHJhaWxlciA8PCAvUm9vdCAxIDAgUiAvU2l6ZSA2IC9JRCBbPDAxODQxNTEwZjFiZmVhNjJhNmRlMDk5ODg5ZGQ4ODQzPjwwMTg0MTUxMGYxYmZlYTYyYTZkZTA5OTg4OWRkODg0Mz5dID4+CnN0YXJ0eHJlZgo0NTAKJSVFT0YK+PgpzdHJlYW0KQlQKL0YxIDI0IFRmCjUwIDUwIFRkCihIZWxsbyBXb3JsZCkgVGoKRVQKZW5kc3RyZWFtCmVuZG9iago1IDAgb2JqCjw8IC9UeXBlIC9Gb250IC9TdWJ0eXBlIC9UeXBlMSAvQmFzZUZvbnQgL0hlbHZldGljYSA+PgplbmRvYmoKeHJlZgowIDYKMDAwMDAwMDAwMCA2NTUzNSBmIAowMDAwMDAwMDA5IDAwMDAwIG4gCjAwMDAwMDA1OCAwMDAwMCBuIAowMDAwMDAwMTE1IDAwMDAwIG4gCjAwMDAwMDAyNjEgMDAwMDAgbiAKMDAwMDAwMDM1NCAwMDAwMCBuIAp0cmFpbGVyCjw8IC9TaXplIDYgL1Jvb3QgMSAwIFIgPj4Kc3RhcnR4cmVmCjQyNAolJUVPRgo=";
 
 export default function Tools() {
   const [pickedFiles, setPickedFiles] = useState<DocumentPicker.DocumentPickerAsset[]>([]);
@@ -39,13 +39,21 @@ export default function Tools() {
       const result = await DocumentPicker.getDocumentAsync({
         type: "application/pdf",
         multiple: true,
-        copyToCacheDirectory: false,
+        copyToCacheDirectory: true,
       });
 
       if (!result.canceled) {
         setPickedFiles((prev) => [...prev, ...result.assets]);
 
-        console.log("Picked files:", result.assets);
+        for (const asset of result.assets) {
+          const file = new File(asset.uri);
+
+          const base64 = await file.base64();
+
+          console.log("File:", asset.name);
+          console.log("URI:", asset.uri);
+          console.log("Base64:", base64);
+        }
       } else {
         console.log("User cancelled document picker");
       }
@@ -53,7 +61,6 @@ export default function Tools() {
       console.error("Error picking document:", error);
     }
   };
-
   const functionRegistry = {
     PickFile,
   } as const;
