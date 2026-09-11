@@ -1,13 +1,13 @@
-import MyComponent from "@/src/components/WebC";
+import AllTools from "@/src/components/AllTools";
 import * as DocumentPicker from "expo-document-picker";
 import { useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
 const tools = [
-  // { emoji: "🔒", label: "Lock", category: "Security", name: "RotatePdf" },
+  { emoji: "🔒", label: "Lock", category: "Security", name: "RotatePd" },
+  { emoji: "🔓", label: "Remove password", category: "Security", name: "RotatePdf" },
   // { emoji: "🔓", label: "Unlock", category: "Security", name: "RotatePdf" },
   // { emoji: "🔁", label: "Change password", category: "Security", name: "RotatePdf" },
-  // { emoji: "🧹", label: "Remove password", category: "Security", name: "RotatePdf" },
 
   { emoji: "➕", label: "Merge", category: "Pages", name: "RotatePdf" },
   { emoji: "✂️", label: "Split", category: "Pages", name: "RotatePdf" },
@@ -68,7 +68,7 @@ export default function Tools() {
   return (
     <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
       <View style={styles.pdfContainer}>
-        <MyComponent />
+        <AllTools />
       </View>
       <View style={styles.header}>
         <Text style={styles.title}>PDF Tools</Text>
