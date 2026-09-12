@@ -33,6 +33,8 @@ const BASE64_PDF =
 
 export default function Tools() {
   const [pickedFiles, setPickedFiles] = useState<DocumentPicker.DocumentPickerAsset[]>([]);
+  const [b64, setb64] = useState<string>("");
+  const [result, setResult] = useState("");
 
   const PickFile = async () => {
     try {
@@ -50,9 +52,10 @@ export default function Tools() {
 
           const base64 = await file.base64();
 
-          console.log("File:", asset.name);
-          console.log("URI:", asset.uri);
-          console.log("Base64:", base64);
+          // console.log("File:", asset.name);
+          // console.log("URI:", asset.uri);
+          // console.log("Base64:", base64);
+          setb64(base64);
         }
       } else {
         console.log("User cancelled document picker");
@@ -76,7 +79,13 @@ export default function Tools() {
   return (
     <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
       <View style={styles.pdfContainer}>
-        <AllTools base64={BASE64_PDF} />
+        <AllTools
+          base64={b64}
+          onResult={(value) => {
+            console.log("Received:", value);
+            setResult(value);
+          }}
+        />
       </View>
       <View style={styles.header}>
         <Text style={styles.title}>PDF Tools</Text>
