@@ -10,7 +10,7 @@ const tools = [
   { emoji: "➕", label: "Merge", category: "Pages", name: "RotatePdf" },
   { emoji: "✂️", label: "Split", category: "Pages", name: "RotatePdf" },
   { emoji: "🎯", label: "Extract pages", category: "Pages", name: "RotatePdf" },
-  { emoji: "🔄", label: "Rotate", category: "Pages", name: "RotatePdf" },
+  { emoji: "🔄", label: "Rotate", category: "Pages", name: "PickFile" },
   { emoji: "🗑", label: "Delete pages", category: "Pages", name: "RotatePdf" },
 
   { emoji: "🗜", label: "Compress", category: "PDF", name: "RotatePdf" },
@@ -28,8 +28,6 @@ const tools = [
 ];
 
 const categories = [...new Set(tools.map((tool) => tool.category))];
-const BASE64_PDF =
-  "JVBERi0xLjQKJb/3ov4KMSAwIG9iago8PCAvUGFnZXMgMiAwIFIgL1R5cGUgL0NhdGFsb2cgPj4KZW5kb2JqCjIgMCBvYmoKPDwgL0NvdW50IDEgL0tpZHMgWyAzIDAgUiBdIC9UeXBlIC9QYWdlcyA+PgplbmRvYmoKMyAwIG9iago8PCAvQ29udGVudHMgNCAwIFIgL01lZGlhQm94IFsgMCAwIDMwMCAxMDAgXSAvUGFyZW50IDIgMCBSIC9SZXNvdXJjZXMgPDwgL0ZvbnQgPDwgL0YxIDUgMCBSID4+ID4+IC9Sb3RhdGUgOTAgL1R5cGUgL1BhZ2UgPj4KZW5kb2JqCjQgMCBvYmoKPDwgL0xlbmd0aCA0OCAvRmlsdGVyIC9GbGF0ZURlY29kZSA+PgpzdHJlYW0KeJxzCuHSdzNUMDJRCEnjMjVQAKKQFC4Nj9ScnHyF8PyinBRNhZAsLtcQLgDRjAp1ZW5kc3RyZWFtCmVuZG9iago1IDAgb2JqCjw8IC9CYXNlRm9udCAvSGVsdmV0aWNhIC9TdWJ0eXBlIC9UeXBlMSAvVHlwZSAvRm9udCA+PgplbmRvYmoKeHJlZgowIDYKMDAwMDAwMDAwMCA2NTUzNSBmIAowMDAwMDAwMDE1IDAwMDAwIG4gCjAwMDAwMDAwNjQgMDAwMDAgbiAKMDAwMDAwMDEyMyAwMDAwMCBuIAowMDAwMDAwMjYyIDAwMDAwIG4gCjAwMDAwMDAzODAgMDAwMDAgbiAKdHJhaWxlciA8PCAvUm9vdCAxIDAgUiAvU2l6ZSA2IC9JRCBbPDAxODQxNTEwZjFiZmVhNjJhNmRlMDk5ODg5ZGQ4ODQzPjwwMTg0MTUxMGYxYmZlYTYyYTZkZTA5OTg4OWRkODg0Mz5dID4+CnN0YXJ0eHJlZgo0NTAKJSVFT0YK+PgpzdHJlYW0KQlQKL0YxIDI0IFRmCjUwIDUwIFRkCihIZWxsbyBXb3JsZCkgVGoKRVQKZW5kc3RyZWFtCmVuZG9iago1IDAgb2JqCjw8IC9UeXBlIC9Gb250IC9TdWJ0eXBlIC9UeXBlMSAvQmFzZUZvbnQgL0hlbHZldGljYSA+PgplbmRvYmoKeHJlZgowIDYKMDAwMDAwMDAwMCA2NTUzNSBmIAowMDAwMDAwMDA5IDAwMDAwIG4gCjAwMDAwMDA1OCAwMDAwMCBuIAowMDAwMDAwMTE1IDAwMDAwIG4gCjAwMDAwMDAyNjEgMDAwMDAgbiAKMDAwMDAwMDM1NCAwMDAwMCBuIAp0cmFpbGVyCjw8IC9TaXplIDYgL1Jvb3QgMSAwIFIgPj4Kc3RhcnR4cmVmCjQyNAolJUVPRgo=";
 
 export default function Tools() {
   const [pickedFiles, setPickedFiles] = useState<DocumentPicker.DocumentPickerAsset[]>([]);
@@ -51,11 +49,8 @@ export default function Tools() {
           const file = new File(asset.uri);
 
           const base64 = await file.base64();
-
-          // console.log("File:", asset.name);
-          // console.log("URI:", asset.uri);
-          // console.log("Base64:", base64);
           setb64(base64);
+          //this is what given to component, the b54 of original file
         }
       } else {
         console.log("User cancelled document picker");
@@ -82,7 +77,7 @@ export default function Tools() {
         <AllTools
           base64={b64}
           onResult={(value) => {
-            console.log("Received:", value);
+            // console.log("Received:", value);
             setResult(value);
           }}
         />

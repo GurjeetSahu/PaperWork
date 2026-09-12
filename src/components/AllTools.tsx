@@ -13,7 +13,6 @@ export default function AllTools({ base64, onResult }: AllToolsProps) {
   const [pdf, setPdf] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState(false);
-  const [resultUrl, setResultUrl] = useState<string | null>(null);
 
   useEffect(() => {
     async function loadData() {
@@ -59,16 +58,7 @@ export default function AllTools({ base64, onResult }: AllToolsProps) {
       const inputBytes = bytes;
 
       const rotated = await pdf.rotate(inputBytes, { angle: 90 });
-      //console.log("Rotated: ", byteArrayToBase64(rotated));
       onResult(byteArrayToBase64(rotated));
-
-      const blob = new Blob([rotated], { type: "application/pdf" });
-      const url = URL.createObjectURL(blob);
-      if (resultUrl) {
-        URL.revokeObjectURL(resultUrl);
-      }
-      console.log(url);
-      setResultUrl(url);
     } catch (error) {
       console.error("PDF processing failed:", error);
     } finally {
