@@ -4,22 +4,22 @@ import { File } from "expo-file-system";
 import { useState } from "react";
 import { Button, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 const tools = [
-  { emoji: "🔒", label: "Lock", category: "Security", name: "PickFile" },
-  { emoji: "🔓", label: "Remove password", category: "Security", name: "RotatePdf" },
+  { emoji: "🔒", label: "Lock", category: "Security", name: "lockPdf" },
+  { emoji: "🔓", label: "Remove password", category: "Security", name: "removePassword" },
 
-  { emoji: "➕", label: "Merge", category: "Pages", name: "RotatePdf" },
-  { emoji: "✂️", label: "Split", category: "Pages", name: "RotatePdf" },
-  { emoji: "🎯", label: "Extract pages", category: "Pages", name: "RotatePdf" },
-  { emoji: "🔄", label: "Rotate", category: "Pages", name: "PickFile" },
-  { emoji: "🗑", label: "Delete pages", category: "Pages", name: "RotatePdf" },
+  { emoji: "➕", label: "Merge", category: "Pages", name: "mergePdf" },
+  { emoji: "✂️", label: "Split", category: "Pages", name: "splitPdf" },
+  { emoji: "🎯", label: "Extract pages", category: "Pages", name: "extractPages" },
+  { emoji: "🔄", label: "Rotate", category: "Pages", name: "rotatePdf" },
+  { emoji: "🗑", label: "Delete pages", category: "Pages", name: "deletePages" },
 
-  { emoji: "🗜", label: "Compress", category: "PDF", name: "RotatePdf" },
-  { emoji: "🩹", label: "Repair", category: "PDF", name: "RotatePdf" },
-  { emoji: "📎", label: "Attachments", category: "PDF", name: "RotatePdf" },
-  { emoji: "🔍", label: "Inspect", category: "PDF", name: "RotatePdf" },
+  { emoji: "🗜", label: "Compress", category: "PDF", name: "compressPdf" },
+  { emoji: "📎", label: "Attachments", category: "PDF", name: "attachmentsExtract" },
 
-  { emoji: "🖼", label: "Images → PDF", category: "Convert", name: "RotatePdf" },
+  { emoji: "🖼", label: "Images → PDF", category: "Convert", name: "imagesToPdf" },
 
+  //{ emoji: "🩹", label: "Repair", category: "PDF", name: "repairPdf" },
+  //{ emoji: "🔍", label: "Inspect", category: "PDF", name: "inspectPdf" },
   //{ emoji: "🫓", label: "Flatten", category: "PDF", name: "RotatePdf" },
   // { emoji: "🔓", label: "Unlock", category: "Security", name: "RotatePdf" },
   // { emoji: "🔁", label: "Change password", category: "Security", name: "RotatePdf" },
@@ -35,6 +35,7 @@ export default function Tools() {
   const [b64, setb64] = useState<string>("");
   const [fileName, setFileName] = useState<string>("");
   const [result, setResult] = useState("");
+  const [selectedFunction, setSelectedFunction] = useState<string>("");
 
   const PickFile = async () => {
     try {
@@ -65,18 +66,6 @@ export default function Tools() {
       console.error("Error picking document:", error);
     }
   };
-  const functionRegistry = {
-    PickFile,
-  } as const;
-
-  const executeFunctionByName = (functionName: keyof typeof functionRegistry) => {
-    const selectedFunction = functionRegistry[functionName];
-
-    if (selectedFunction) {
-      selectedFunction();
-    }
-  };
-
   return (
     <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
       <View style={styles.pdfContainer}>
@@ -91,8 +80,9 @@ export default function Tools() {
         </View>
         <AllTools
           base64={b64}
+          functionName={selectedFunction}
           onResult={(value) => {
-            // console.log("Received:", value);
+            console.log("Received:", value);
             setResult(value);
           }}
         />
@@ -118,7 +108,7 @@ export default function Tools() {
                     <Pressable
                       key={tool.label}
                       accessibilityRole="button"
-                      onPress={() => executeFunctionByName(tool.name as keyof typeof functionRegistry)}
+                      onPress={() => setSelectedFunction(tool.name)}
                       style={({ pressed }) => [styles.tool, columnIndex === 0 && styles.leftTool, pressed && styles.toolPressed]}
                     >
                       <View style={styles.icon}>

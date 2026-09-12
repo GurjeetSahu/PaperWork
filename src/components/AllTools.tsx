@@ -6,11 +6,11 @@ import { ActivityIndicator, Text, View } from "react-native";
 
 type AllToolsProps = {
   base64: string;
-  option?: string;
+  functionName?: string;
   onResult: (value: string) => void;
 };
 
-export default function AllTools({ base64, onResult }: AllToolsProps) {
+export default function AllTools({ base64, functionName, onResult }: AllToolsProps) {
   const [pdf, setPdf] = useState<any>(null);
   //const [pdf, setPdf] = useState<PdfToolkit | null>(null);
   const [loading, setLoading] = useState(true);
@@ -47,8 +47,27 @@ export default function AllTools({ base64, onResult }: AllToolsProps) {
     return btoa(binary);
   }
 
+  useEffect(() => {
+    if (!functionName || !base64 || !pdf || processing) return;
+
+    const executeSelectedFunction = async () => {
+      switch (functionName) {
+        case "rotatePdf":
+          await rotatePdf();
+          break;
+        case "lockPdf":
+          await lockPdf();
+          break;
+        default:
+          console.warn(`No PDF function registered for: ${functionName}`);
+      }
+    };
+
+    executeSelectedFunction();
+  }, [base64, functionName, pdf, processing]);
+
   async function rotatePdf() {
-    if (!pdf) return;
+    if (!pdf || !base64) return;
     try {
       setProcessing(true);
       console.log("here");
@@ -67,8 +86,8 @@ export default function AllTools({ base64, onResult }: AllToolsProps) {
       setProcessing(false);
     }
   }
-  async function unlockPdf() {
-    if (!pdf) return;
+  async function lockPdf() {
+    if (!pdf || !base64) return;
     try {
       setProcessing(true);
       console.log("here");
@@ -79,7 +98,7 @@ export default function AllTools({ base64, onResult }: AllToolsProps) {
       }
       const inputBytes = bytes;
 
-      const rotated = await pdf.removePassword(inputBytes, { password: "" });
+      const rotated = await pdf.lock(inputBytes, { userPassword: "d" });
       onResult(byteArrayToBase64(rotated));
     } catch (error) {
       console.error("PDF processing failed:", error);
