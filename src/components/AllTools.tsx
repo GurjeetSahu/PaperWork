@@ -2,15 +2,17 @@
 
 import { createPdfToolkit, PdfToolkit } from "pdfstudio";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, Button, Text, View } from "react-native";
+import { ActivityIndicator, Text, View } from "react-native";
 
 type AllToolsProps = {
   base64: string;
+  option?: string;
   onResult: (value: string) => void;
 };
 
 export default function AllTools({ base64, onResult }: AllToolsProps) {
   const [pdf, setPdf] = useState<any>(null);
+  //const [pdf, setPdf] = useState<PdfToolkit | null>(null);
   const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState(false);
 
@@ -65,6 +67,26 @@ export default function AllTools({ base64, onResult }: AllToolsProps) {
       setProcessing(false);
     }
   }
+  async function unlockPdf() {
+    if (!pdf) return;
+    try {
+      setProcessing(true);
+      console.log("here");
+      const binary = atob(base64);
+      const bytes = new Uint8Array(binary.length);
+      for (let i = 0; i < binary.length; i++) {
+        bytes[i] = binary.charCodeAt(i);
+      }
+      const inputBytes = bytes;
+
+      const rotated = await pdf.removePassword(inputBytes, { password: "" });
+      onResult(byteArrayToBase64(rotated));
+    } catch (error) {
+      console.error("PDF processing failed:", error);
+    } finally {
+      setProcessing(false);
+    }
+  }
 
   if (loading) {
     return (
@@ -96,11 +118,10 @@ export default function AllTools({ base64, onResult }: AllToolsProps) {
       </View>
     );
   }
-
-  return (
-    <View style={{ width: "100%", gap: 12 }}>
-      <Text>QPDF Ready 🚀</Text>
-      <Button title={processing ? "Processing..." : "Rotate PDF 90°"} onPress={rotatePdf} disabled={processing} />
-    </View>
-  );
+  // return (
+  //   <View style={{ width: "100%", gap: 12 }}>
+  //     <Text>QPDF Ready 🚀</Text>
+  //     <Button title={processing ? "Processing..." : "Rotate PDF 90°"} onPress={rotatePdf} disabled={processing} />
+  //   </View>
+  // );
 }

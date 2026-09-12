@@ -2,7 +2,7 @@ import AllTools from "@/src/components/AllTools";
 import * as DocumentPicker from "expo-document-picker";
 import { File } from "expo-file-system";
 import { useState } from "react";
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Button, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 const tools = [
   { emoji: "🔒", label: "Lock", category: "Security", name: "PickFile" },
   { emoji: "🔓", label: "Remove password", category: "Security", name: "RotatePdf" },
@@ -16,10 +16,11 @@ const tools = [
   { emoji: "🗜", label: "Compress", category: "PDF", name: "RotatePdf" },
   { emoji: "🩹", label: "Repair", category: "PDF", name: "RotatePdf" },
   { emoji: "📎", label: "Attachments", category: "PDF", name: "RotatePdf" },
-  { emoji: "🫓", label: "Flatten", category: "PDF", name: "RotatePdf" },
   { emoji: "🔍", label: "Inspect", category: "PDF", name: "RotatePdf" },
 
   { emoji: "🖼", label: "Images → PDF", category: "Convert", name: "RotatePdf" },
+
+  //{ emoji: "🫓", label: "Flatten", category: "PDF", name: "RotatePdf" },
   // { emoji: "🔓", label: "Unlock", category: "Security", name: "RotatePdf" },
   // { emoji: "🔁", label: "Change password", category: "Security", name: "RotatePdf" },
   // { emoji: "🂠", label: "Collate", category: "Pages", name: "RotatePdf" },
@@ -32,6 +33,7 @@ const categories = [...new Set(tools.map((tool) => tool.category))];
 export default function Tools() {
   const [pickedFiles, setPickedFiles] = useState<DocumentPicker.DocumentPickerAsset[]>([]);
   const [b64, setb64] = useState<string>("");
+  const [fileName, setFileName] = useState<string>("");
   const [result, setResult] = useState("");
 
   const PickFile = async () => {
@@ -49,6 +51,10 @@ export default function Tools() {
           const file = new File(asset.uri);
 
           const base64 = await file.base64();
+
+          console.log("File:", asset.name);
+          setFileName(asset.name);
+          // setFileName(asset.base64!);
           setb64(base64);
           //this is what given to component, the b54 of original file
         }
@@ -74,6 +80,15 @@ export default function Tools() {
   return (
     <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
       <View style={styles.pdfContainer}>
+        <View style={{ width: "100%", gap: 12 }}>
+          <Text>QPDF Ready 🚀 {fileName}</Text>
+          <Button
+            title="Pick File"
+            onPress={() => {
+              PickFile();
+            }}
+          />
+        </View>
         <AllTools
           base64={b64}
           onResult={(value) => {
