@@ -69,23 +69,23 @@ export default function Tools() {
   return (
     <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
       <View style={styles.pdfContainer}>
-        <View style={{ width: "100%", gap: 12 }}>
-          <Text>QPDF Ready 🚀 {fileName}</Text>
+        <View style={{ width: "100%", height: 50 }}>
+          <Text>{fileName}</Text>
           <Button
             title="Pick File"
             onPress={() => {
               PickFile();
             }}
           />
+          <AllTools
+            base64={b64}
+            functionName={selectedFunction}
+            onResult={(value) => {
+              console.log("Received: ", value);
+              setResult(value);
+            }}
+          />
         </View>
-        <AllTools
-          base64={b64}
-          functionName={selectedFunction}
-          onResult={(value) => {
-            console.log("Received:", value);
-            setResult(value);
-          }}
-        />
       </View>
       <View style={styles.header}>
         <Text style={styles.title}>PDF Tools</Text>
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
   pdfContainer: {
     width: "100%",
     height: 70,
-    marginTop: 20,
+    marginTop: 10,
     marginBottom: 20,
     backgroundColor: "white",
     borderRadius: 10,

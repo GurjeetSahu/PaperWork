@@ -137,10 +137,9 @@ export default function AllTools({ base64, functionName, onResult }: AllToolsPro
       </View>
     );
   }
-  // return (
-  //   <View style={{ width: "100%", gap: 12 }}>
-  //     <Text>QPDF Ready 🚀</Text>
-  //     <Button title={processing ? "Processing..." : "Rotate PDF 90°"} onPress={rotatePdf} disabled={processing} />
-  //   </View>
-  // );
+  return (
+    <View style={{ width: "100%" }}>
+      <Text>QPDF Ready 🚀</Text>
+    </View>
+  );
 }
