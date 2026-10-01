@@ -52,11 +52,26 @@ export default function AllTools({ base64, functionName, onResult }: AllToolsPro
 
     const executeSelectedFunction = async () => {
       switch (functionName) {
+        case "lockPdf":
+          await lockPdf();
+          break;
+        case "removePassword":
+          await removePassword();
+          break;
+        case "mergePdf":
+          await mergePdf();
+          break;
+        case "splitPdf":
+          await splitPdf();
+          break;
+        case "extractPages":
+          await extractPages();
+          break;
         case "rotatePdf":
           await rotatePdf();
           break;
-        case "lockPdf":
-          await lockPdf();
+        case "deletePages":
+          await deletePages();
           break;
         default:
           console.warn(`No PDF function registered for: ${functionName}`);
@@ -66,26 +81,6 @@ export default function AllTools({ base64, functionName, onResult }: AllToolsPro
     executeSelectedFunction();
   }, [base64, functionName, pdf, processing]);
 
-  async function rotatePdf() {
-    if (!pdf || !base64) return;
-    try {
-      setProcessing(true);
-      console.log("here");
-      const binary = atob(base64);
-      const bytes = new Uint8Array(binary.length);
-      for (let i = 0; i < binary.length; i++) {
-        bytes[i] = binary.charCodeAt(i);
-      }
-      const inputBytes = bytes;
-
-      const rotated = await pdf.rotate(inputBytes, { angle: 90 });
-      onResult(byteArrayToBase64(rotated));
-    } catch (error) {
-      console.error("PDF processing failed:", error);
-    } finally {
-      setProcessing(false);
-    }
-  }
   async function lockPdf() {
     if (!pdf || !base64) return;
     try {
@@ -106,7 +101,127 @@ export default function AllTools({ base64, functionName, onResult }: AllToolsPro
       setProcessing(false);
     }
   }
+  async function removePassword() {
+    if (!pdf || !base64) return;
+    try {
+      setProcessing(true);
+      const binary = atob(base64);
+      const bytes = new Uint8Array(binary.length);
+      for (let i = 0; i < binary.length; i++) {
+        bytes[i] = binary.charCodeAt(i);
+      }
+      const inputBytes = bytes;
 
+      const password = "";
+      const deleted = await pdf.removePassword(inputBytes, { password: password });
+      onResult(byteArrayToBase64(deleted));
+    } catch (error) {
+      console.error("PDF processing failed:", error);
+    } finally {
+      setProcessing(false);
+    }
+  }
+
+  async function mergePdf() {
+    if (!pdf || !base64) return;
+    try {
+      setProcessing(true);
+      const binary = atob(base64);
+      const bytes = new Uint8Array(binary.length);
+      for (let i = 0; i < binary.length; i++) {
+        bytes[i] = binary.charCodeAt(i);
+      }
+      const inputBytes = bytes;
+
+      const pages: ReadonlyArray<string> = [""];
+      const extracted = await pdf.merge({ pages: pages });
+      onResult(byteArrayToBase64(extracted));
+    } catch (error) {
+      console.error("PDF processing failed:", error);
+    } finally {
+      setProcessing(false);
+    }
+  }
+  async function splitPdf() {
+    if (!pdf || !base64) return;
+    try {
+      setProcessing(true);
+      const binary = atob(base64);
+      const bytes = new Uint8Array(binary.length);
+      for (let i = 0; i < binary.length; i++) {
+        bytes[i] = binary.charCodeAt(i);
+      }
+      const inputBytes = bytes;
+
+      const pages = "";
+      const extracted = await pdf.extractPages(inputBytes, { pages: pages });
+      onResult(byteArrayToBase64(extracted));
+    } catch (error) {
+      console.error("PDF processing failed:", error);
+    } finally {
+      setProcessing(false);
+    }
+  }
+  async function extractPages() {
+    if (!pdf || !base64) return;
+    try {
+      setProcessing(true);
+      const binary = atob(base64);
+      const bytes = new Uint8Array(binary.length);
+      for (let i = 0; i < binary.length; i++) {
+        bytes[i] = binary.charCodeAt(i);
+      }
+      const inputBytes = bytes;
+
+      const pages = "";
+      const extracted = await pdf.extractPages(inputBytes, { pages: pages });
+      onResult(byteArrayToBase64(extracted));
+    } catch (error) {
+      console.error("PDF processing failed:", error);
+    } finally {
+      setProcessing(false);
+    }
+  }
+  async function rotatePdf() {
+    if (!pdf || !base64) return;
+    try {
+      setProcessing(true);
+      console.log("here");
+      const binary = atob(base64);
+      const bytes = new Uint8Array(binary.length);
+      for (let i = 0; i < binary.length; i++) {
+        bytes[i] = binary.charCodeAt(i);
+      }
+      const inputBytes = bytes;
+
+      const rotated = await pdf.rotate(inputBytes, { angle: 90 });
+      onResult(byteArrayToBase64(rotated));
+    } catch (error) {
+      console.error("PDF processing failed:", error);
+    } finally {
+      setProcessing(false);
+    }
+  }
+  async function deletePages() {
+    if (!pdf || !base64) return;
+    try {
+      setProcessing(true);
+      const binary = atob(base64);
+      const bytes = new Uint8Array(binary.length);
+      for (let i = 0; i < binary.length; i++) {
+        bytes[i] = binary.charCodeAt(i);
+      }
+      const inputBytes = bytes;
+
+      const pages = "";
+      const deleted = await pdf.deletePages(inputBytes, { pages: pages });
+      onResult(byteArrayToBase64(deleted));
+    } catch (error) {
+      console.error("PDF processing failed:", error);
+    } finally {
+      setProcessing(false);
+    }
+  }
   if (loading) {
     return (
       <View

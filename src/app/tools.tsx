@@ -14,10 +14,10 @@ const tools = [
   { emoji: "🗑", label: "Delete pages", category: "Pages", name: "deletePages" },
 
   { emoji: "🗜", label: "Compress", category: "PDF", name: "compressPdf" },
-  { emoji: "📎", label: "Attachments", category: "PDF", name: "attachmentsExtract" },
 
   { emoji: "🖼", label: "Images → PDF", category: "Convert", name: "imagesToPdf" },
 
+  //  { emoji: "📎", label: "Attachments", category: "PDF", name: "attachmentsExtract" },
   //{ emoji: "🩹", label: "Repair", category: "PDF", name: "repairPdf" },
   //{ emoji: "🔍", label: "Inspect", category: "PDF", name: "inspectPdf" },
   //{ emoji: "🫓", label: "Flatten", category: "PDF", name: "RotatePdf" },
