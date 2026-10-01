@@ -253,7 +253,7 @@ export default function AllTools({ base64, functionName, onResult }: AllToolsPro
     );
   }
   return (
-    <View style={{ width: "100%" }}>
+    <View>
       <Text>QPDF Ready 🚀</Text>
     </View>
   );

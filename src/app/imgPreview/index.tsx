@@ -1,7 +1,8 @@
+import SaveMenu from "@/src/components/SaveMenu";
+import PagerView from "@expo/ui/community/pager-view";
+import { Image } from "expo-image";
 import { useLocalSearchParams } from "expo-router";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-
-import SaveMenu from "@/src/components/SaveMenu";
 
 export default function Index() {
   const { uris, viewMode } = useLocalSearchParams<{
@@ -12,7 +13,7 @@ export default function Index() {
   return (
     <View style={styles.container}>
       {/* Image Section */}
-      {/* <PagerView style={styles.container} initialPage={0}>
+      <PagerView style={styles.container} initialPage={0}>
         {uriList.map((uri: string, index: string) => (
           <View style={styles.imageWrapper} key={index.toString()}>
             <View style={styles.imageCard}>
@@ -20,7 +21,7 @@ export default function Index() {
             </View>
           </View>
         ))}
-      </PagerView> */}
+      </PagerView>
       {/* Footer Actions */}
       {viewMode !== "true" && (
         <View style={styles.footer}>

@@ -44,15 +44,11 @@ export default function Tools() {
         multiple: true,
         copyToCacheDirectory: true,
       });
-
       if (!result.canceled) {
         setPickedFiles((prev) => [...prev, ...result.assets]);
-
         for (const asset of result.assets) {
           const file = new File(asset.uri);
-
           const base64 = await file.base64();
-
           console.log("File:", asset.name);
           setFileName(asset.name);
           // setFileName(asset.base64!);
@@ -78,7 +74,7 @@ export default function Tools() {
           />
         </View>
 
-        <View style={{ width: "50%", height: 50, backgroundColor: "gray" }}>
+        <View style={{ width: "50%", height: 50, backgroundColor: "white" }}>
           <AllTools
             base64={b64}
             functionName={selectedFunction}
@@ -88,16 +84,16 @@ export default function Tools() {
             }}
           />
         </View>
-      </View>
-      <View style={styles.fileContainer}>
-        <View>
-          <Text style={{ fontWeight: "bold", fontSize: 20 }}>{fileName}</Text>
-          {pickedFiles.length > 0 && (
-            <Text style={styles.fileCount}>
-              {pickedFiles.length} PDF
-              {pickedFiles.length === 1 ? "" : "s"} selected
-            </Text>
-          )}
+        <View style={styles.fileContainer}>
+          <View>
+            <Text style={{ fontWeight: "bold", fontSize: 20 }}>{fileName}</Text>
+            {pickedFiles.length > 0 && (
+              <Text style={styles.fileCount}>
+                {pickedFiles.length} PDF
+                {pickedFiles.length === 1 ? "" : "s"} selected
+              </Text>
+            )}
+          </View>
         </View>
       </View>
 
@@ -146,10 +142,10 @@ export default function Tools() {
 const styles = StyleSheet.create({
   pdfContainer: {
     width: "100%",
-    height: 150,
+    height: 300,
     marginTop: 10,
     marginBottom: 20,
-    backgroundColor: "red",
+    backgroundColor: "gray",
     borderRadius: 10,
     overflow: "hidden",
   },
@@ -158,7 +154,7 @@ const styles = StyleSheet.create({
     height: 150,
     marginTop: 10,
     marginBottom: 20,
-    backgroundColor: "gray",
+    backgroundColor: "red",
     opacity: 0.3,
     borderRadius: 10,
     overflow: "hidden",

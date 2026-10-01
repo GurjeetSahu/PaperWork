@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@expo/html-elements": "^0.10.1",
+    "@expo/ui": "~57.0.21",
     "@expo/vector-icons": "^15.0.3",
     "@gluestack-ui/core": "^3.0.16",
     "@gluestack-ui/utils": "^3.0.19",
@@ -26,7 +27,7 @@
     "expo-file-system": "~57.0.6",
     "expo-font": "~57.0.3",
     "expo-haptics": "~57.0.2",
-    "expo-image": "~57.0.4",
+    "expo-image": "~57.0.5",
     "expo-image-picker": "~57.0.16",
     "expo-intent-launcher": "~57.0.1",
     "expo-linking": "~57.0.9",
