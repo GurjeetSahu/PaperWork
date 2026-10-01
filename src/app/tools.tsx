@@ -57,7 +57,7 @@ export default function Tools() {
           setFileName(asset.name);
           // setFileName(asset.base64!);
           setb64(base64);
-          //this is what given to component, the b54 of original file
+          //this is what given to component, the b64 of original file
         }
       } else {
         console.log("User cancelled document picker");
@@ -69,14 +69,16 @@ export default function Tools() {
   return (
     <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
       <View style={styles.pdfContainer}>
-        <View style={{ width: "100%", height: 50 }}>
-          <Text>{fileName}</Text>
+        <View style={{ width: "50%", marginBottom: 20 }}>
           <Button
             title="Pick File"
             onPress={() => {
               PickFile();
             }}
           />
+        </View>
+
+        <View style={{ width: "50%", height: 50, backgroundColor: "gray" }}>
           <AllTools
             base64={b64}
             functionName={selectedFunction}
@@ -87,9 +89,16 @@ export default function Tools() {
           />
         </View>
       </View>
-      <View style={styles.header}>
-        <Text style={styles.title}>PDF Tools</Text>
-        <Text style={styles.subtitle}>{tools.length} tools</Text>
+      <View style={styles.fileContainer}>
+        <View>
+          <Text style={{ fontWeight: "bold", fontSize: 20 }}>{fileName}</Text>
+          {pickedFiles.length > 0 && (
+            <Text style={styles.fileCount}>
+              {pickedFiles.length} PDF
+              {pickedFiles.length === 1 ? "" : "s"} selected
+            </Text>
+          )}
+        </View>
       </View>
 
       {categories.map((category) => {
@@ -130,12 +139,6 @@ export default function Tools() {
       })}
 
       {/* Optional: useful while testing */}
-      {pickedFiles.length > 0 && (
-        <Text style={styles.fileCount}>
-          {pickedFiles.length} PDF
-          {pickedFiles.length === 1 ? "" : "s"} selected
-        </Text>
-      )}
     </ScrollView>
   );
 }
@@ -143,10 +146,20 @@ export default function Tools() {
 const styles = StyleSheet.create({
   pdfContainer: {
     width: "100%",
-    height: 70,
+    height: 150,
     marginTop: 10,
     marginBottom: 20,
-    backgroundColor: "white",
+    backgroundColor: "red",
+    borderRadius: 10,
+    overflow: "hidden",
+  },
+  fileContainer: {
+    width: "100%",
+    height: 150,
+    marginTop: 10,
+    marginBottom: 20,
+    backgroundColor: "gray",
+    opacity: 0.3,
     borderRadius: 10,
     overflow: "hidden",
   },
@@ -222,6 +235,7 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: "row",
     minHeight: 82,
+    padding: 10,
   },
 
   /* Tool */
@@ -290,8 +304,8 @@ const styles = StyleSheet.create({
   /* Testing */
 
   fileCount: {
-    marginTop: -14,
-    marginBottom: 20,
+    marginTop: 10,
+    marginBottom: 10,
     textAlign: "center",
     fontSize: 13,
     fontWeight: "600",
