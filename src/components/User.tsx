@@ -1,33 +1,10 @@
 import { Menu, MenuItem, MenuItemLabel } from "@/src/components/ui/menu";
 import { Directory, Paths } from "expo-file-system";
-import {
-  createContext,
-  ReactNode,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
-import {
-  Pressable,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
-import {
-  Modal,
-  ModalBackdrop,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-} from "./ui/modal";
+import { Modal, ModalBackdrop, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader } from "./ui/modal";
 
 type UserContextValue = {
   users: string[];
@@ -125,7 +102,7 @@ export default function User() {
           <View style={styles.user}>
             <Text style={styles.greeting}>Hello, {currentUser} 👋</Text>
             <Pressable {...triggerProps}>
-              <Ionicons name="caret-down" size={40} color="white" />
+              <Ionicons name="caret-down-outline" size={24} color="white" />
             </Pressable>
           </View>
         );
@@ -166,10 +143,7 @@ export default function User() {
                 <Text style={styles.title}>New User</Text>
 
                 <ModalCloseButton>
-                  <TouchableOpacity
-                    style={styles.closeButton}
-                    onPress={resetModal}
-                  >
+                  <TouchableOpacity style={styles.closeButton} onPress={resetModal}>
                     <Text style={styles.closeText}>✕</Text>
                   </TouchableOpacity>
                 </ModalCloseButton>
@@ -194,10 +168,7 @@ export default function User() {
               </ModalBody>
 
               <ModalFooter style={styles.footer}>
-                <TouchableOpacity
-                  style={[styles.actionButton, styles.cancel]}
-                  onPress={resetModal}
-                >
+                <TouchableOpacity style={[styles.actionButton, styles.cancel]} onPress={resetModal}>
                   <Text style={styles.cancelText}>Cancel</Text>
                 </TouchableOpacity>
 
@@ -207,11 +178,7 @@ export default function User() {
                     const trimmedName = userName.trim();
                     if (!trimmedName) return;
 
-                    new Directory(
-                      Paths.document,
-                      "userData",
-                      trimmedName,
-                    ).create({
+                    new Directory(Paths.document, "userData", trimmedName).create({
                       idempotent: true,
                     });
                     setCurrentUser(trimmedName);

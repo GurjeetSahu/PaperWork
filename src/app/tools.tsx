@@ -30,10 +30,14 @@ const tools = [
 
 const categories = [...new Set(tools.map((tool) => tool.category))];
 
+type files = {
+  fileName: string;
+  fileType: string;
+};
 export default function Tools() {
   const [pickedFiles, setPickedFiles] = useState<DocumentPicker.DocumentPickerAsset[]>([]);
   const [b64, setb64] = useState<string>("");
-  const [fileName, setFileName] = useState<string>("");
+  const [fileNames, setFileNames] = useState<string[]>([]);
   const [result, setResult] = useState("");
   const [selectedFunction, setSelectedFunction] = useState<string>("");
 
@@ -46,14 +50,13 @@ export default function Tools() {
       });
       if (!result.canceled) {
         setPickedFiles((prev) => [...prev, ...result.assets]);
+        //
         for (const asset of result.assets) {
           const file = new File(asset.uri);
           const base64 = await file.base64();
-          console.log("File:", asset.name);
-          setFileName(asset.name);
-          // setFileName(asset.base64!);
+          console.log("File(s):", asset.name);
+          setFileNames((prev) => [...prev, asset.name]);
           setb64(base64);
-          //this is what given to component, the b64 of original file
         }
       } else {
         console.log("User cancelled document picker");
@@ -86,7 +89,7 @@ export default function Tools() {
         </View>
         <View style={styles.fileContainer}>
           <View>
-            <Text style={{ fontWeight: "bold", fontSize: 20 }}>{fileName}</Text>
+            <Text style={{ fontWeight: "bold", fontSize: 20 }}>{JSON.stringify(fileNames)}</Text>
             {pickedFiles.length > 0 && (
               <Text style={styles.fileCount}>
                 {pickedFiles.length} PDF

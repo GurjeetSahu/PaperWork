@@ -15,9 +15,7 @@ export default function TabLayout() {
             options={{
               title: "Home",
               headerShown: false,
-              tabBarIcon: ({ color }) => (
-                <FontAwesome size={28} name="home" color={color} />
-              ),
+              tabBarIcon: ({ color }) => <FontAwesome size={28} name="home" color={color} />,
             }}
           />
           <Tabs.Screen
@@ -25,12 +23,10 @@ export default function TabLayout() {
             options={{
               title: "Tools",
               headerShown: false,
-              tabBarIcon: ({ color }) => (
-                <FontAwesome size={28} name="gear" color={color} />
-              ),
+              tabBarIcon: ({ color }) => <FontAwesome size={28} name="gear" color={color} />,
             }}
           />
-          <Tabs.Screen
+          {/* <Tabs.Screen
             name="profile"
             options={{
               title: "Profile",
@@ -39,7 +35,7 @@ export default function TabLayout() {
               ),
               headerShown: false,
             }}
-          />
+          /> */}
           <Tabs.Screen
             name="imgPreview/index"
             options={{

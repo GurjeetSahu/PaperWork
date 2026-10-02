@@ -82,10 +82,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
 
-  hello: {
-    color: "white",
-  },
-
   name: {
     color: "white",
     fontSize: 20,
