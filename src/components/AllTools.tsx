@@ -2,7 +2,7 @@
 
 import { createPdfToolkit, PdfToolkit } from "pdfstudio";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, Text, View } from "react-native";
+import { View } from "react-native";
 
 type AllToolsProps = {
   base64: string;
@@ -223,38 +223,39 @@ export default function AllTools({ base64, functionName, onResult }: AllToolsPro
     }
   }
   if (loading) {
-    return (
-      <View
-        style={{
-          width: "100%",
-          height: "100%",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <ActivityIndicator />
-        <Text>Loading QPDF...</Text>
-      </View>
-    );
+    // return (
+    //   <View
+    //     style={{
+    //       width: "100%",
+    //       height: "100%",
+    //       justifyContent: "center",
+    //       alignItems: "center",
+    //     }}
+    //   >
+    //     <ActivityIndicator />
+    //     <Text>Loading QPDF...</Text>
+    //   </View>
+    // );
   }
 
   if (!pdf) {
     return (
-      <View
-        style={{
-          width: "100%",
-          height: "100%",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Text>Failed to initialize PDF toolkit.</Text>
-      </View>
+      <View></View>
+      // <View
+      //   style={{
+      //     width: "100%",
+      //     height: "100%",
+      //     justifyContent: "center",
+      //     alignItems: "center",
+      //   }}
+      // >
+      //   <Text>Failed to initialize PDF toolkit.</Text>
+      // </View>
     );
   }
-  return (
-    <View>
-      <Text>QPDF Ready 🚀</Text>
-    </View>
-  );
+  // return (
+  //   <View style={{ width: "50%", height: 50, backgroundColor: "white" }}>
+  //     <Text>QPDF Ready 🚀</Text>
+  //   </View>
+  // );
 }

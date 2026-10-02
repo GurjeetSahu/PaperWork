@@ -2,7 +2,12 @@ import AllTools from "@/src/components/AllTools";
 import * as DocumentPicker from "expo-document-picker";
 import { File } from "expo-file-system";
 import { useState } from "react";
-import { Button, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+
+import { Card } from "@/src/components/ui/card";
+import { Text } from "@/src/components/ui/text";
+
+import { Button, Pressable, ScrollView, StyleSheet, View } from "react-native";
+
 const tools = [
   { emoji: "🔒", label: "Lock", category: "Security", name: "lockPdf" },
   { emoji: "🔓", label: "Remove password", category: "Security", name: "removePassword" },
@@ -50,11 +55,12 @@ export default function Tools() {
       });
       if (!result.canceled) {
         setPickedFiles((prev) => [...prev, ...result.assets]);
+        console.log(result);
+        console.log(pickedFiles);
         //
         for (const asset of result.assets) {
           const file = new File(asset.uri);
           const base64 = await file.base64();
-          console.log("File(s):", asset.name);
           setFileNames((prev) => [...prev, asset.name]);
           setb64(base64);
         }
@@ -68,7 +74,7 @@ export default function Tools() {
   return (
     <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
       <View style={styles.pdfContainer}>
-        <View style={{ width: "50%", marginBottom: 20 }}>
+        <View style={{ margin: 10 }}>
           <Button
             title="Pick File"
             onPress={() => {
@@ -76,30 +82,35 @@ export default function Tools() {
             }}
           />
         </View>
-
-        <View style={{ width: "50%", height: 50, backgroundColor: "white" }}>
-          <AllTools
-            base64={b64}
-            functionName={selectedFunction}
-            onResult={(value) => {
-              console.log("Received: ", value);
-              setResult(value);
-            }}
-          />
-        </View>
-        <View style={styles.fileContainer}>
-          <View>
-            <Text style={{ fontWeight: "bold", fontSize: 20 }}>{JSON.stringify(fileNames)}</Text>
-            {pickedFiles.length > 0 && (
-              <Text style={styles.fileCount}>
-                {pickedFiles.length} PDF
-                {pickedFiles.length === 1 ? "" : "s"} selected
-              </Text>
-            )}
-          </View>
-        </View>
+        <AllTools
+          base64={b64}
+          functionName={selectedFunction}
+          onResult={(value) => {
+            console.log("Received: ", value);
+            setResult(value);
+          }}
+        />
       </View>
+      <View style={styles.fileContainer}>
+        <ScrollView nestedScrollEnabled={true} contentContainerStyle={styles.container} showsVerticalScrollIndicator={true}>
+          {fileNames.map((name) => {
+            return (
+              <View style={{ marginBottom: 5 }}>
+                <Card className="w-80" size="default">
+                  <Text style={{ fontWeight: "bold", fontSize: 20 }}>{name}</Text>
+                </Card>
+              </View>
+            );
+          })}
 
+          {pickedFiles.length > 0 && (
+            <Text style={styles.fileCount}>
+              {pickedFiles.length} PDF
+              {pickedFiles.length === 1 ? "" : "s"} selected
+            </Text>
+          )}
+        </ScrollView>
+      </View>
       {categories.map((category) => {
         const categoryTools = tools.filter((tool) => tool.category === category);
 
@@ -145,7 +156,7 @@ export default function Tools() {
 const styles = StyleSheet.create({
   pdfContainer: {
     width: "100%",
-    height: 300,
+    height: 50,
     marginTop: 10,
     marginBottom: 20,
     backgroundColor: "gray",
@@ -155,12 +166,10 @@ const styles = StyleSheet.create({
   fileContainer: {
     width: "100%",
     height: 150,
-    marginTop: 10,
     marginBottom: 20,
-    backgroundColor: "red",
-    opacity: 0.3,
     borderRadius: 10,
     overflow: "hidden",
+    borderWidth: 3,
   },
   container: {
     flexGrow: 1,
