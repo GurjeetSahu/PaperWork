@@ -9,18 +9,18 @@ import { Text } from "@/src/components/ui/text";
 import { Button, Pressable, ScrollView, StyleSheet, View } from "react-native";
 
 const tools = [
-  { emoji: "🔒", label: "Lock", category: "Security", name: "lockPdf" },
-  { emoji: "🔓", label: "Remove password", category: "Security", name: "removePassword" },
+  { emoji: "🔒", label: "Lock", name: "lockPdf" },
+  { emoji: "🔓", label: "Remove password", name: "removePassword" },
 
-  { emoji: "➕", label: "Merge", category: "Pages", name: "mergePdf" },
-  { emoji: "✂️", label: "Split", category: "Pages", name: "splitPdf" },
-  { emoji: "🎯", label: "Extract pages", category: "Pages", name: "extractPages" },
-  { emoji: "🔄", label: "Rotate", category: "Pages", name: "rotatePdf" },
-  { emoji: "🗑", label: "Delete pages", category: "Pages", name: "deletePages" },
+  { emoji: "➕", label: "Merge", name: "mergePdf" },
+  { emoji: "✂️", label: "Split", name: "splitPdf" },
+  { emoji: "🎯", label: "Extract pages", name: "extractPages" },
+  { emoji: "🔄", label: "Rotate", name: "rotatePdf" },
+  { emoji: "🗑", label: "Delete pages", name: "deletePages" },
 
-  { emoji: "🗜", label: "Compress", category: "PDF", name: "compressPdf" },
+  { emoji: "🗜", label: "Compress", name: "compressPdf" },
 
-  { emoji: "🖼", label: "Images → PDF", category: "Convert", name: "imagesToPdf" },
+  { emoji: "🖼", label: "Images → PDF", name: "imagesToPdf" },
 
   //  { emoji: "📎", label: "Attachments", category: "PDF", name: "attachmentsExtract" },
   //{ emoji: "🩹", label: "Repair", category: "PDF", name: "repairPdf" },
@@ -32,8 +32,6 @@ const tools = [
   // { emoji: "🛠", label: "Escape hatch", category: "Advanced", name: "RotatePdf" },
   // { emoji: "💧", label: "Watermark", category: "PDF", name: "RotatePdf" },
 ];
-
-const categories = [...new Set(tools.map((tool) => tool.category))];
 
 type files = {
   fileName: string;
@@ -111,44 +109,32 @@ export default function Tools() {
           )}
         </ScrollView>
       </View>
-      {categories.map((category) => {
-        const categoryTools = tools.filter((tool) => tool.category === category);
 
-        const rows = Array.from({ length: Math.ceil(categoryTools.length / 2) }, (_, index) => categoryTools.slice(index * 2, index * 2 + 2));
-
-        return (
-          <View key={category} style={styles.section}>
-            <Text style={styles.category}>{category}</Text>
-
-            <View style={styles.table}>
-              {rows.map((row, rowIndex) => (
-                <View key={rowIndex} style={styles.row}>
-                  {row.map((tool, columnIndex) => (
-                    <Pressable
-                      key={tool.label}
-                      accessibilityRole="button"
-                      onPress={() => setSelectedFunction(tool.name)}
-                      style={({ pressed }) => [styles.tool, columnIndex === 0 && styles.leftTool, pressed && styles.toolPressed]}
-                    >
-                      <View style={styles.icon}>
-                        <Text style={styles.emoji}>{tool.emoji}</Text>
-                      </View>
-
-                      <Text style={styles.label} numberOfLines={2}>
-                        {tool.label}
-                      </Text>
-                    </Pressable>
-                  ))}
-
-                  {row.length === 1 && <View style={styles.toolSpacer} />}
+      <View style={styles.table}>
+        {tools.map((tool) => {
+          return (
+            <Pressable
+              key={tool.label}
+              accessibilityRole="button"
+              onPress={() => {
+                console.log("pressed");
+                setSelectedFunction(tool.name);
+              }}
+              style={styles.row}
+            >
+              <View key={tool.name} style={styles.tool}>
+                <View style={styles.icon}>
+                  <Text style={styles.emoji}>{tool.emoji}</Text>
                 </View>
-              ))}
-            </View>
-          </View>
-        );
-      })}
 
-      {/* Optional: useful while testing */}
+                <Text style={styles.label} numberOfLines={2}>
+                  {tool.label}
+                </Text>
+              </View>
+            </Pressable>
+          );
+        })}
+      </View>
     </ScrollView>
   );
 }
@@ -219,10 +205,11 @@ const styles = StyleSheet.create({
     color: "#64748b",
   },
 
-  /* Table */
-
   table: {
-    borderRadius: 18,
+    flex: 2,
+    flexDirection: "row",
+    flexWrap: "wrap",
+
     overflow: "hidden",
     backgroundColor: "#ffffff",
 
@@ -241,9 +228,12 @@ const styles = StyleSheet.create({
   },
 
   row: {
+    borderWidth: 1,
+    width: "50%",
     flexDirection: "row",
     minHeight: 82,
     padding: 10,
+    backgroundColor: "pink",
   },
 
   /* Tool */
@@ -297,8 +287,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
 
-  /* Label */
-
   label: {
     flex: 1,
 
@@ -308,8 +296,6 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: "#1e293b",
   },
-
-  /* Testing */
 
   fileCount: {
     marginTop: 10,
