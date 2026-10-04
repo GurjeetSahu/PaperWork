@@ -51,7 +51,6 @@ export default function AllTools({ base64, functionName, onResult }: AllToolsPro
     if (!functionName || !base64 || !pdf || processing) return;
 
     const executeSelectedFunction = async () => {
-      console.log(functionName);
       switch (functionName) {
         case "lockPdf":
           await lockPdf();
@@ -86,7 +85,6 @@ export default function AllTools({ base64, functionName, onResult }: AllToolsPro
     if (!pdf || !base64) return;
     try {
       setProcessing(true);
-      console.log("here");
       const binary = atob(base64);
       const bytes = new Uint8Array(binary.length);
       for (let i = 0; i < binary.length; i++) {
@@ -187,7 +185,6 @@ export default function AllTools({ base64, functionName, onResult }: AllToolsPro
     if (!pdf || !base64) return;
     try {
       setProcessing(true);
-      console.log("here");
       const binary = atob(base64);
       const bytes = new Uint8Array(binary.length);
       for (let i = 0; i < binary.length; i++) {

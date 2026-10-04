@@ -59,7 +59,6 @@ export default function Tools() {
           const base64 = await file.base64();
 
           setFileNames((prev) => [...prev, asset.name]);
-          // console.log(base64);
           setb64(base64);
         }
       } else {
@@ -75,7 +74,8 @@ export default function Tools() {
     try {
       const cleanBase64 = base64Data.replace(/^data:.*?;base64,/, "");
       const file = new File(Paths.document, "document.pdf");
-      file.write(cleanBase64);
+      file.write(cleanBase64, { encoding: "base64" });
+
       console.log("File written successfully to:", file.uri);
       return file.uri;
     } catch (error) {
@@ -119,7 +119,6 @@ export default function Tools() {
           functionName={selectedFunction}
           onResult={(value) => {
             setResult(value);
-            console.log(value.slice(0, 20));
             saveBase64ToFile(value);
           }}
         />
@@ -184,7 +183,6 @@ export default function Tools() {
               key={tool.label}
               accessibilityRole="button"
               onPress={() => {
-                console.log(tool.name, "ing");
                 setSelectedFunction(tool.name);
               }}
               style={styles.tool}
