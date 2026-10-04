@@ -51,6 +51,7 @@ export default function AllTools({ base64, functionName, onResult }: AllToolsPro
     if (!functionName || !base64 || !pdf || processing) return;
 
     const executeSelectedFunction = async () => {
+      console.log(functionName);
       switch (functionName) {
         case "lockPdf":
           await lockPdf();

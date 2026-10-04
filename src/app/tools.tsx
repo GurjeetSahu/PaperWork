@@ -2,9 +2,11 @@ import AllTools from "@/src/components/AllTools";
 
 import { Text } from "@/src/components/ui/text";
 import * as DocumentPicker from "expo-document-picker";
-import { File } from "expo-file-system";
+import { File, Paths } from "expo-file-system";
 import { useState } from "react";
 import { Button, Pressable, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
+
+import * as Sharing from "expo-sharing";
 
 const tools = [
   { emoji: "🔒", label: "Lock", name: "lockPdf" },
@@ -57,6 +59,7 @@ export default function Tools() {
           const base64 = await file.base64();
 
           setFileNames((prev) => [...prev, asset.name]);
+          // console.log(base64);
           setb64(base64);
         }
       } else {
@@ -67,6 +70,30 @@ export default function Tools() {
     }
   };
 
+  function saveBase64ToFile(base64Data: string) {
+    console.log(base64Data);
+    try {
+      const cleanBase64 = base64Data.replace(/^data:.*?;base64,/, "");
+      const file = new File(Paths.document, "document.pdf");
+      file.write(cleanBase64);
+      console.log("File written successfully to:", file.uri);
+      return file.uri;
+    } catch (error) {
+      console.error("Failed to write file:", error);
+    }
+  }
+  const shareFileToDevice = async () => {
+    const isAvailable = await Sharing.isAvailableAsync();
+
+    if (isAvailable) {
+      await Sharing.shareAsync("file:///data/user/0/com.gurjeetsahu.onlyDocs/files/document.pdf", {
+        mimeType: "application/pdf", // Adjust based on your file extension
+        dialogTitle: "Save or Share your file",
+      });
+    } else {
+      console.log("Sharing is not available on this platform");
+    }
+  };
   // Remove file by index
   const removeFile = (index: number) => {
     setFileNames((prev) => prev.filter((_, i) => i !== index));
@@ -92,6 +119,8 @@ export default function Tools() {
           functionName={selectedFunction}
           onResult={(value) => {
             setResult(value);
+            console.log(value.slice(0, 20));
+            saveBase64ToFile(value);
           }}
         />
       </View>
@@ -131,9 +160,15 @@ export default function Tools() {
         onPress={() => {
           console.log(fileNames);
         }}
+      /> */}
+      <Button
+        title="Share"
+        onPress={() => {
+          shareFileToDevice();
+        }}
       />
 
-      <Button
+      {/* <Button
         title="Delete"
         onPress={() => {
           setFileNames([]);
@@ -149,7 +184,7 @@ export default function Tools() {
               key={tool.label}
               accessibilityRole="button"
               onPress={() => {
-                console.log("pressed");
+                console.log(tool.name, "ing");
                 setSelectedFunction(tool.name);
               }}
               style={styles.tool}
