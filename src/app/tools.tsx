@@ -70,7 +70,6 @@ export default function Tools() {
   };
 
   function saveBase64ToFile(base64Data: string) {
-    console.log(base64Data);
     try {
       const cleanBase64 = base64Data.replace(/^data:.*?;base64,/, "");
       const file = new File(Paths.document, "document.pdf");
@@ -105,8 +104,9 @@ export default function Tools() {
     <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
       {/* Pick File */}
       <View style={styles.pickFile}>
-        <View style={{ margin: 10 }}>
+        <View>
           <Button
+            color="#48426D"
             title="Pick File"
             onPress={() => {
               PickFile();
@@ -161,6 +161,7 @@ export default function Tools() {
         }}
       /> */}
       <Button
+        color="#48426D"
         title="Share"
         onPress={() => {
           shareFileToDevice();
@@ -207,11 +208,11 @@ export default function Tools() {
 const styles = StyleSheet.create({
   pickFile: {
     width: "100%",
-    height: 50,
+    height: 36,
     marginTop: 10,
     marginBottom: 20,
     backgroundColor: "gray",
-    borderRadius: 10,
+    borderRadius: 5,
     overflow: "hidden",
   },
 
@@ -253,11 +254,12 @@ const styles = StyleSheet.create({
   tool: {
     margin: 5,
     borderWidth: 1,
+    borderRadius: 10,
     width: "47%",
     flexDirection: "row",
     minHeight: 82,
     padding: 10,
-    backgroundColor: "pink",
+    backgroundColor: "#F0C38E",
   },
 
   icon: {

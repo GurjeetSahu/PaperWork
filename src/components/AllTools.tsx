@@ -111,7 +111,7 @@ export default function AllTools({ base64, functionName, onResult }: AllToolsPro
       }
       const inputBytes = bytes;
 
-      const password = "";
+      const password = "d";
       const deleted = await pdf.removePassword(inputBytes, { password: password });
       onResult(byteArrayToBase64(deleted));
     } catch (error) {
