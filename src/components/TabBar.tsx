@@ -1,17 +1,7 @@
 import { Directory, Paths } from "expo-file-system";
 import { useCallback, useEffect, useRef, useState } from "react";
-import {
-  LayoutChangeEvent,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-  withSpring,
-} from "react-native-reanimated";
+import { LayoutChangeEvent, Pressable, StyleSheet, Text, View } from "react-native";
+import Animated, { useAnimatedStyle, useSharedValue, withSpring } from "react-native-reanimated";
 
 import DocumentSection from "@/src/components/DocumentSection";
 import { useUsers } from "@/src/components/User";
@@ -34,20 +24,12 @@ export default function TabBar() {
       return;
     }
 
-    const entries = new Directory(
-      Paths.document,
-      "userData",
-      currentUser,
-    ).list();
+    const entries = new Directory(Paths.document, "userData", currentUser).list();
 
-    const nextTabs = entries
-      .filter((entry) => entry instanceof Directory)
-      .map((folder) => folder.name);
+    const nextTabs = entries.filter((entry) => entry instanceof Directory).map((folder) => folder.name);
 
     setTabs((previousTabs) => {
-      const sameTabs =
-        previousTabs.length === nextTabs.length &&
-        previousTabs.every((tab, index) => tab === nextTabs[index]);
+      const sameTabs = previousTabs.length === nextTabs.length && previousTabs.every((tab, index) => tab === nextTabs[index]);
 
       return sameTabs ? previousTabs : nextTabs;
     });
@@ -116,27 +98,14 @@ export default function TabBar() {
           const isActive = activeIndex === index;
 
           return (
-            <Pressable
-              key={tab}
-              style={styles.tab}
-              onPress={() => selectTab(index, tab)}
-              onLayout={(event) => onTabLayout(index, event)}
-            >
-              <Text
-                style={[styles.tabLabel, isActive && styles.tabLabelActive]}
-              >
-                {tab}
-              </Text>
+            <Pressable key={tab} style={styles.tab} onPress={() => selectTab(index, tab)} onLayout={(event) => onTabLayout(index, event)}>
+              <Text style={[styles.tabLabel, isActive && styles.tabLabelActive]}>{tab}</Text>
             </Pressable>
           );
         })}
       </View>
       {/**Here's the Connection to all documents view via  activeTab.key */}
-      <View style={styles.content}>
-        {currentUser && currentTab ? (
-          <DocumentSection user={currentUser} category={currentTab} />
-        ) : null}
-      </View>
+      <View style={styles.content}>{currentUser && currentTab ? <DocumentSection user={currentUser} category={currentTab} /> : null}</View>
     </View>
   );
 }
@@ -161,7 +130,7 @@ const styles = StyleSheet.create({
     top: 4,
     bottom: 4,
     left: 0,
-    backgroundColor: "#2563eb",
+    backgroundColor: "#39AEA9",
     borderRadius: 9,
     boxShadow: "0px 2px 4px rgba(30, 64, 175, 0.2)",
     elevation: 3,

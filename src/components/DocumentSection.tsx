@@ -1,27 +1,17 @@
 import { Directory, Paths } from "expo-file-system";
 import { useFocusEffect, useRouter } from "expo-router";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import { Menu, MenuItem, MenuItemLabel } from "@/src/components/ui/menu";
-import { Pressable } from "@/src/components/ui/pressable";
 import { useUsers } from "@/src/components/User";
 
-export default function DocumentSection({
-  user,
-  category,
-}: {
-  user: string;
-  category: string;
-}) {
+export default function DocumentSection({ user, category }: { user: string; category: string }) {
   const router = useRouter();
   const { foldersVersion } = useUsers();
   const [files, setFiles] = useState<string[]>([]);
 
-  const directory = useMemo(
-    () => new Directory(Paths.document, "userData", user, category),
-    [user, category],
-  );
+  const directory = useMemo(() => new Directory(Paths.document, "userData", user, category), [user, category]);
 
   const loadFiles = useCallback(() => {
     try {

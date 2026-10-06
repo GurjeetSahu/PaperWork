@@ -1,22 +1,8 @@
-import {
-  Modal,
-  ModalBackdrop,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-} from "@/src/components/ui/modal";
+import { Modal, ModalBackdrop, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader } from "@/src/components/ui/modal";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Directory, Paths } from "expo-file-system";
 import { useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 import { useUsers } from "@/src/components/User";
 
@@ -91,17 +77,11 @@ export default function NewFolder() {
           </ModalBody>
 
           <ModalFooter style={styles.footer}>
-            <TouchableOpacity
-              style={[styles.actionButton, styles.cancel]}
-              onPress={resetModal}
-            >
+            <TouchableOpacity style={[styles.actionButton, styles.cancel]} onPress={resetModal}>
               <Text style={styles.cancelText}>Cancel</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity
-              style={[styles.actionButton, styles.save]}
-              onPress={handleSave}
-            >
+            <TouchableOpacity style={[styles.actionButton, styles.save]} onPress={handleSave}>
               <Text style={styles.saveText}>Save</Text>
             </TouchableOpacity>
           </ModalFooter>

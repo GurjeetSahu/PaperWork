@@ -1,10 +1,9 @@
 import AllTools from "@/src/components/AllTools";
 
-import { Text } from "@/src/components/ui/text";
 import * as DocumentPicker from "expo-document-picker";
 import { File, Paths } from "expo-file-system";
 import { useState } from "react";
-import { Button, Pressable, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Button, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import * as Sharing from "expo-sharing";
 

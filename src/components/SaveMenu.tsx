@@ -1,23 +1,8 @@
-import { Button, ButtonText } from "@/src/components/ui/button";
-import {
-  Modal,
-  ModalBackdrop,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-} from "@/src/components/ui/modal";
+import { Modal, ModalBackdrop, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader } from "@/src/components/ui/modal";
 import { Directory, File, Paths } from "expo-file-system";
 import { router } from "expo-router";
-import React, { useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { useState } from "react";
+import { Button, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useUsers } from "./User";
 
 type SaveMenuProps = {
@@ -55,23 +40,11 @@ export default function SaveMenu(props: SaveMenuProps) {
     resetModal();
 
     if (!fromCamera) {
-      new Directory(
-        Paths.document,
-        "userData",
-        currentUser,
-        trimmedSubCat,
-        trimmedFileName,
-      ).create({});
+      new Directory(Paths.document, "userData", currentUser, trimmedSubCat, trimmedFileName).create({});
 
       for (const uri of uriList) {
         const sourceFile = new File(uri);
-        const destinationDir = new Directory(
-          Paths.document,
-          "userData",
-          currentUser,
-          trimmedSubCat,
-          trimmedFileName,
-        );
+        const destinationDir = new Directory(Paths.document, "userData", currentUser, trimmedSubCat, trimmedFileName);
         sourceFile.move(destinationDir);
       }
       refreshFolders();
@@ -79,12 +52,7 @@ export default function SaveMenu(props: SaveMenuProps) {
       return;
     }
 
-    const subCategory = new Directory(
-      Paths.document,
-      "userData",
-      currentUser,
-      trimmedSubCat,
-    );
+    const subCategory = new Directory(Paths.document, "userData", currentUser, trimmedSubCat);
     subCategory.create({ idempotent: true });
 
     new Directory(Paths.document, "userData", "temp").rename(trimmedFileName);
@@ -96,9 +64,7 @@ export default function SaveMenu(props: SaveMenuProps) {
 
   return (
     <View>
-      <Button onPress={openModal}>
-        <ButtonText>Proceed</ButtonText>
-      </Button>
+      <Button title="Procced" onPress={openModal} />
 
       <Modal isOpen={showModal} onClose={resetModal} size="md">
         <ModalBackdrop />
@@ -148,17 +114,11 @@ export default function SaveMenu(props: SaveMenuProps) {
           </ModalBody>
 
           <ModalFooter style={styles.footer}>
-            <TouchableOpacity
-              style={[styles.actionButton, styles.cancel]}
-              onPress={resetModal}
-            >
+            <TouchableOpacity style={[styles.actionButton, styles.cancel]} onPress={resetModal}>
               <Text style={styles.cancelText}>Cancel</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity
-              style={[styles.actionButton, styles.save]}
-              onPress={handleSave}
-            >
+            <TouchableOpacity style={[styles.actionButton, styles.save]} onPress={handleSave}>
               <Text style={styles.saveText}>Save</Text>
             </TouchableOpacity>
           </ModalFooter>
