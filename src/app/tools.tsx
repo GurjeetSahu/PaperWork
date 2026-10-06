@@ -40,8 +40,14 @@ export default function Tools() {
   const [b64, setb64] = useState<string>("");
   const [fileNames, setFileNames] = useState<string[]>([]);
   const [result, setResult] = useState("");
+  const [resultCard, setResultCard] = useState(false);
   const [selectedFunction, setSelectedFunction] = useState<string>("");
 
+  const onResults = (value: any) => {
+    setResultCard(true);
+    setResult(value);
+    saveBase64ToFile(value);
+  };
   const PickFile = async () => {
     try {
       const result = await DocumentPicker.getDocumentAsync({
@@ -117,8 +123,7 @@ export default function Tools() {
           base64={b64}
           functionName={selectedFunction}
           onResult={(value) => {
-            setResult(value);
-            saveBase64ToFile(value);
+            onResults(value);
           }}
         />
       </View>
