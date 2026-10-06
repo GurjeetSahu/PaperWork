@@ -106,7 +106,7 @@ export default function Tools() {
       <View style={styles.pickFile}>
         <View>
           <Button
-            color="#48426D"
+            color="#39AEA9"
             title="Pick File"
             onPress={() => {
               PickFile();
@@ -161,7 +161,7 @@ export default function Tools() {
         }}
       /> */}
       <Button
-        color="#48426D"
+        color="#39AEA9"
         title="Share"
         onPress={() => {
           shareFileToDevice();
@@ -259,7 +259,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     minHeight: 82,
     padding: 10,
-    backgroundColor: "#F0C38E",
+    backgroundColor: "#E5EFC1",
   },
 
   icon: {
