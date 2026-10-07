@@ -1,12 +1,12 @@
 import AllTools from "@/src/components/AllTools";
-
 import * as DocumentPicker from "expo-document-picker";
 import { File, Paths } from "expo-file-system";
 import { useState } from "react";
 import { Button, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-import * as Sharing from "expo-sharing";
+import * as IntentLauncher from "expo-intent-launcher";
 
+import CloseableCard from "@/src/components/ui/card";
 const tools = [
   { emoji: "🔒", label: "Lock", name: "lockPdf" },
   { emoji: "🔓", label: "Remove password", name: "removePassword" },
@@ -40,11 +40,11 @@ export default function Tools() {
   const [b64, setb64] = useState<string>("");
   const [fileNames, setFileNames] = useState<string[]>([]);
   const [result, setResult] = useState("");
-  const [resultCard, setResultCard] = useState(false);
+  const [resultCard, showResultCard] = useState(false);
   const [selectedFunction, setSelectedFunction] = useState<string>("");
 
   const onResults = (value: any) => {
-    setResultCard(true);
+    showResultCard(true);
     setResult(value);
     saveBase64ToFile(value);
   };
@@ -86,22 +86,28 @@ export default function Tools() {
       console.error("Failed to write file:", error);
     }
   }
-  const shareFileToDevice = async () => {
-    const isAvailable = await Sharing.isAvailableAsync();
 
-    if (isAvailable) {
-      await Sharing.shareAsync("file:///data/user/0/com.gurjeetsahu.onlyDocs/files/document.pdf", {
-        mimeType: "application/pdf", // Adjust based on your file extension
-        dialogTitle: "Save or Share your file",
-      });
-    } else {
-      console.log("Sharing is not available on this platform");
-    }
+  const shareFileToDevice = async () => {
+    const cUri = new File(Paths.document, "file:///data/user/0/com.gurjeetsahu.onlyDocs/files/document.pdf");
+    await IntentLauncher.startActivityAsync("android.intent.action.VIEW", {
+      data: cUri.uri,
+      type: "application/pdf",
+      flags: 1, // FLAG_GRANT_READ_URI_PERMISSION
+    });
+    // const isAvailable = await Sharing.isAvailableAsync();
+
+    // if (isAvailable) {
+    //   await Sharing.shareAsync("file:///data/user/0/com.gurjeetsahu.onlyDocs/files/document.pdf", {
+    //     mimeType: "application/pdf", // Adjust based on your file extension
+    //     dialogTitle: "Save or Share your file",
+    //   });
+    // } else {
+    //   console.log("Sharing is not available on this platform");
+    // }
   };
   // Remove file by index
   const removeFile = (index: number) => {
     setFileNames((prev) => prev.filter((_, i) => i !== index));
-
     setPickedFiles((prev) => prev.filter((_, i) => i !== index));
   };
 
@@ -164,6 +170,15 @@ export default function Tools() {
           console.log(fileNames);
         }}
       /> */}
+      {resultCard && (
+        <CloseableCard
+          title={fileNames}
+          description=""
+          onClose={() => {
+            showResultCard(false);
+          }}
+        />
+      )}
       <Button
         color="#39AEA9"
         title="Share"
@@ -330,7 +345,6 @@ const styles = StyleSheet.create({
     color: "#666666",
     lineHeight: 20,
   },
-
   closeButton: {
     position: "absolute",
     top: 12,
