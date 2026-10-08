@@ -1,12 +1,12 @@
 import AllTools from "@/src/components/AllTools";
 import * as DocumentPicker from "expo-document-picker";
 import { File, Paths } from "expo-file-system";
+import * as Sharing from "expo-sharing";
 import { useState } from "react";
 import { Button, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-import * as IntentLauncher from "expo-intent-launcher";
-
 import CloseableCard from "@/src/components/ui/card";
+import PasswordMenu from "../components/PasswordMenu";
 const tools = [
   { emoji: "🔒", label: "Lock", name: "lockPdf" },
   { emoji: "🔓", label: "Remove password", name: "removePassword" },
@@ -48,6 +48,12 @@ export default function Tools() {
     setResult(value);
     saveBase64ToFile(value);
   };
+  const [formData, setFormData] = useState<{ pwd?: string; confirmPwd?: string } | null>(null);
+
+  const handlePwdFormSubmit = (result: any) => {
+    setFormData(result);
+    console.log(result);
+  };
   const PickFile = async () => {
     try {
       const result = await DocumentPicker.getDocumentAsync({
@@ -88,22 +94,16 @@ export default function Tools() {
   }
 
   const shareFileToDevice = async () => {
-    const cUri = new File(Paths.document, "file:///data/user/0/com.gurjeetsahu.onlyDocs/files/document.pdf");
-    await IntentLauncher.startActivityAsync("android.intent.action.VIEW", {
-      data: cUri.uri,
-      type: "application/pdf",
-      flags: 1, // FLAG_GRANT_READ_URI_PERMISSION
-    });
-    // const isAvailable = await Sharing.isAvailableAsync();
+    const isAvailable = await Sharing.isAvailableAsync();
 
-    // if (isAvailable) {
-    //   await Sharing.shareAsync("file:///data/user/0/com.gurjeetsahu.onlyDocs/files/document.pdf", {
-    //     mimeType: "application/pdf", // Adjust based on your file extension
-    //     dialogTitle: "Save or Share your file",
-    //   });
-    // } else {
-    //   console.log("Sharing is not available on this platform");
-    // }
+    if (isAvailable) {
+      await Sharing.shareAsync("file:///data/user/0/com.gurjeetsahu.onlyDocs/files/document.pdf", {
+        mimeType: "application/pdf", // Adjust based on your file extension
+        dialogTitle: "Save or Share your file",
+      });
+    } else {
+      console.log("Sharing is not available on this platform");
+    }
   };
   // Remove file by index
   const removeFile = (index: number) => {
@@ -128,6 +128,7 @@ export default function Tools() {
         <AllTools
           base64={b64}
           functionName={selectedFunction}
+          functionData={formData?.pwd!}
           onResult={(value) => {
             onResults(value);
           }}
@@ -171,22 +172,31 @@ export default function Tools() {
         }}
       /> */}
       {resultCard && (
-        <CloseableCard
-          title={fileNames}
-          description=""
-          onClose={() => {
-            showResultCard(false);
-          }}
-        />
+        <View>
+          <CloseableCard
+            title={fileNames}
+            description=""
+            onClose={() => {
+              showResultCard(false);
+            }}
+          />
+          <Button
+            color="#39AEA9"
+            title="Share"
+            onPress={() => {
+              shareFileToDevice();
+            }}
+          />
+        </View>
       )}
-      <Button
-        color="#39AEA9"
-        title="Share"
-        onPress={() => {
-          shareFileToDevice();
-        }}
-      />
+      <PasswordMenu onSubmitResult={handlePwdFormSubmit} />
 
+      {formData && (
+        <View style={{}}>
+          <Text>Submitted Name: {formData?.pwd}</Text>
+          <Text>Submitted Email: {formData?.confirmPwd}</Text>
+        </View>
+      )}
       {/* <Button
         title="Delete"
         onPress={() => {

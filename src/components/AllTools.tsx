@@ -1,16 +1,18 @@
 "use dom";
 
 import { createPdfToolkit, PdfToolkit } from "pdfstudio";
+//import { LockOptions, UnlockOptions, SplitOptions, ExtractPagesOptions, RotateOptions, DeletePagesOptions, ImagesToPdfOptions, CompressOptions } from "pdfstudio";
 import { useEffect, useState } from "react";
 import { View } from "react-native";
 
 type AllToolsProps = {
   base64: string;
   functionName?: string;
+  functionData?: string;
   onResult: (value: string) => void;
 };
 
-export default function AllTools({ base64, functionName, onResult }: AllToolsProps) {
+export default function AllTools({ base64, functionName, functionData, onResult }: AllToolsProps) {
   const [pdf, setPdf] = useState<any>(null);
   //const [pdf, setPdf] = useState<PdfToolkit | null>(null);
   const [loading, setLoading] = useState(true);
@@ -92,7 +94,7 @@ export default function AllTools({ base64, functionName, onResult }: AllToolsPro
       }
       const inputBytes = bytes;
 
-      const rotated = await pdf.lock(inputBytes, { userPassword: "d" });
+      const rotated = await pdf.lock(inputBytes, { userPassword: functionData });
       onResult(byteArrayToBase64(rotated));
     } catch (error) {
       console.error("PDF processing failed:", error);
@@ -112,7 +114,7 @@ export default function AllTools({ base64, functionName, onResult }: AllToolsPro
       const inputBytes = bytes;
 
       const password = "d";
-      const deleted = await pdf.removePassword(inputBytes, { password: password });
+      const deleted = await pdf.removePassword(inputBytes, { password: functionData });
       onResult(byteArrayToBase64(deleted));
     } catch (error) {
       console.error("PDF processing failed:", error);
@@ -152,8 +154,7 @@ export default function AllTools({ base64, functionName, onResult }: AllToolsPro
       }
       const inputBytes = bytes;
 
-      const pages = "";
-      const extracted = await pdf.extractPages(inputBytes, { pages: pages });
+      const extracted = await pdf.extractPages(inputBytes, { pages: functionData });
       onResult(byteArrayToBase64(extracted));
     } catch (error) {
       console.error("PDF processing failed:", error);
@@ -171,9 +172,7 @@ export default function AllTools({ base64, functionName, onResult }: AllToolsPro
         bytes[i] = binary.charCodeAt(i);
       }
       const inputBytes = bytes;
-
-      const pages = "";
-      const extracted = await pdf.extractPages(inputBytes, { pages: pages });
+      const extracted = await pdf.extractPages(inputBytes, { pages: functionData });
       onResult(byteArrayToBase64(extracted));
     } catch (error) {
       console.error("PDF processing failed:", error);
@@ -210,9 +209,7 @@ export default function AllTools({ base64, functionName, onResult }: AllToolsPro
         bytes[i] = binary.charCodeAt(i);
       }
       const inputBytes = bytes;
-
-      const pages = "";
-      const deleted = await pdf.deletePages(inputBytes, { pages: pages });
+      const deleted = await pdf.deletePages(inputBytes, { pages: functionData });
       onResult(byteArrayToBase64(deleted));
     } catch (error) {
       console.error("PDF processing failed:", error);
@@ -220,40 +217,6 @@ export default function AllTools({ base64, functionName, onResult }: AllToolsPro
       setProcessing(false);
     }
   }
-  if (loading) {
-    // return (
-    //   <View
-    //     style={{
-    //       width: "100%",
-    //       height: "100%",
-    //       justifyContent: "center",
-    //       alignItems: "center",
-    //     }}
-    //   >
-    //     <ActivityIndicator />
-    //     <Text>Loading QPDF...</Text>
-    //   </View>
-    // );
-  }
 
-  if (!pdf) {
-    return (
-      <View></View>
-      // <View
-      //   style={{
-      //     width: "100%",
-      //     height: "100%",
-      //     justifyContent: "center",
-      //     alignItems: "center",
-      //   }}
-      // >
-      //   <Text>Failed to initialize PDF toolkit.</Text>
-      // </View>
-    );
-  }
-  // return (
-  //   <View style={{ width: "50%", height: 50, backgroundColor: "white" }}>
-  //     <Text>QPDF Ready 🚀</Text>
-  //   </View>
-  // );
+  return <View></View>;
 }
