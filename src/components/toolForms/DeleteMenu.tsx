@@ -1,12 +1,18 @@
 import { useState } from "react";
 import { Button, Modal, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 
-export default function PasswordMenu({ onSubmitResult }: any) {
+import { DeletePagesOptions } from "pdfstudio";
+
+type DeleteMenuProps = {
+  onSubmitResult: (options: DeletePagesOptions) => void;
+};
+
+export default function DeleteMenu({ onSubmitResult }: DeleteMenuProps) {
   const [modalVisible, setModalVisible] = useState(false);
+  const [pages, setPages] = useState("");
   const [pwd, setPwd] = useState("");
-  const [confirmPwd, setCnfmPwd] = useState("");
   const handlePress = () => {
-    onSubmitResult({ pwd, confirmPwd });
+    onSubmitResult({ pages, password: pwd });
   };
   return (
     <View style={styles.container}>
@@ -34,21 +40,21 @@ export default function PasswordMenu({ onSubmitResult }: any) {
             <View style={styles.textBox}>
               <TextInput
                 style={styles.input}
-                placeholder="Enter password..."
+                placeholder="Enter pages..."
                 placeholderTextColor="#888"
                 // 2. Bind the value to your state variable
-                value={pwd}
+                value={pages}
                 // 3. Update state automatically when text changes
-                onChangeText={(newText) => setPwd(newText)}
+                onChangeText={(newText) => setPages(newText)}
               />
               <TextInput
                 style={styles.input}
                 placeholder="Confirm password..."
                 placeholderTextColor="#888"
                 // 2. Bind the value to your state variable
-                value={confirmPwd}
+                value={pwd}
                 // 3. Update state automatically when text changes
-                onChangeText={(newText) => setCnfmPwd(newText)}
+                onChangeText={(newText) => setPwd(newText)}
               />
             </View>
             <Button title="Done" onPress={handlePress} />
