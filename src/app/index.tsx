@@ -4,12 +4,11 @@ import TabBar from "@/src/components/TabBar";
 import { Directory, Paths } from "expo-file-system";
 import { useEffect } from "react";
 
-import { Image, ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 
 import FileSystemDumpButton, { dir } from "@/src/components/DummyComp";
 
 import User from "@/src/components/User";
-import { Ionicons } from "@expo/vector-icons";
 
 export default function HomeScreen() {
   const Separator = () => <View style={styles.hr} />;
@@ -29,8 +28,8 @@ export default function HomeScreen() {
             <User />
           </View>
 
-          <View style={styles.headerTopRight}>
-            <Ionicons name="search" size={40} color="white" />
+          {/* <View style={styles.headerTopRight}>
+            <Ionicons name="search" size={30} color="white" />
 
             <Image
               source={{
@@ -38,7 +37,7 @@ export default function HomeScreen() {
               }}
               style={styles.avatar}
             />
-          </View>
+          </View> */}
         </View>
       </View>
 
