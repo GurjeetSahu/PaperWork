@@ -1,50 +1,131 @@
-# Welcome to your Expo app 👋
+# PaperWork
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+PaperWork is a mobile-first PDF toolkit built with Expo and React Native. It helps users work with PDF documents directly on a phone or tablet, including password protection, page operations, compression, and image-to-PDF conversion.
 
-## Get started
+## Overview
 
-1. Install dependencies
+This app is designed for quick document workflows on-device:
 
-   ```bash
-   npm install
-   ```
+- Lock and unlock PDFs
+- Merge multiple PDFs
+- Split and extract pages
+- Rotate and delete pages
+- Compress PDF files
+- Convert images into a PDF
+- Save the output locally and share it to other apps
 
-2. Start the app
+The project uses the `pdfstudio` WebAssembly PDF engine for processing and stores generated files in the app document directory.
 
-   ```bash
-   npx expo start
-   ```
+## Tech Stack
 
-In the output, you'll find options to open the app in a
+- Expo SDK 57
+- React Native 0.86
+- Expo Router
+- TypeScript
+- NativeWind
+- Gluestack UI
+- `pdfstudio` for PDF processing
+- `expo-document-picker`, `expo-file-system`, and `expo-sharing`
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Features
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+### PDF operations
 
-## Get a fresh project
+- Lock PDFs with user and owner passwords
+- Remove PDF passwords
+- Merge multiple selected PDFs in order
+- Split a PDF into multiple files
+- Extract specific pages
+- Rotate pages by angle
+- Delete selected pages
+- Compress PDF files
+- Convert images to a single PDF
 
-When you're ready, run:
+### Mobile workflow
+
+- Pick files from the device
+- Manage selected PDFs in a local list
+- Save processed output to the app documents folder
+- Share final files through native share dialogs
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- npm
+- Expo CLI (optional, but available via `npx expo`)
+- Android Studio or Xcode for running emulators/simulators
+
+### Install dependencies
 
 ```bash
-npm run reset-project
+npm install
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### Run the app
 
-## Learn more
+Start the development server:
 
-To learn more about developing your project with Expo, look at the following resources:
+```bash
+npx expo start
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+Then choose one of the available options:
 
-## Join the community
+```bash
+npm run android
+npm run ios
+npm run web
+```
 
-Join our community of developers creating universal apps.
+### Linting
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+```bash
+npm run lint
+```
+
+## Project Structure
+
+```text
+.
+├── android/                 # Android native project
+├── ios/                     # iOS native project
+├── public/
+│   └── qpdf.wasm            # PDF engine WebAssembly asset used by pdfstudio
+├── src/
+│   ├── app/                 # Expo Router screens
+│   ├── components/          # Reusable UI and tool forms
+│   ├── types/               # TypeScript models for tool forms
+│   └── store/               # App state/store code
+├── app.json                 # Expo app config
+├── babel.config.js          # Babel config
+├── eslint.config.js         # ESLint config
+├── metro.config.js          # Metro bundler config
+├── package.json             # Scripts and dependencies
+├── tailwind.config.js      # Tailwind setup
+├── tsconfig.json            # TypeScript config
+├── README.md                # Project documentation
+└── global.css              # Global styles
+```
+
+## Notes
+
+- The app loads the PDF engine from `public/qpdf.wasm`.
+- Processed files are saved into the app document directory using `expo-file-system`.
+- If you are serving the app from a custom base URL, make sure the `EXPO_PUBLIC_BASE_URL` environment variable is set appropriately for the PDF engine to load correctly.
+
+## Useful Commands
+
+```bash
+npm install
+npx expo start
+npm run android
+npm run ios
+npm run web
+npm run lint
+```
+
+## License
+
+This project is currently unlicensed unless you add a license file for your own distribution or publishing workflow.
