@@ -1,0 +1,92 @@
+import { StyleSheet } from "react-native";
+
+export const formStyles = StyleSheet.create({
+  textBox: {
+    width: "100%",
+    gap: 10,
+  },
+  input: {
+    height: 48,
+    width: "100%",
+    borderWidth: 1,
+    borderColor: "#cbd5e1",
+    borderRadius: 8,
+    paddingHorizontal: 14,
+    backgroundColor: "#fff",
+    fontSize: 16,
+  },
+  hint: {
+    fontSize: 13,
+    color: "#64748b",
+    marginBottom: 8,
+    textAlign: "center",
+  },
+  backdrop: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalContent: {
+    width: "85%",
+    maxWidth: 360,
+    backgroundColor: "#ffffff",
+    borderRadius: 12,
+    padding: 24,
+    alignItems: "stretch",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    position: "relative",
+  },
+  closeCornerButton: {
+    position: "absolute",
+    top: 12,
+    right: 16,
+    padding: 8,
+    zIndex: 1,
+  },
+  closeButtonText: {
+    fontSize: 20,
+    color: "#8e8e93",
+    fontWeight: "bold",
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 12,
+    color: "#0f172a",
+    textAlign: "center",
+  },
+  angleRow: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 8,
+    justifyContent: "center",
+    marginBottom: 8,
+  },
+  angleChip: {
+    paddingVertical: 8,
+    paddingHorizontal: 14,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "#cbd5e1",
+    backgroundColor: "#f8fafc",
+  },
+  angleChipSelected: {
+    borderColor: "#39AEA9",
+    backgroundColor: "#E5EFC1",
+  },
+  angleChipText: {
+    fontWeight: "600",
+    color: "#334155",
+  },
+  imageRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginVertical: 4,
+  },
+});

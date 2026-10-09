@@ -1,12 +1,22 @@
 import AllTools from "@/src/components/AllTools";
+import CompressMenu from "@/src/components/toolForms/CompressMenu";
+import DeleteMenu from "@/src/components/toolForms/DeleteMenu";
+import ExtractMenu from "@/src/components/toolForms/ExtractMenu";
+import ImagesToPdfMenu from "@/src/components/toolForms/ImagesToPdfMenu";
+import LockMenu from "@/src/components/toolForms/LockMenu";
+import MergeMenu from "@/src/components/toolForms/MergeMenu";
+import RotateMenu from "@/src/components/toolForms/RotateMenu";
+import SplitMenu from "@/src/components/toolForms/SplitMenu";
+import UnlockMenu from "@/src/components/toolForms/UnlockMenu";
+import type { ToolFormData } from "@/src/types/toolFormData";
 import * as DocumentPicker from "expo-document-picker";
 import { File, Paths } from "expo-file-system";
 import * as Sharing from "expo-sharing";
 import { useState } from "react";
-import { Button, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Alert, Button, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import CloseableCard from "@/src/components/ui/card";
-import PasswordMenu from "../components/PasswordMenu";
+
 const tools = [
   { emoji: "🔒", label: "Lock", name: "lockPdf" },
   { emoji: "🔓", label: "Remove password", name: "removePassword" },
@@ -17,43 +27,62 @@ const tools = [
   { emoji: "🗑", label: "Delete pages", name: "deletePages" },
   { emoji: "🗜", label: "Compress", name: "compressPdf" },
   { emoji: "🖼", label: "Images → PDF", name: "imagesToPdf" },
+] as const;
 
-  // { emoji: "📎", label: "Attachments", category: "PDF", name: "attachmentsExtract" },
-  // { emoji: "🩹", label: "Repair", category: "PDF", name: "repairPdf" },
-  // { emoji: "🔍", label: "Inspect", category: "PDF", name: "inspectPdf" },
-  // { emoji: "🫓", label: "Flatten", category: "PDF", name: "RotatePdf" },
-  // { emoji: "🔓", label: "Unlock", category: "Security", name: "RotatePdf" },
-  // { emoji: "🔁", label: "Change password", category: "Security", name: "RotatePdf" },
-  // { emoji: "🂠", label: "Collate", category: "Pages", name: "RotatePdf" },
-  // { emoji: "🛠", label: "Escape hatch", category: "Advanced", name: "RotatePdf" },
-  // { emoji: "💧", label: "Watermark", category: "PDF", name: "RotatePdf" },
+type ToolName = (typeof tools)[number]["name"];
+
+const PDF_TOOLS: ToolName[] = [
+  "lockPdf",
+  "removePassword",
+  "mergePdf",
+  "splitPdf",
+  "extractPages",
+  "rotatePdf",
+  "deletePages",
+  "compressPdf",
 ];
-
-type files = {
-  fileName: string;
-  fileType: string;
-};
 
 export default function Tools() {
   const [pickedFiles, setPickedFiles] = useState<DocumentPicker.DocumentPickerAsset[]>([]);
-
+  const [base64Files, setBase64Files] = useState<string[]>([]);
   const [b64, setb64] = useState<string>("");
   const [fileNames, setFileNames] = useState<string[]>([]);
   const [result, setResult] = useState("");
   const [resultCard, showResultCard] = useState(false);
-  const [selectedFunction, setSelectedFunction] = useState<string>("");
+  const [splitPartCount, setSplitPartCount] = useState(0);
+  const [selectedFunction, setSelectedFunction] = useState<ToolName | "">("");
+  const [formData, setFormData] = useState<ToolFormData | null>(null);
+  const [runId, setRunId] = useState(0);
+  const [activeTool, setActiveTool] = useState<ToolName | null>(null);
+  const [outputUri, setOutputUri] = useState<string | null>(null);
 
-  const onResults = (value: any) => {
+  const onResults = (value: string | string[]) => {
     showResultCard(true);
-    setResult(value);
-    saveBase64ToFile(value);
+    const primary = Array.isArray(value) ? value[0] : value;
+    setSplitPartCount(Array.isArray(value) ? value.length : 0);
+    setResult(primary);
+    const uri = saveBase64ToFile(primary);
+    if (uri) setOutputUri(uri);
   };
-  const [formData, setFormData] = useState<{ pwd?: string; confirmPwd?: string } | null>(null);
 
-  const handlePwdFormSubmit = (result: any) => {
-    setFormData(result);
-    console.log(result);
+  const runTool = (name: ToolName, data: ToolFormData) => {
+    setSelectedFunction(name);
+    setFormData(data);
+    setRunId((n) => n + 1);
   };
+
+  const openTool = (name: ToolName) => {
+    if (PDF_TOOLS.includes(name) && fileNames.length === 0) {
+      Alert.alert("Pick a PDF first", "Use Pick File to choose at least one PDF for this tool.");
+      return;
+    }
+    if (name === "mergePdf" && fileNames.length < 2) {
+      Alert.alert("Need more files", "Pick at least two PDFs to merge.");
+      return;
+    }
+    setActiveTool(name);
+  };
+
   const PickFile = async () => {
     try {
       const result = await DocumentPicker.getDocumentAsync({
@@ -65,15 +94,21 @@ export default function Tools() {
       if (!result.canceled) {
         setPickedFiles((prev) => [...prev, ...result.assets]);
 
+        const newNames: string[] = [];
+        const newBase64: string[] = [];
+
         for (const asset of result.assets) {
           const file = new File(asset.uri);
           const base64 = await file.base64();
-
-          setFileNames((prev) => [...prev, asset.name]);
-          setb64(base64);
+          newNames.push(asset.name);
+          newBase64.push(base64);
         }
-      } else {
-        console.log("User cancelled document picker");
+
+        setFileNames((prev) => [...prev, ...newNames]);
+        setBase64Files((prev) => [...prev, ...newBase64]);
+        if (newBase64.length > 0) {
+          setb64(newBase64[newBase64.length - 1]);
+        }
       }
     } catch (error) {
       console.error("Error picking document:", error);
@@ -85,77 +120,67 @@ export default function Tools() {
       const cleanBase64 = base64Data.replace(/^data:.*?;base64,/, "");
       const file = new File(Paths.document, "document.pdf");
       file.write(cleanBase64, { encoding: "base64" });
-
       console.log("File written successfully to:", file.uri);
       return file.uri;
     } catch (error) {
       console.error("Failed to write file:", error);
+      return null;
     }
   }
 
   const shareFileToDevice = async () => {
     const isAvailable = await Sharing.isAvailableAsync();
+    const uri = outputUri ?? `${Paths.document.uri}/document.pdf`;
 
     if (isAvailable) {
-      await Sharing.shareAsync("file:///data/user/0/com.gurjeetsahu.onlyDocs/files/document.pdf", {
-        mimeType: "application/pdf", // Adjust based on your file extension
+      await Sharing.shareAsync(uri, {
+        mimeType: "application/pdf",
         dialogTitle: "Save or Share your file",
       });
     } else {
       console.log("Sharing is not available on this platform");
     }
   };
-  // Remove file by index
+
   const removeFile = (index: number) => {
     setFileNames((prev) => prev.filter((_, i) => i !== index));
     setPickedFiles((prev) => prev.filter((_, i) => i !== index));
+    setBase64Files((prev) => {
+      const next = prev.filter((_, i) => i !== index);
+      setb64(next[next.length - 1] ?? "");
+      return next;
+    });
   };
 
   return (
     <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
-      {/* Pick File */}
       <View style={styles.pickFile}>
         <View>
-          <Button
-            color="#39AEA9"
-            title="Pick File"
-            onPress={() => {
-              PickFile();
-            }}
-          />
+          <Button color="#39AEA9" title="Pick File" onPress={PickFile} />
         </View>
 
         <AllTools
           base64={b64}
+          base64Files={base64Files}
           functionName={selectedFunction}
-          functionData={formData?.pwd!}
-          onResult={(value) => {
-            onResults(value);
-          }}
+          functionData={formData}
+          runId={runId}
+          onResult={onResults}
         />
       </View>
 
-      {/* Files */}
       {fileNames.length > 0 && (
         <View style={styles.fileContainer}>
-          <ScrollView nestedScrollEnabled={true} showsVerticalScrollIndicator={true}>
+          <ScrollView nestedScrollEnabled showsVerticalScrollIndicator>
             {fileNames.map((name, index) => (
               <View key={`${name}-${index}`} style={styles.card}>
-                {/* Close Button */}
                 <TouchableOpacity style={styles.closeButton} onPress={() => removeFile(index)} activeOpacity={0.7}>
                   <Text style={styles.closeText}>✕</Text>
                 </TouchableOpacity>
-
-                {/* Card Content */}
                 <Text style={styles.title}>{name}</Text>
-
-                <Text style={styles.description}>
-                  This is a customizable card component. You can easily dismiss it by tapping the close icon in the corner.
-                </Text>
+                <Text style={styles.description}>Selected for PDF tools (merge uses order shown).</Text>
               </View>
             ))}
-
-            {/* File Count */}
             <Text style={styles.fileCount}>
               {fileNames.length} PDF
               {fileNames.length === 1 ? "" : "s"} selected
@@ -164,71 +189,82 @@ export default function Tools() {
         </View>
       )}
 
-      {/* Log Button */}
-      {/* <Button
-        title="Log"
-        onPress={() => {
-          console.log(fileNames);
-        }}
-      /> */}
       {resultCard && (
         <View>
           <CloseableCard
-            title={fileNames}
-            description=""
-            onClose={() => {
-              showResultCard(false);
-            }}
+            title={splitPartCount > 1 ? `Done (${splitPartCount} parts — first saved)` : "Done"}
+            description={result ? "Output saved. Share or save to your device." : ""}
+            onClose={() => showResultCard(false)}
           />
-          <Button
-            color="#39AEA9"
-            title="Share"
-            onPress={() => {
-              shareFileToDevice();
-            }}
-          />
+          <Button color="#39AEA9" title="Share" onPress={shareFileToDevice} />
         </View>
       )}
-      <PasswordMenu onSubmitResult={handlePwdFormSubmit} />
 
-      {formData && (
-        <View style={{}}>
-          <Text>Submitted Name: {formData?.pwd}</Text>
-          <Text>Submitted Email: {formData?.confirmPwd}</Text>
-        </View>
-      )}
-      {/* <Button
-        title="Delete"
-        onPress={() => {
-          setFileNames([]);
-          setPickedFiles([]);
-        }}
-      /> */}
+      <LockMenu
+        visible={activeTool === "lockPdf"}
+        onClose={() => setActiveTool(null)}
+        onSubmit={(data) => runTool("lockPdf", data)}
+      />
+      <UnlockMenu
+        visible={activeTool === "removePassword"}
+        onClose={() => setActiveTool(null)}
+        onSubmit={(data) => runTool("removePassword", data)}
+      />
+      <MergeMenu
+        visible={activeTool === "mergePdf"}
+        fileCount={fileNames.length}
+        onClose={() => setActiveTool(null)}
+        onSubmit={(data) => runTool("mergePdf", data)}
+      />
+      <SplitMenu
+        visible={activeTool === "splitPdf"}
+        onClose={() => setActiveTool(null)}
+        onSubmit={(data) => runTool("splitPdf", data)}
+      />
+      <ExtractMenu
+        visible={activeTool === "extractPages"}
+        onClose={() => setActiveTool(null)}
+        onSubmit={(data) => runTool("extractPages", data)}
+      />
+      <RotateMenu
+        visible={activeTool === "rotatePdf"}
+        onClose={() => setActiveTool(null)}
+        onSubmit={(data) => runTool("rotatePdf", data)}
+      />
+      <DeleteMenu
+        visible={activeTool === "deletePages"}
+        onClose={() => setActiveTool(null)}
+        onSubmit={(data) => runTool("deletePages", data)}
+      />
+      <CompressMenu
+        visible={activeTool === "compressPdf"}
+        onClose={() => setActiveTool(null)}
+        onSubmit={(data) => runTool("compressPdf", data)}
+      />
+      <ImagesToPdfMenu
+        visible={activeTool === "imagesToPdf"}
+        onClose={() => setActiveTool(null)}
+        onSubmit={(data) => runTool("imagesToPdf", data)}
+      />
 
-      {/* Tools */}
       <View style={styles.toolsContainer}>
-        {tools.map((tool) => {
-          return (
-            <Pressable
-              key={tool.label}
-              accessibilityRole="button"
-              onPress={() => {
-                setSelectedFunction(tool.name);
-              }}
-              style={styles.tool}
-            >
-              <View>
-                <View style={styles.icon}>
-                  <Text style={styles.emoji}>{tool.emoji}</Text>
-                </View>
-
-                <Text style={styles.label} numberOfLines={2}>
-                  {tool.label}
-                </Text>
+        {tools.map((tool) => (
+          <Pressable
+            key={tool.name}
+            accessibilityRole="button"
+            onPress={() => openTool(tool.name)}
+            style={styles.tool}
+          >
+            <View>
+              <View style={styles.icon}>
+                <Text style={styles.emoji}>{tool.emoji}</Text>
               </View>
-            </Pressable>
-          );
-        })}
+              <Text style={styles.label} numberOfLines={2}>
+                {tool.label}
+              </Text>
+            </View>
+          </Pressable>
+        ))}
       </View>
     </ScrollView>
   );
@@ -328,11 +364,7 @@ const styles = StyleSheet.create({
     padding: 24,
     margin: 16,
     position: "relative",
-
-    // Android Shadow
     elevation: 4,
-
-    // iOS Shadow
     shadowColor: "#000000",
     shadowOffset: {
       width: 0,

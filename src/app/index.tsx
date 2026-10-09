@@ -43,9 +43,8 @@ export default function HomeScreen() {
       </View>
 
       {/* CONTENT */}
+      <TabBar />
       <ScrollView style={styles.content} contentContainerStyle={styles.contentContainer}>
-        <TabBar />
-
         <View style={styles.grid}>
           <View style={styles.mainColumn}>
             <FileSystemDumpButton root={dir(Paths.document, "userData")} title="Dump" />
@@ -72,7 +71,7 @@ const styles = StyleSheet.create({
   },
 
   header: {
-    backgroundColor: "#2563eb",
+    backgroundColor: "#a2d5ab",
     padding: 20,
     paddingTop: 50,
   },

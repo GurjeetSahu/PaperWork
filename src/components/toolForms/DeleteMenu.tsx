@@ -1,142 +1,58 @@
-import { useState } from "react";
-import { Button, Modal, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { useEffect, useState } from "react";
+import { Alert, Text, TextInput } from "react-native";
 
-import { DeletePagesOptions } from "pdfstudio";
+import type { PagesFormData } from "@/src/types/toolFormData";
+
+import ToolFormModal from "./ToolFormModal";
+import { formStyles } from "./formStyles";
 
 type DeleteMenuProps = {
-  onSubmitResult: (options: DeletePagesOptions) => void;
+  visible: boolean;
+  onClose: () => void;
+  onSubmit: (data: PagesFormData) => void;
 };
 
-export default function DeleteMenu({ onSubmitResult }: DeleteMenuProps) {
-  const [modalVisible, setModalVisible] = useState(false);
+export default function DeleteMenu({ visible, onClose, onSubmit }: DeleteMenuProps) {
   const [pages, setPages] = useState("");
-  const [pwd, setPwd] = useState("");
-  const handlePress = () => {
-    onSubmitResult({ pages, password: pwd });
+  const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    if (!visible) {
+      setPages("");
+      setPassword("");
+    }
+  }, [visible]);
+
+  const handleSubmit = () => {
+    if (!pages.trim()) {
+      Alert.alert("Pages required", "Enter which pages to remove.");
+      return;
+    }
+    onSubmit({
+      pages: pages.trim(),
+      ...(password.trim() ? { password: password.trim() } : {}),
+    });
+    onClose();
   };
+
   return (
-    <View style={styles.container}>
-      <Pressable style={styles.openButton} onPress={() => setModalVisible(true)}>
-        <Text style={styles.openButtonText}>Open Modal</Text>
-      </Pressable>
-
-      <Modal
-        animationType="fade"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => setModalVisible(false)} // Handles hardware back button on Android
-      >
-        {/* Backdrop Wrapper: Tapping here closes the modal */}
-        <Pressable style={styles.backdrop} onPress={() => setModalVisible(false)}>
-          {/* Modal Container: Prevents clicks here from closing the modal */}
-          <Pressable style={styles.modalContent} onPress={(e) => e.stopPropagation()}>
-            {/* Close Button in the Top-Right Corner */}
-            <Pressable style={styles.closeCornerButton} onPress={() => setModalVisible(false)}>
-              <Text style={styles.closeButtonText}>✕</Text>
-            </Pressable>
-
-            {/* Modal Body Elements */}
-            <Text style={styles.modalTitle}>Locking Pdf</Text>
-            <View style={styles.textBox}>
-              <TextInput
-                style={styles.input}
-                placeholder="Enter pages..."
-                placeholderTextColor="#888"
-                // 2. Bind the value to your state variable
-                value={pages}
-                // 3. Update state automatically when text changes
-                onChangeText={(newText) => setPages(newText)}
-              />
-              <TextInput
-                style={styles.input}
-                placeholder="Confirm password..."
-                placeholderTextColor="#888"
-                // 2. Bind the value to your state variable
-                value={pwd}
-                // 3. Update state automatically when text changes
-                onChangeText={(newText) => setPwd(newText)}
-              />
-            </View>
-            <Button title="Done" onPress={handlePress} />
-          </Pressable>
-        </Pressable>
-      </Modal>
-    </View>
+    <ToolFormModal visible={visible} title="Delete pages" onClose={onClose} onSubmit={handleSubmit}>
+      <Text style={formStyles.hint}>Pages to remove from the document.</Text>
+      <TextInput
+        style={formStyles.input}
+        placeholder="Pages to delete"
+        placeholderTextColor="#888"
+        value={pages}
+        onChangeText={setPages}
+      />
+      <TextInput
+        style={formStyles.input}
+        placeholder="PDF password (if encrypted)"
+        placeholderTextColor="#888"
+        secureTextEntry
+        value={password}
+        onChangeText={setPassword}
+      />
+    </ToolFormModal>
   );
 }
-
-const styles = StyleSheet.create({
-  textBox: { justifyContent: "flex-start", alignItems: "flex-start" },
-  input: {
-    height: 50,
-    width: 300,
-    borderWidth: 1,
-    borderColor: "#000000",
-    borderRadius: 5,
-    paddingHorizontal: 15,
-    backgroundColor: "#fff",
-    fontSize: 16,
-    justifyContent: "flex-start",
-  },
-  resultText: {
-    marginTop: 15,
-    fontSize: 16,
-    color: "#333",
-  },
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#ff0000",
-  },
-  openButton: {
-    backgroundColor: "#4ad500",
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 8,
-  },
-  openButtonText: {
-    color: "#002051",
-    fontWeight: "600",
-    fontSize: 16,
-  },
-  // Dark semi-transparent background stretching across the entire screen
-  backdrop: {
-    flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  // The actual white modal box
-  modalContent: {
-    width: "85%",
-    backgroundColor: "#ffffff",
-    borderRadius: 1,
-    padding: 24,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-    position: "relative", // Enables absolute positioning for the corner button
-  },
-  // Positioned strictly in the top-right corner
-  closeCornerButton: {
-    position: "absolute",
-    top: 12,
-    right: 16,
-    padding: 8, // Enlarges touch target area
-  },
-  closeButtonText: {
-    fontSize: 20,
-    color: "#8e8e93",
-    fontWeight: "bold",
-  },
-  modalTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 12,
-    color: "#000",
-  },
-});

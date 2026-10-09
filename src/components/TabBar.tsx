@@ -113,6 +113,7 @@ export default function TabBar() {
 const styles = StyleSheet.create({
   wrapper: {
     gap: 12,
+    width: "100%",
   },
   sectionTitle: {
     fontSize: 16,
@@ -122,8 +123,9 @@ const styles = StyleSheet.create({
   tabBar: {
     flexDirection: "row",
     position: "relative",
-    backgroundColor: "#dbeafe",
+    backgroundColor: "#a2d5ab",
     padding: 4,
+    width: "100%",
   },
   indicator: {
     position: "absolute",
@@ -152,5 +154,6 @@ const styles = StyleSheet.create({
   },
   content: {
     minHeight: 120,
+    paddingHorizontal: 15,
   },
 });

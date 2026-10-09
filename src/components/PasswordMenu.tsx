@@ -11,7 +11,7 @@ export default function PasswordMenu({ onSubmitResult }: any) {
   return (
     <View style={styles.container}>
       <Pressable style={styles.openButton} onPress={() => setModalVisible(true)}>
-        <Text style={styles.openButtonText}>Open Modal</Text>
+        <Text style={styles.openButtonText}>Op</Text>
       </Pressable>
 
       <Modal
@@ -82,6 +82,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#ff0000",
+    height: 2,
+    width: 200,
+    padding: 0,
   },
   openButton: {
     backgroundColor: "#4ad500",
